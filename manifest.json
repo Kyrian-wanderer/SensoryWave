@@ -2,39 +2,40 @@
   "name": "SensoryWave",
   "short_name": "SensoryWave",
   "description": "Communication app for sensory overload and migraine episodes",
-  "start_url": "/?v=1.1",
-  "id": "/?v=1.1",
+  "start_url": "/SensoryWave/?v=1.1",
+  "id": "/SensoryWave/?v=1.1",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
   "background_color": "#0a0a10",
   "theme_color": "#0a0a10",
-  "scope": "/",
+  "scope": "/SensoryWave/",
   "lang": "en",
   "dir": "auto",
   "categories": ["health", "utilities", "accessibility"],
   "prefer_related_applications": false,
   "icons": [
-    { "src": "/icons/icon-57.png",  "sizes": "57x57",   "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-60.png",  "sizes": "60x60",   "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-76.png",  "sizes": "76x76",   "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-114.png", "sizes": "114x114", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-120.png", "sizes": "120x120", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-167.png", "sizes": "167x167", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
-    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/SensoryWave/icons/icon-57.png",  "sizes": "57x57",   "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-60.png",  "sizes": "60x60",   "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-76.png",  "sizes": "76x76",   "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-114.png", "sizes": "114x114", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-120.png", "sizes": "120x120", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-167.png", "sizes": "167x167", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "/SensoryWave/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/SensoryWave/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
   "shortcuts": [
     {
       "name": "Panic Board",
       "short_name": "Panic",
       "description": "Open the quick communication buttons",
-      "url": "/?v=1.1",
-      "icons": [{ "src": "/icons/icon-192.png", "sizes": "192x192" }]
+      "url": "/SensoryWave/?v=1.1",
+      "icons": [{ "src": "/SensoryWave/icons/icon-192.png", "sizes": "192x192" }]
     }
   ]
 }
+
