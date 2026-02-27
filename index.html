@@ -41,7 +41,6 @@ body { background:#0a0a10; font-family:Arial,sans-serif; color:#f0f0f0; display:
 @keyframes ok-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
 @keyframes walk { 0%{transform:translateX(0)} 100%{transform:translateX(140px)} }
 @keyframes door-open { 0%{transform-origin:left;transform:perspective(200px) rotateY(0)} 100%{transform-origin:left;transform:perspective(200px) rotateY(-70deg)} }
-@keyframes overload-shake { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-10px,6px)} 20%{transform:translate(10px,-6px)} 30%{transform:translate(-6px,10px)} 40%{transform:translate(6px,-10px)} 50%{transform:translate(-10px,4px)} 60%{transform:translate(10px,-4px)} 70%{transform:translate(-4px,10px)} 80%{transform:translate(4px,-10px)} }
 @keyframes candy-bounce { 0%,100%{transform:translateY(0) rotate(0)} 25%{transform:translateY(-24px) rotate(-12deg)} 75%{transform:translateY(-12px) rotate(12deg)} }
 @keyframes alert-ring { 0%{transform:scale(1);opacity:1} 100%{transform:scale(2.8);opacity:0} }
 @keyframes sit-down { 0%{transform:translateY(0)} 100%{transform:translateY(70px)} }
@@ -111,31 +110,21 @@ body { background:#0a0a10; font-family:Arial,sans-serif; color:#f0f0f0; display:
 .b11{background:#0d1a2e;border-color:rgba(100,160,220,.4)}.b11 .bl{color:rgba(160,200,255,.95)}
 
 /* OVERLOAD */
-.ov { background:#12082a; align-items:center; padding:24px 20px; gap:14px; }
-.ovr { width:80px;height:80px;background:rgba(160,100,255,.15);border-radius:50%;border:3px solid rgba(200,120,255,.5);display:flex;align-items:center;justify-content:center;font-size:38px;animation:pulse 2s infinite; }
-.ovb { background:rgba(200,120,255,.2);border:1px solid rgba(200,120,255,.5);border-radius:22px;padding:5px 20px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c080ff; }
-.ovt { font-size:20px;font-weight:700;color:#fff;text-align:center;line-height:1.4; }
-.ovs { font-size:13px;color:rgba(200,160,255,.65);text-align:center; }
-.ovl { width:100%;height:1px;background:rgba(200,120,255,.2); }
-.ova { display:flex;gap:10px;width:100%;max-width:500px; }
-.ovat { flex:1;border-radius:14px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:13px;font-weight:700;text-transform:uppercase; }
-.ovsh { background:rgba(100,160,255,.18);color:#7ab8f5;border:1.5px solid rgba(100,160,255,.5); }
-.ovai { font-size:26px; }
-.rec { width:100%;max-width:600px;display:flex;flex-direction:column;gap:10px; }
-.rech { font-size:13px;font-weight:700;text-align:center;color:rgba(255,255,255,.8);letter-spacing:.1em;text-transform:uppercase; }
-.rect { width:100%;height:30px;background:rgba(255,255,255,.08);border-radius:15px;overflow:hidden;border:1px solid rgba(255,255,255,.15); }
-.recf { height:100%;width:0%;border-radius:15px;background:#C0392B;transition:width .4s ease,background-color .6s ease; }
-.recp { font-size:14px;font-weight:700;text-align:center;color:rgba(255,255,255,.9); }
-.rech2 { font-size:11px;text-align:center;color:rgba(255,255,255,.35); }
-.ph { border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:10px;opacity:.35;transition:all .4s ease; }
-.ph.on { opacity:1; }
-.pd { width:12px;height:12px;border-radius:50%;flex-shrink:0; }
-.pr2 { font-size:11px;font-weight:700;color:rgba(255,255,255,.5); }
-.pt { font-size:13px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.3; }
-.phr{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25)}.phr.on{background:rgba(192,57,43,.28);border-color:rgba(192,57,43,.65)}
-.phy{background:rgba(212,172,13,.1);border:1px solid rgba(212,172,13,.2)}.phy.on{background:rgba(212,172,13,.25);border-color:rgba(212,172,13,.6)}
-.phg{background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.2)}.phg.on{background:rgba(39,174,96,.25);border-color:rgba(39,174,96,.6)}
-.rsb { background:rgba(192,57,43,.18);border:1.5px solid rgba(192,57,43,.45);border-radius:22px;padding:10px 0;text-align:center;font-size:14px;font-weight:700;color:#E74C3C;max-width:300px;margin:0 auto;width:100%; }
+@keyframes ov-label-breathe { 0%,100%{opacity:.65} 50%{opacity:1} }
+.ov { background:#071420;align-items:center;padding:20px 20px 28px;gap:12px;overflow-y:auto; }
+.ov-title { font-size:15px;font-weight:700;color:rgba(120,200,220,.9);text-align:center;letter-spacing:.08em;text-transform:uppercase; }
+.ov-sub { font-size:13px;color:rgba(120,180,210,.5);text-align:center;line-height:1.5;max-width:320px; }
+.ov-levels { display:flex;flex-direction:column;gap:9px;width:100%;max-width:500px; }
+.ov-level { border-radius:16px;padding:13px 15px;display:flex;align-items:center;gap:13px;border:1.5px solid rgba(80,160,200,.2);background:rgba(20,60,90,.35);transition:all .3s ease; }
+.ov-level.active { border-color:rgba(80,180,220,.7);background:rgba(20,80,120,.6); }
+.ov-level-icon { font-size:26px;flex-shrink:0;width:34px;text-align:center; }
+.ov-level-text { flex:1; }
+.ov-level-name { font-size:12px;font-weight:700;color:rgba(140,210,230,.9);letter-spacing:.06em;text-transform:uppercase;margin-bottom:3px; }
+.ov-level-desc { font-size:11px;color:rgba(180,220,240,.6);line-height:1.4; }
+.ov-show-btn { background:rgba(40,120,180,.25);border:1.5px solid rgba(80,160,220,.5);border-radius:22px;padding:12px 28px;font-size:14px;font-weight:700;color:#7ab8f5;width:100%;max-width:340px;text-align:center; }
+.ov-canvas-wrap { position:relative;width:100%;max-width:340px;height:150px;border-radius:14px;overflow:hidden;background:rgba(10,30,50,.6);border:1px solid rgba(60,130,180,.2); }
+.ov-canvas-wrap canvas { position:absolute;top:0;left:0;width:100%;height:100%; }
+.ov-anim-label { font-size:12px;color:rgba(120,190,220,.6);text-align:center;animation:ov-label-breathe 3s ease-in-out infinite;max-width:320px;line-height:1.5; }
 
 /* MIGRAINE */
 #s-migraine { background:#0d0010;align-items:center;padding:16px;gap:0;overflow-y:auto; }
@@ -525,9 +514,19 @@ body { font-size: 16px; }
 .lock-header-btn { font-size: 15px !important; padding: 10px 14px !important; }
 .lang-note { font-size: 15px !important; padding: 14px 18px !important; }
 
+/* UPDATE TOAST */
+#update-toast { position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:#0d2a3a;border:1.5px solid rgba(80,180,220,.6);border-radius:18px;padding:14px 20px;display:flex;align-items:center;gap:12px;z-index:9999;transition:transform .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.5);min-width:260px;max-width:340px; }
+#update-toast.show { transform:translateX(-50%) translateY(0); }
+#update-toast-msg { flex:1;font-size:13px;font-weight:600;color:rgba(180,220,240,.9);line-height:1.4; }
+#update-toast-btn { background:rgba(80,160,220,.25);border:1.5px solid rgba(80,160,220,.6);border-radius:22px;padding:7px 16px;font-size:12px;font-weight:700;color:#7ab8f5;white-space:nowrap;flex-shrink:0; }
 </style>
 </head>
 <body>
+<!-- UPDATE TOAST -->
+<div id="update-toast">
+  <div id="update-toast-msg">💙 New version available</div>
+  <div id="update-toast-btn" onclick="window.location.reload(true)">Update now</div>
+</div>
 
 <!-- PIN LOCK SCREEN -->
 <div id="pin-screen" class="hidden">
@@ -581,7 +580,7 @@ body { font-size: 16px; }
         <div class="btn b3"  id="btn3"><div class="bi">🚫</div><div class="bl" data-t="b3">Do not touch me</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
         <div class="btn b4"  id="btn4"><div class="bi">✋</div><div class="bl" data-t="b4">I'm okay — please wait</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
         <div class="btn b5"  id="btn5"><div class="bi">🚪</div><div class="bl" data-t="b5">I need to leave</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
-        <div class="btn b6"  id="btn6"><div class="bi">⚡</div><div class="bl" data-t="b6">Sensory Overload starting</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b6"  id="btn6"><div class="bi">⚡</div><div class="bl" data-t="b6">Sensory Overload</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
         <div class="btn b7"  id="btn7"><div class="bi">🤕</div><div class="bl" data-t="b7">Migraine Intensity</div><div class="show-lbl" data-t="tap_set">tap to set level</div></div>
         <div class="btn b8"  id="btn8"><div class="bi">🍬</div><div class="bl" data-t="b8">Low blood sugar — get candy</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
         <div class="btn b9"  id="btn9"><div class="bi">🪑</div><div class="bl" data-t="b9">I need to sit down</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
@@ -591,23 +590,43 @@ body { font-size: 16px; }
     </div>
 
     <!-- OVERLOAD -->
+    <!-- OVERLOAD -->
     <div class="screen ov" id="s-overload">
-      <div class="ovr">⚡</div>
-      <div class="ovb" data-t="ov_badge">⚠ SENSORY OVERLOAD</div>
-      <div class="ovt" data-t="ov_title">I feel a Sensory<br>Overload starting</div>
-      <div class="ovs" data-t="ov_sub">Signal lost · Please help me</div>
-      <div class="ovl"></div>
-      <div class="ova"><div class="ovat ovsh" id="ov-show"><div class="ovai">👁</div><span data-t="show_fullscreen">Show Fullscreen</span></div></div>
-      <div class="rec">
-        <div class="rech" data-t="rec_title">Recovery Bar</div>
-        <div class="rect" id="rec-track"><div class="recf" id="rec-fill"></div></div>
-        <div class="recp" id="rec-pct" data-t="rec_start">Tap the bar to begin recovery</div>
-        <div class="rech2" data-t="rec_hint">Each tap adds 10%</div>
-        <div class="ph phr on" id="p-red"><div class="pd" style="background:#C0392B"></div><div><div class="pr2">10–40%</div><div class="pt" data-t="rec_red">Still having sensory overload</div></div></div>
-        <div class="ph phy" id="p-yel"><div class="pd" style="background:#D4AC0D"></div><div><div class="pr2">40–75%</div><div class="pt" data-t="rec_yellow">Beginning recovery — please wait</div></div></div>
-        <div class="ph phg" id="p-grn"><div class="pd" style="background:#27AE60"></div><div><div class="pr2">75–100%</div><div class="pt" data-t="rec_green">Recovery</div></div></div>
-        <div class="rsb" id="reset-btn" data-t="rec_reset">↺ Reset Bar to 0%</div>
+      <div class="ov-title" data-t="ov_title">Sensory Overload</div>
+      <div class="ov-sub" data-t="ov_sub">Tap the level that matches how you feel, then show your screen</div>
+      <div class="ov-canvas-wrap"><canvas id="ov-canvas"></canvas></div>
+      <div class="ov-anim-label" id="ov-anim-label"></div>
+      <div class="ov-levels">
+        <div class="ov-level active" id="ovl1">
+          <div class="ov-level-icon">🌀</div>
+          <div class="ov-level-text">
+            <div class="ov-level-name" data-t="ov_l1_name">Level 1 — Glitching</div>
+            <div class="ov-level-desc" data-t="ov_l1_desc">Senses starting to behave erratically · brain fog · nausea · Please reduce light and movement</div>
+          </div>
+        </div>
+        <div class="ov-level" id="ovl2">
+          <div class="ov-level-icon">🏢</div>
+          <div class="ov-level-text">
+            <div class="ov-level-name" data-t="ov_l2_name">Level 2 — Peliopsia</div>
+            <div class="ov-level-desc" data-t="ov_l2_desc">Things are rushing toward me and magnifying · Please step back · move slowly · no sudden movements</div>
+          </div>
+        </div>
+        <div class="ov-level" id="ovl3">
+          <div class="ov-level-icon">📐</div>
+          <div class="ov-level-text">
+            <div class="ov-level-name" data-t="ov_l3_name">Level 3 — Macropsia</div>
+            <div class="ov-level-desc" data-t="ov_l3_desc">Everything feels impossibly large and distorted · I cannot navigate · Please sit me down somewhere dim and still</div>
+          </div>
+        </div>
+        <div class="ov-level" id="ovl4">
+          <div class="ov-level-icon">🖨️</div>
+          <div class="ov-level-text">
+            <div class="ov-level-name" data-t="ov_l4_name">Level 4 — Event Perception Distorting</div>
+            <div class="ov-level-desc" data-t="ov_l4_desc">Events arriving faster than I can process · like a printer overloading an inbox · Please pause · don't add new information</div>
+          </div>
+        </div>
       </div>
+      <div class="ov-show-btn" id="ov-show" data-t="show_fullscreen">👁 Show Fullscreen</div>
     </div>
 
     <!-- MIGRAINE -->
@@ -646,6 +665,13 @@ body { font-size: 16px; }
       <div class="mg-btn-row">
         <div class="mg-show-btn" id="mg-show-btn" data-t="show_fullscreen">👁 Show Fullscreen</div>
         <div class="mg-back-btn" id="mg-back-btn" data-t="back">← Back</div>
+      </div>
+      <div class="ov-level" id="mg-epd-btn" style="margin-top:10px;width:100%;max-width:500px;box-sizing:border-box">
+        <div class="ov-level-icon">🖨️📄📥💾</div>
+        <div class="ov-level-text">
+          <div class="ov-level-name" data-t="ov_l4_name">Event Perception Distorting</div>
+          <div class="ov-level-desc" data-t="ov_l4_desc">Events arriving faster than I can process · Please pause · don't add new information · give me time to catch up</div>
+        </div>
       </div>
     </div>
 
@@ -826,7 +852,27 @@ body { font-size: 16px; }
 </div>
 
 <script>
-if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js'); }
+// ── SERVICE WORKER V1.1 ──
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/sw.js?v=1.1').then(function(reg){
+    reg.update();
+    setInterval(function(){ reg.update(); }, 60000);
+    function promptUpdate(){
+      var toast=document.getElementById('update-toast');
+      if(toast) toast.classList.add('show');
+    }
+    if(reg.waiting) promptUpdate();
+    reg.addEventListener('updatefound', function(){
+      var nw=reg.installing;
+      nw.addEventListener('statechange', function(){
+        if(nw.state==='installed' && navigator.serviceWorker.controller) promptUpdate();
+      });
+    });
+  });
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    window.location.reload(true);
+  });
+}
 
 /* ── TRANSLATIONS ── */
 var LANGS=[
@@ -847,12 +893,18 @@ var LANGS=[
 var T={
   en:{nav_panic:'Panic Board',nav_overload:'Overload',nav_medical:'Medical ID',
     b1:'I need quiet',b2:'Give me space',b3:'Do not touch me',b4:"I'm okay — please wait",b5:'I need to leave',
-    b6:'Sensory Overload starting',b7:'Migraine Intensity',b8:'Low blood sugar — get candy',b9:'I need to sit down',b10:'My medical card',b11:"I'm tired",
+    b6:'Sensory Overload',b7:'Migraine Intensity',b8:'Low blood sugar — get candy',b9:'I need to sit down',b10:'My medical card',b11:"I'm tired",
     tap_show:'tap to show',tap_set:'tap to set level',tap_open:'tap to open',
-    ov_badge:'⚠ SENSORY OVERLOAD',ov_title:'I feel a Sensory\nOverload starting',ov_sub:'Signal lost · Please help me',
-    show_fullscreen:'👁 Show Fullscreen',rec_title:'Recovery Bar',rec_start:'Tap the bar to begin recovery',
-    rec_hint:'Each tap adds 10%',rec_red:'Still having sensory overload',rec_yellow:'Beginning recovery — please wait',
-    rec_green:'Recovery',rec_reset:'↺ Reset Bar to 0%',
+    ov_title:'Sensory Overload',ov_sub:'Tap the level that matches how you feel, then show your screen',
+    ov_l1_name:'Level 1 — Glitching',ov_l1_desc:'Senses starting to behave erratically · brain fog · nausea · Please reduce light and movement',
+    ov_l2_name:'Level 2 — Peliopsia',ov_l2_desc:'Things are rushing toward me and magnifying · Please step back · move slowly · no sudden movements',
+    ov_l3_name:'Level 3 — Macropsia',ov_l3_desc:'Everything feels impossibly large and distorted · I cannot navigate · Please sit me down somewhere dim and still',
+    ov_l4_name:'Level 4 — Event Perception Distorting',ov_l4_desc:'Events arriving faster than I can process · like a printer overloading an inbox · Please pause · don\'t add new information · give me time to catch up',
+    show_fullscreen:'👁 Show Fullscreen',
+    ov_fs_l1:'My senses are glitching · Please reduce light and movement around me',
+    ov_fs_l2:'Things are rushing toward me · Please step back and move slowly · no sudden touch',
+    ov_fs_l3:'Everything is impossibly large · I cannot navigate · Please sit me down and guide me gently',
+    ov_fs_l4:'My perception of events is distorting · Events are arriving faster than I can process · Please pause · stay still · don\'t add new information · give me a moment to catch up',
     mg_title:'🤕 Migraine Intensity',mg_sub:'Set the level, then show your phone to someone',
     mg_tap_level:'Tap a level',mg_drag:'Or drag the slider',
     mg_l1:'Mild',mg_l2:'Low',mg_l3:'Moderate',mg_l4:'Severe',mg_l5:'Unbearable',
@@ -874,10 +926,16 @@ var T={
     b1:'Necesito silencio',b2:'Dame espacio',b3:'No me toques',b4:'Estoy bien — espera',b5:'Necesito irme',
     b6:'Sobrecarga sensorial',b7:'Intensidad de migraña',b8:'Azúcar baja — dulce',b9:'Necesito sentarme',b10:'Mi tarjeta médica',b11:'Estoy cansado',
     tap_show:'toca para mostrar',tap_set:'toca para ajustar',tap_open:'toca para abrir',
-    ov_badge:'⚠ SOBRECARGA SENSORIAL',ov_title:'Siento una Sobrecarga\nSensorial',ov_sub:'Señal perdida · Ayúdame',
-    show_fullscreen:'👁 Mostrar Pantalla',rec_title:'Barra de Recuperación',rec_start:'Toca para comenzar',
-    rec_hint:'Cada toque añade 10%',rec_red:'Aún en sobrecarga',rec_yellow:'Comenzando recuperación',
-    rec_green:'Recuperación',rec_reset:'↺ Reiniciar a 0%',
+    ov_title:'Sobrecarga Sensorial',ov_sub:'Toca el nivel que describes y muestra tu pantalla',
+    ov_l1_name:'Nivel 1 — Fallo',ov_l1_desc:'Los sentidos empiezan a fallar · niebla mental · náuseas · Por favor reduce la luz y el movimiento',
+    ov_l2_name:'Nivel 2 — Peliopsia',ov_l2_desc:'Las cosas se acercan y se amplifican · Por favor retrocede · muévete despacio',
+    ov_l3_name:'Nivel 3 — Macropsia',ov_l3_desc:'Todo parece imposiblemente grande · No puedo navegar · Por favor siéntame en un lugar tranquilo',
+    ov_l4_name:'Nivel 4 — Percepción de eventos distorsionada',ov_l4_desc:'Los eventos llegan más rápido de lo que puedo procesar · Por favor pausa · no añadas nueva información',
+    show_fullscreen:'👁 Mostrar Pantalla',
+    ov_fs_l1:'Mis sentidos están fallando · Por favor reduce la luz y el movimiento',
+    ov_fs_l2:'Las cosas se acercan · Por favor retrocede y muévete despacio',
+    ov_fs_l3:'Todo es imposiblemente grande · No puedo navegar · Por favor guíame',
+    ov_fs_l4:'Mi percepción de eventos se distorsiona · Por favor pausa · no añadas nueva información · dame tiempo para procesar',
     mg_title:'🤕 Intensidad de Migraña',mg_sub:'Ajusta el nivel y muestra tu teléfono',
     mg_tap_level:'Toca un nivel',mg_drag:'O desliza',
     mg_l1:'Leve',mg_l2:'Baja',mg_l3:'Moderada',mg_l4:'Severa',mg_l5:'Insoportable',
@@ -899,10 +957,16 @@ var T={
     b1:"J'ai besoin de silence",b2:"Donnez-moi de l'espace",b3:'Ne me touchez pas',b4:'Je vais bien — attendez',b5:'Je dois partir',
     b6:'Surcharge sensorielle',b7:'Intensité migraine',b8:'Glycémie basse — bonbon',b9:"Je dois m'asseoir",b10:'Ma carte médicale',b11:'Je suis fatigué',
     tap_show:'appuyer pour montrer',tap_set:'appuyer pour régler',tap_open:'appuyer pour ouvrir',
-    ov_badge:'⚠ SURCHARGE SENSORIELLE',ov_title:'Je ressens une Surcharge\nSensorielle',ov_sub:'Signal perdu · Aidez-moi',
-    show_fullscreen:'👁 Afficher Plein Écran',rec_title:'Barre de Récupération',rec_start:'Appuyez pour commencer',
-    rec_hint:'Chaque pression ajoute 10%',rec_red:'Toujours en surcharge',rec_yellow:'Récupération commence',
-    rec_green:'Récupération',rec_reset:'↺ Réinitialiser',
+    ov_title:'Surcharge Sensorielle',ov_sub:'Appuyez sur le niveau correspondant et montrez votre écran',
+    ov_l1_name:'Niveau 1 — Dysfonction',ov_l1_desc:'Les sens commencent à dysfonctionner · brouillard mental · nausées · Réduisez la lumière et les mouvements',
+    ov_l2_name:'Niveau 2 — Peliopsia',ov_l2_desc:'Les objets se rapprochent et grossissent · Reculez · bougez lentement',
+    ov_l3_name:'Niveau 3 — Macropsia',ov_l3_desc:"Tout semble immensément grand · Je ne peux pas naviguer · Asseyez-moi quelque part de calme",
+    ov_l4_name:'Niveau 4 — Perception des événements distordue',ov_l4_desc:"Les événements arrivent trop vite · Faites une pause · n'ajoutez pas de nouvelles informations",
+    show_fullscreen:'👁 Afficher Plein Écran',
+    ov_fs_l1:'Mes sens dysfonctionnent · Réduisez la lumière et les mouvements',
+    ov_fs_l2:'Les objets se rapprochent · Reculez et bougez lentement',
+    ov_fs_l3:'Tout est immensément grand · Asseyez-moi et guidez-moi doucement',
+    ov_fs_l4:"Ma perception des événements se distord · Faites une pause · n'ajoutez pas d'informations · donnez-moi le temps de traiter",
     mg_title:'🤕 Intensité Migraine',mg_sub:'Réglez le niveau et montrez votre téléphone',
     mg_tap_level:'Appuyez sur un niveau',mg_drag:'Ou faites glisser',
     mg_l1:'Légère',mg_l2:'Faible',mg_l3:'Modérée',mg_l4:'Sévère',mg_l5:'Insupportable',
@@ -924,10 +988,16 @@ var T={
     b1:'Ich brauche Stille',b2:'Gib mir Abstand',b3:'Nicht anfassen',b4:'Mir geht es gut — bitte warten',b5:'Ich muss gehen',
     b6:'Sensorische Überlastung',b7:'Migräne-Intensität',b8:'Niedriger Blutzucker — Süßes',b9:'Ich muss mich setzen',b10:'Mein Medizinausweis',b11:'Ich bin müde',
     tap_show:'tippen',tap_set:'tippen zum Einstellen',tap_open:'tippen zum Öffnen',
-    ov_badge:'⚠ SENSORISCHE ÜBERLASTUNG',ov_title:'Ich spüre eine sensorische\nÜberlastung',ov_sub:'Signal verloren · Bitte helfen',
-    show_fullscreen:'👁 Vollbild Anzeigen',rec_title:'Erholungsbalken',rec_start:'Tippen zum Starten',
-    rec_hint:'Jeder Tipp fügt 10% hinzu',rec_red:'Noch in Überlastung',rec_yellow:'Erholung beginnt',
-    rec_green:'Erholung',rec_reset:'↺ Zurücksetzen',
+    ov_title:'Sensorische Überlastung',ov_sub:'Wähle die Stufe und zeige deinen Bildschirm',
+    ov_l1_name:'Stufe 1 — Störung',ov_l1_desc:'Sinne beginnen zu versagen · Gehirnnebel · Übelkeit · Bitte reduzieren Sie Licht und Bewegung',
+    ov_l2_name:'Stufe 2 — Peliopsia',ov_l2_desc:'Dinge kommen auf mich zu und vergrößern sich · Bitte treten Sie zurück · langsam bewegen',
+    ov_l3_name:'Stufe 3 — Makropsie',ov_l3_desc:'Alles wirkt riesig und verzerrt · Ich kann nicht navigieren · Bitte setzen Sie mich hin',
+    ov_l4_name:'Stufe 4 — Ereigniswahrnehmung gestört',ov_l4_desc:'Ereignisse kommen schneller als ich verarbeiten kann · Bitte pausieren · keine neuen Informationen',
+    show_fullscreen:'👁 Vollbild Anzeigen',
+    ov_fs_l1:'Meine Sinne versagen · Bitte reduzieren Sie Licht und Bewegung',
+    ov_fs_l2:'Dinge vergrößern sich · Bitte treten Sie zurück und bewegen Sie sich langsam',
+    ov_fs_l3:'Alles ist riesig · Ich kann nicht navigieren · Bitte führen Sie mich sanft',
+    ov_fs_l4:'Meine Ereigniswahrnehmung ist gestört · Bitte pausieren · keine neuen Infos · geben Sie mir Zeit zum Verarbeiten',
     mg_title:'🤕 Migräne-Intensität',mg_sub:'Stufe einstellen und Handy zeigen',
     mg_tap_level:'Stufe antippen',mg_drag:'Oder schieben',
     mg_l1:'Leicht',mg_l2:'Niedrig',mg_l3:'Mäßig',mg_l4:'Stark',mg_l5:'Unerträglich',
@@ -949,10 +1019,16 @@ var T={
     b1:'Ho bisogno di silenzio',b2:'Dammi spazio',b3:'Non toccarmi',b4:'Sto bene — aspetta',b5:'Devo andare',
     b6:'Sovraccarico sensoriale',b7:'Intensità emicrania',b8:'Glicemia bassa — dolce',b9:'Devo sedermi',b10:'La mia carta medica',b11:'Sono stanco',
     tap_show:'tocca per mostrare',tap_set:'tocca per impostare',tap_open:'tocca per aprire',
-    ov_badge:'⚠ SOVRACCARICO SENSORIALE',ov_title:'Sento un Sovraccarico\nSensoriale',ov_sub:'Segnale perso · Aiutami',
-    show_fullscreen:'👁 Mostra Schermo Intero',rec_title:'Barra di Recupero',rec_start:'Tocca per iniziare',
-    rec_hint:'Ogni tocco aggiunge 10%',rec_red:'Ancora in sovraccarico',rec_yellow:'Recupero inizia',
-    rec_green:'Recupero',rec_reset:'↺ Azzera',
+    ov_title:'Sovraccarico Sensoriale',ov_sub:'Tocca il livello corrispondente e mostra lo schermo',
+    ov_l1_name:'Livello 1 — Disfunzione',ov_l1_desc:'I sensi iniziano a dare problemi · nebbia mentale · nausea · Per favore riduci luce e movimenti',
+    ov_l2_name:'Livello 2 — Peliopsia',ov_l2_desc:'Le cose si avvicinano e si ingrandiscono · Per favore fai un passo indietro · muoviti lentamente',
+    ov_l3_name:'Livello 3 — Macropsia',ov_l3_desc:'Tutto sembra enormemente grande · Non riesco a navigare · Per favore siedimi in un posto calmo',
+    ov_l4_name:'Livello 4 — Percezione degli eventi distorta',ov_l4_desc:'Gli eventi arrivano più veloci di quanto posso elaborare · Per favore fermati · non aggiungere nuove informazioni',
+    show_fullscreen:'👁 Mostra Schermo Intero',
+    ov_fs_l1:'I miei sensi stanno cedendo · Per favore riduci luce e movimenti',
+    ov_fs_l2:'Le cose si avvicinano · Per favore fai un passo indietro e muoviti lentamente',
+    ov_fs_l3:'Tutto è enormemente grande · Non riesco a navigare · Guidami dolcemente',
+    ov_fs_l4:'La mia percezione degli eventi è distorta · Per favore fermati · non aggiungere informazioni · dammi tempo per elaborare',
     mg_title:'🤕 Intensità Emicrania',mg_sub:'Imposta il livello e mostra il telefono',
     mg_tap_level:'Tocca un livello',mg_drag:'O trascina',
     mg_l1:'Lieve',mg_l2:'Bassa',mg_l3:'Moderata',mg_l4:'Severa',mg_l5:'Insopportabile',
@@ -974,10 +1050,16 @@ var T={
     b1:'Preciso de silêncio',b2:'Dê-me espaço',b3:'Não me toque',b4:'Estou bem — espere',b5:'Preciso sair',
     b6:'Sobrecarga sensorial',b7:'Intensidade de enxaqueca',b8:'Açúcar baixo — doce',b9:'Preciso sentar',b10:'Meu cartão médico',b11:'Estou cansado',
     tap_show:'toque para mostrar',tap_set:'toque para definir',tap_open:'toque para abrir',
-    ov_badge:'⚠ SOBRECARGA SENSORIAL',ov_title:'Estou sentindo\nSobrecarga Sensorial',ov_sub:'Sinal perdido · Me ajude',
-    show_fullscreen:'👁 Mostrar Tela Cheia',rec_title:'Barra de Recuperação',rec_start:'Toque para começar',
-    rec_hint:'Cada toque adiciona 10%',rec_red:'Ainda em sobrecarga',rec_yellow:'Recuperação começando',
-    rec_green:'Recuperação',rec_reset:'↺ Reiniciar',
+    ov_title:'Sobrecarga Sensorial',ov_sub:'Toque o nível correspondente e mostre sua tela',
+    ov_l1_name:'Nível 1 — Falha',ov_l1_desc:'Sentidos começando a falhar · névoa mental · náusea · Por favor reduza luz e movimento',
+    ov_l2_name:'Nível 2 — Peliopsia',ov_l2_desc:'As coisas estão se aproximando e ampliando · Por favor recue · mova-se devagar',
+    ov_l3_name:'Nível 3 — Macropsia',ov_l3_desc:'Tudo parece imenso · Não consigo navegar · Por favor me sente em lugar calmo',
+    ov_l4_name:'Nível 4 — Percepção de eventos distorcida',ov_l4_desc:'Eventos chegando mais rápido do que consigo processar · Por favor pause · não adicione novas informações',
+    show_fullscreen:'👁 Mostrar Tela Cheia',
+    ov_fs_l1:'Meus sentidos estão falhando · Por favor reduza luz e movimento',
+    ov_fs_l2:'As coisas estão se aproximando · Por favor recue e mova-se devagar',
+    ov_fs_l3:'Tudo é imenso · Não consigo navegar · Por favor me guie com calma',
+    ov_fs_l4:'Minha percepção de eventos está distorcida · Por favor pause · não adicione informações · me dê tempo para processar',
     mg_title:'🤕 Intensidade de Enxaqueca',mg_sub:'Defina o nível e mostre o telefone',
     mg_tap_level:'Toque um nível',mg_drag:'Ou arraste',
     mg_l1:'Leve',mg_l2:'Baixa',mg_l3:'Moderada',mg_l4:'Severa',mg_l5:'Insuportável',
@@ -997,12 +1079,18 @@ var T={
     anim_sit:'Preciso sentar',anim_okay_sub:'Por favor espere comigo',anim_tired:'Estou cansado — preciso descansar'},
   ar:{nav_panic:'لوحة الطوارئ',nav_overload:'إرهاق حسي',nav_medical:'بطاقة طبية',
     b1:'أحتاج للهدوء',b2:'أعطني مساحة',b3:'لا تلمسني',b4:'أنا بخير — انتظر',b5:'أحتاج للمغادرة',
-    b6:'إرهاق حسي بدأ',b7:'شدة الصداع',b8:'سكر منخفض — حلوى',b9:'أحتاج للجلوس',b10:'بطاقتي الطبية',b11:'أنا متعب',
+    b6:'إرهاق حسي',b7:'شدة الصداع',b8:'سكر منخفض — حلوى',b9:'أحتاج للجلوس',b10:'بطاقتي الطبية',b11:'أنا متعب',
     tap_show:'اضغط للعرض',tap_set:'اضغط للضبط',tap_open:'اضغط للفتح',
-    ov_badge:'⚠ إرهاق حسي',ov_title:'أشعر ببداية إرهاق حسي',ov_sub:'الإشارة ضعيفة · ساعدني',
-    show_fullscreen:'👁 عرض كامل',rec_title:'شريط التعافي',rec_start:'اضغط لبدء التعافي',
-    rec_hint:'كل ضغطة تضيف 10%',rec_red:'لا يزال في إرهاق',rec_yellow:'التعافي يبدأ',
-    rec_green:'التعافي',rec_reset:'↺ إعادة ضبط',
+    ov_title:'إرهاق حسي',ov_sub:'اضغط على المستوى المناسب وأرِ شاشتك',
+    ov_l1_name:'المستوى 1 — بداية الخلل',ov_l1_desc:'الحواس تبدأ في الخلل · ضباب ذهني · غثيان · أرجو تقليل الضوء والحركة',
+    ov_l2_name:'المستوى 2 — بيليوبسيا',ov_l2_desc:'الأشياء تقترب وتكبر · أرجو التراجع · تحرك ببطء',
+    ov_l3_name:'المستوى 3 — ماكروبسيا',ov_l3_desc:'كل شيء يبدو ضخماً · لا أستطيع التنقل · أرجو مساعدتي في الجلوس',
+    ov_l4_name:'المستوى 4 — تشويه إدراك الأحداث',ov_l4_desc:'الأحداث تصل أسرع مما أستطيع معالجته · أرجو التوقف · لا تضف معلومات جديدة',
+    show_fullscreen:'👁 عرض كامل',
+    ov_fs_l1:'حواسي تتعطل · أرجو تقليل الضوء والحركة',
+    ov_fs_l2:'الأشياء تكبر وتقترب · أرجو التراجع والتحرك ببطء',
+    ov_fs_l3:'كل شيء ضخم جداً · لا أستطيع التنقل · أرجو إرشادي برفق',
+    ov_fs_l4:'إدراكي للأحداث يتشوه · أرجو التوقف · لا تضف معلومات · أعطني وقتاً للمعالجة',
     mg_title:'🤕 شدة الصداع',mg_sub:'اضبط المستوى وأرِ هاتفك',
     mg_tap_level:'اضغط على مستوى',mg_drag:'أو اسحب',
     mg_l1:'خفيف',mg_l2:'منخفض',mg_l3:'متوسط',mg_l4:'شديد',mg_l5:'لا يُحتمل',
@@ -1022,12 +1110,18 @@ var T={
     anim_sit:'أحتاج للجلوس',anim_okay_sub:'انتظر معي',anim_tired:'أنا متعب — أحتاج للراحة'},
   zh:{nav_panic:'紧急面板',nav_overload:'感觉过载',nav_medical:'医疗卡',
     b1:'我需要安静',b2:'给我空间',b3:'请勿触碰我',b4:'我没事 — 请等一下',b5:'我需要离开',
-    b6:'感觉过载开始',b7:'偏头痛强度',b8:'血糖低 — 请给我糖',b9:'我需要坐下',b10:'我的医疗卡',b11:'我累了',
+    b6:'感觉过载',b7:'偏头痛强度',b8:'血糖低 — 请给我糖',b9:'我需要坐下',b10:'我的医疗卡',b11:'我累了',
     tap_show:'点击展示',tap_set:'点击设置',tap_open:'点击打开',
-    ov_badge:'⚠ 感觉过载',ov_title:'我感到感觉过载开始了',ov_sub:'信号丢失 · 请帮助我',
-    show_fullscreen:'👁 全屏显示',rec_title:'恢复条',rec_start:'点击开始恢复',
-    rec_hint:'每次点击增加10%',rec_red:'仍在感觉过载中',rec_yellow:'开始恢复 — 请等待',
-    rec_green:'恢复中',rec_reset:'↺ 重置为0%',
+    ov_title:'感觉过载',ov_sub:'点击对应的级别然后展示屏幕',
+    ov_l1_name:'第1级 — 开始失调',ov_l1_desc:'感官开始失调 · 脑雾 · 恶心 · 请减少周围的光线和动作',
+    ov_l2_name:'第2级 — 视物变近',ov_l2_desc:'东西在向我靠近并放大 · 请后退 · 慢慢移动',
+    ov_l3_name:'第3级 — 视物变大',ov_l3_desc:'一切都感觉无比巨大 · 我无法移动 · 请让我坐下',
+    ov_l4_name:'第4级 — 事件感知扭曲',ov_l4_desc:'事件到达的速度超过我的处理能力 · 请暂停 · 不要添加新信息',
+    show_fullscreen:'👁 全屏显示',
+    ov_fs_l1:'我的感官正在失调 · 请减少光线和动作',
+    ov_fs_l2:'东西在放大靠近 · 请后退并慢慢移动',
+    ov_fs_l3:'一切都无比巨大 · 我无法移动 · 请轻轻引导我',
+    ov_fs_l4:'我对事件的感知正在扭曲 · 请暂停 · 不要添加新信息 · 给我时间来处理',
     mg_title:'🤕 偏头痛强度',mg_sub:'设置级别后展示手机',
     mg_tap_level:'点击一个级别',mg_drag:'或滑动',
     mg_l1:'轻微',mg_l2:'较低',mg_l3:'中度',mg_l4:'严重',mg_l5:'难以忍受',
@@ -1047,12 +1141,18 @@ var T={
     anim_sit:'我需要坐下',anim_okay_sub:'请陪我等一下',anim_tired:'我累了 — 我需要休息'},
   ja:{nav_panic:'緊急パネル',nav_overload:'過負荷',nav_medical:'医療カード',
     b1:'静かにしてください',b2:'スペースをください',b3:'触れないでください',b4:'大丈夫 — 待ってください',b5:'帰る必要があります',
-    b6:'感覚過負荷が始まりました',b7:'片頭痛の強さ',b8:'血糖値が低い — 甘いものを',b9:'座る必要があります',b10:'私の医療カード',b11:'疲れています',
+    b6:'感覚過負荷',b7:'片頭痛の強さ',b8:'血糖値が低い — 甘いものを',b9:'座る必要があります',b10:'私の医療カード',b11:'疲れています',
     tap_show:'タップして表示',tap_set:'タップして設定',tap_open:'タップして開く',
-    ov_badge:'⚠ 感覚過負荷',ov_title:'感覚過負荷が始まっています',ov_sub:'信号消失 · 助けてください',
-    show_fullscreen:'👁 全画面表示',rec_title:'回復バー',rec_start:'バーをタップして始める',
-    rec_hint:'1回タップで10%追加',rec_red:'まだ感覚過負荷中',rec_yellow:'回復を開始 — 待ってください',
-    rec_green:'回復中',rec_reset:'↺ リセット',
+    ov_title:'感覚過負荷',ov_sub:'該当するレベルをタップして画面を見せてください',
+    ov_l1_name:'レベル1 — 異常開始',ov_l1_desc:'感覚が誤作動し始めています · 脳の霧 · 吐き気 · 周囲の光と動きを減らしてください',
+    ov_l2_name:'レベル2 — 視物変容症',ov_l2_desc:'ものが近づいて大きくなっています · 後退してください · ゆっくり動いてください',
+    ov_l3_name:'レベル3 — 大視症',ov_l3_desc:'すべてが巨大に感じます · 動けません · 静かな場所に座らせてください',
+    ov_l4_name:'レベル4 — 事象知覚の歪み',ov_l4_desc:'出来事が処理できる速さより早く届いています · 一時停止してください · 新しい情報を加えないでください',
+    show_fullscreen:'👁 全画面表示',
+    ov_fs_l1:'感覚が誤作動しています · 光と動きを減らしてください',
+    ov_fs_l2:'ものが近づいています · 後退してゆっくり動いてください',
+    ov_fs_l3:'すべてが巨大です · 動けません · 優しく誘導してください',
+    ov_fs_l4:'事象の知覚が歪んでいます · 一時停止してください · 新情報を加えないで · 処理する時間をください',
     mg_title:'🤕 片頭痛の強さ',mg_sub:'レベルを設定して見せてください',
     mg_tap_level:'レベルをタップ',mg_drag:'またはスライド',
     mg_l1:'軽度',mg_l2:'低め',mg_l3:'中程度',mg_l4:'重度',mg_l5:'耐えられない',
@@ -1074,10 +1174,16 @@ var T={
     b1:'Potrzebuję ciszy',b2:'Daj mi przestrzeń',b3:'Nie dotykaj mnie',b4:'Wszystko OK — poczekaj',b5:'Muszę wyjść',
     b6:'Przeciążenie sensoryczne',b7:'Intensywność migreny',b8:'Niski cukier — cukierek',b9:'Muszę usiąść',b10:'Moja karta medyczna',b11:'Jestem zmęczony',
     tap_show:'dotknij aby pokazać',tap_set:'dotknij aby ustawić',tap_open:'dotknij aby otworzyć',
-    ov_badge:'⚠ PRZECIĄŻENIE SENSORYCZNE',ov_title:'Czuję Przeciążenie\nSensoryczne',ov_sub:'Sygnał utracony · Pomóż mi',
-    show_fullscreen:'👁 Pokaż Pełny Ekran',rec_title:'Pasek Zdrowienia',rec_start:'Dotknij aby zacząć',
-    rec_hint:'Każde dotknięcie dodaje 10%',rec_red:'Nadal w przeciążeniu',rec_yellow:'Zdrowienie zaczyna',
-    rec_green:'Zdrowienie',rec_reset:'↺ Resetuj',
+    ov_title:'Przeciążenie Sensoryczne',ov_sub:'Dotknij odpowiedni poziom i pokaż ekran',
+    ov_l1_name:'Poziom 1 — Zaburzenia',ov_l1_desc:'Zmysły zaczynają szwankować · mgła umysłowa · nudności · Proszę zmniejsz światło i ruch',
+    ov_l2_name:'Poziom 2 — Peliopsia',ov_l2_desc:'Rzeczy zbliżają się i powiększają · Proszę się cofnij · poruszaj się powoli',
+    ov_l3_name:'Poziom 3 — Makropsja',ov_l3_desc:'Wszystko wydaje się ogromne · Nie mogę się poruszać · Proszę posadź mnie w spokojnym miejscu',
+    ov_l4_name:'Poziom 4 — Zniekształcenie percepcji zdarzeń',ov_l4_desc:'Zdarzenia docierają szybciej niż mogę przetworzyć · Proszę zatrzymaj się · nie dodawaj nowych informacji',
+    show_fullscreen:'👁 Pokaż Pełny Ekran',
+    ov_fs_l1:'Moje zmysły szwankują · Proszę zmniejsz światło i ruch',
+    ov_fs_l2:'Rzeczy się powiększają · Proszę cofnij się i poruszaj powoli',
+    ov_fs_l3:'Wszystko jest ogromne · Nie mogę się poruszać · Proszę prowadź mnie delikatnie',
+    ov_fs_l4:'Moja percepcja zdarzeń jest zniekształcona · Proszę zatrzymaj się · nie dodawaj informacji · daj mi czas na przetworzenie',
     mg_title:'🤕 Intensywność Migreny',mg_sub:'Ustaw poziom i pokaż telefon',
     mg_tap_level:'Dotknij poziom',mg_drag:'Lub przesuń',
     mg_l1:'Lekka',mg_l2:'Niska',mg_l3:'Umiarkowana',mg_l4:'Silna',mg_l5:'Nieznośna',
@@ -1099,10 +1205,16 @@ var T={
     b1:'Am nevoie de liniște',b2:'Dă-mi spațiu',b3:'Nu mă atinge',b4:'Sunt bine — așteaptă',b5:'Trebuie să plec',
     b6:'Supraîncărcare senzorială',b7:'Intensitate migrenă',b8:'Zahăr scăzut — dulce',b9:'Trebuie să mă așez',b10:'Cardul meu medical',b11:'Sunt obosit',
     tap_show:'apasă pentru afișare',tap_set:'apasă pentru setare',tap_open:'apasă pentru deschidere',
-    ov_badge:'⚠ SUPRAÎNCĂRCARE SENZORIALĂ',ov_title:'Simt o Supraîncărcare\nSenzorială',ov_sub:'Semnal pierdut · Ajutor',
-    show_fullscreen:'👁 Afișează Ecran Complet',rec_title:'Bară de Recuperare',rec_start:'Apasă bara pentru a începe',
-    rec_hint:'Fiecare apăsare adaugă 10%',rec_red:'Încă în supraîncărcare',rec_yellow:'Recuperare începe',
-    rec_green:'Recuperare',rec_reset:'↺ Resetare',
+    ov_title:'Supraîncărcare Senzorială',ov_sub:'Apasă nivelul corespunzător și arată ecranul',
+    ov_l1_name:'Nivelul 1 — Disfuncție',ov_l1_desc:'Simțurile încep să funcționeze eronat · ceață mentală · greață · Vă rog reduceți lumina și mișcarea',
+    ov_l2_name:'Nivelul 2 — Peliopsia',ov_l2_desc:'Lucrurile se apropie și se măresc · Vă rog dați înapoi · mișcați-vă încet',
+    ov_l3_name:'Nivelul 3 — Macropsia',ov_l3_desc:'Totul pare imens · Nu mă pot orienta · Vă rog ajutați-mă să mă așez undeva liniștit',
+    ov_l4_name:'Nivelul 4 — Percepție distorsionată a evenimentelor',ov_l4_desc:'Evenimentele sosesc mai repede decât pot procesa · Vă rog opriți-vă · nu adăugați informații noi',
+    show_fullscreen:'👁 Afișează Ecran Complet',
+    ov_fs_l1:'Simțurile mele disfuncționează · Vă rog reduceți lumina și mișcarea',
+    ov_fs_l2:'Lucrurile se măresc · Vă rog dați înapoi și mișcați-vă încet',
+    ov_fs_l3:'Totul este imens · Nu mă pot orienta · Vă rog ghidați-mă blând',
+    ov_fs_l4:'Percepția evenimentelor este distorsionată · Vă rog opriți-vă · nu adăugați informații · dați-mi timp să procesez',
     mg_title:'🤕 Intensitate Migrenă',mg_sub:'Setează nivelul și arată telefonul',
     mg_tap_level:'Apasă un nivel',mg_drag:'Sau glisează',
     mg_l1:'Ușoară',mg_l2:'Scăzută',mg_l3:'Moderată',mg_l4:'Severă',mg_l5:'Insuportabilă',
@@ -1124,10 +1236,16 @@ var T={
     b1:'Ik heb stilte nodig',b2:'Geef me ruimte',b3:'Raak me niet aan',b4:'Ik ben oké — wacht',b5:'Ik moet weg',
     b6:'Zintuiglijke overbelasting',b7:'Migraine intensiteit',b8:'Lage bloedsuiker — snoep',b9:'Ik moet zitten',b10:'Mijn medische kaart',b11:'Ik ben moe',
     tap_show:'tik om te tonen',tap_set:'tik om in te stellen',tap_open:'tik om te openen',
-    ov_badge:'⚠ ZINTUIGLIJKE OVERBELASTING',ov_title:'Ik voel Zintuiglijke\nOverbelasting',ov_sub:'Signaal verloren · Help me',
-    show_fullscreen:'👁 Toon Volledig Scherm',rec_title:'Herstelbar',rec_start:'Tik om te beginnen',
-    rec_hint:'Elke tik voegt 10% toe',rec_red:'Nog in overbelasting',rec_yellow:'Herstel begint',
-    rec_green:'Herstel',rec_reset:'↺ Resetten',
+    ov_title:'Zintuiglijke Overbelasting',ov_sub:'Tik op het bijpassende niveau en toon uw scherm',
+    ov_l1_name:'Niveau 1 — Storing',ov_l1_desc:'Zintuigen beginnen te haperen · hersenmist · misselijkheid · Verminder alstublieft licht en beweging',
+    ov_l2_name:'Niveau 2 — Peliopsia',ov_l2_desc:'Dingen komen op me af en worden groter · Ga alstublieft achteruit · beweeg langzaam',
+    ov_l3_name:'Niveau 3 — Macropsia',ov_l3_desc:'Alles lijkt enorm groot · Ik kan me niet oriënteren · Help me alstublieft ergens rustig zitten',
+    ov_l4_name:'Niveau 4 — Waarneming van gebeurtenissen verstoord',ov_l4_desc:'Gebeurtenissen komen sneller dan ik kan verwerken · Pauzeer alstublieft · voeg geen nieuwe informatie toe',
+    show_fullscreen:'👁 Toon Volledig Scherm',
+    ov_fs_l1:'Mijn zintuigen haperen · Verminder alstublieft licht en beweging',
+    ov_fs_l2:'Dingen worden groter · Ga achteruit en beweeg langzaam',
+    ov_fs_l3:'Alles is enorm groot · Ik kan me niet oriënteren · Begeleid me voorzichtig',
+    ov_fs_l4:'Mijn waarneming van gebeurtenissen is verstoord · Pauzeer alstublieft · voeg geen informatie toe · geef me tijd om te verwerken',
     mg_title:'🤕 Migraine Intensiteit',mg_sub:'Stel niveau in en toon telefoon',
     mg_tap_level:'Tik op een niveau',mg_drag:'Of versleep',
     mg_l1:'Licht',mg_l2:'Laag',mg_l3:'Matig',mg_l4:'Ernstig',mg_l5:'Ondraaglijk',
@@ -1353,6 +1471,7 @@ function goTo(id){
   var nb=document.getElementById('nav-'+id); if(nb)nb.classList.add('active');
   document.querySelector('.content').scrollTop=0;
   if(id==='widget') setTimeout(initStorm,120);
+  if(id==='overload') setTimeout(initOvCanvas,120);
 }
 onTap(document.getElementById('nav-panic'),    function(){goTo('panic');});
 onTap(document.getElementById('nav-overload'), function(){goTo('overload');});
@@ -1381,7 +1500,162 @@ function animSpace(){var t=getLang(),s=sc(64),a=sc(36),w=sc(280);showAnim('linea
 function animNoTouch(){var t=getLang();showAnim('linear-gradient(160deg,#2a0a0a,#1a0000)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(20)+'px"><div style="font-size:'+sc(100)+'px;animation:hand-shake .6s ease-in-out infinite">🤚</div><div style="font-size:'+sc(80)+'px;color:#E74C3C;font-weight:900;animation:x-pulse .8s ease-in-out infinite">✖</div></div>',t.anim_notouch);}
 function animOkay(){var t=getLang();showAnim('linear-gradient(160deg,#0a2e0a,#001a00)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(24)+'px"><div style="font-size:'+sc(110)+'px;animation:ok-bounce 1.5s ease-in-out infinite;filter:drop-shadow(0 0 '+sc(30)+'px rgba(39,174,96,.8))">✋</div><div style="font-size:'+sc(48)+'px;font-weight:900;color:#27AE60;letter-spacing:4px">OK</div><div style="font-size:'+sc(20)+'px;color:rgba(255,255,255,.7)">'+t.anim_okay_sub+'</div></div>',t.anim_okay);}
 function animLeave(){var t=getLang(),w=sc(260);showAnim('linear-gradient(160deg,#1a0a0a,#2a0000)','<div style="position:relative;width:'+w+'px;height:'+w+'px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;right:'+sc(40)+'px;top:'+sc(40)+'px;width:'+sc(90)+'px;height:'+sc(160)+'px;border:'+sc(6)+'px solid #888;border-radius:4px 4px 0 0;background:#1a1a2a"><div style="width:100%;height:100%;background:#2a2a3a;border-radius:2px;animation:door-open 1.5s ease-in-out infinite alternate;transform-origin:left"></div></div><div style="position:absolute;font-size:'+sc(64)+'px;animation:walk 1.5s ease-in-out infinite alternate;left:'+sc(20)+'px">🚶</div><div style="position:absolute;font-size:'+sc(40)+'px;right:'+sc(20)+'px;top:50%;transform:translateY(-50%);color:#E74C3C">➡️</div></div>',t.anim_leave);}
-function animOverload(){var t=getLang();showAnim('#12082a','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(16)+'px;animation:overload-shake .3s ease-in-out infinite"><div style="font-size:'+sc(90)+'px;filter:drop-shadow(0 0 '+sc(20)+'px #ff00ff)">⚡</div><div style="font-size:'+sc(24)+'px;font-weight:900;color:white;text-align:center;letter-spacing:2px;line-height:1.3">'+t.anim_overload_title+'</div><div style="font-size:'+sc(18)+'px;color:rgba(255,255,255,.8)">'+t.anim_overload_sub+'</div></div>','');animLbl.textContent='';var cols=['#12082a','#440044','#004444','#440000','#001144'],fi=0;flashInterval=setInterval(function(){if(!overlay.classList.contains('open')){clearInterval(flashInterval);return;}overlay.style.background=cols[fi%cols.length];fi++;},200);}
+// ── OVERLOAD 4-LEVEL SYSTEM ──
+var ovLevel=1,ovAnimRAF=null;
+function stopOvAnim(){if(ovAnimRAF){cancelAnimationFrame(ovAnimRAF);ovAnimRAF=null;}}
+function initOvCanvas(){
+  var canvas=document.getElementById('ov-canvas');
+  var wrap=document.querySelector('.ov-canvas-wrap');
+  if(!canvas||!wrap)return;
+  canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;
+  runOvAnim();
+}
+function runOvAnim(){
+  stopOvAnim();
+  var canvas=document.getElementById('ov-canvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
+  var label=document.getElementById('ov-anim-label');
+  var t=getLang();
+  ctx.clearRect(0,0,w,h);
+  if(ovLevel===1)animOvL1(ctx,w,h,label,t);
+  else if(ovLevel===2)animOvL2(ctx,w,h,label,t);
+  else if(ovLevel===3)animOvL3(ctx,w,h,label,t);
+  else animOvL4(ctx,w,h,label,t);
+}
+function animOvL1(ctx,w,h,label,t){
+  label.textContent=t.ov_fs_l1||'My senses are glitching · Please reduce light and movement';
+  var start=null;
+  function draw(ts){
+    if(!start)start=ts;
+    var p=((ts-start)%4000)/4000;
+    ctx.clearRect(0,0,w,h);
+    [{y:h*.3,sp:1,am:5},{y:h*.5,sp:.7,am:7},{y:h*.7,sp:.5,am:9}].forEach(function(wv){
+      var ph=p*Math.PI*2*wv.sp;
+      ctx.save();ctx.globalAlpha=Math.max(0.1,0.4+Math.sin(ph)*0.3);
+      ctx.strokeStyle='rgba(80,180,200,.7)';ctx.lineWidth=2;ctx.beginPath();
+      for(var x=0;x<=w;x+=3){var y=wv.y+Math.sin((x/w)*Math.PI*2+ph)*wv.am;x===0?ctx.moveTo(x,y):ctx.lineTo(x,y);}
+      ctx.stroke();ctx.restore();
+    });
+    ovAnimRAF=requestAnimationFrame(draw);
+  }
+  ovAnimRAF=requestAnimationFrame(draw);
+}
+function animOvL2(ctx,w,h,label,t){
+  label.textContent=t.ov_fs_l2||'Things are rushing toward me · Please step back';
+  var start=null;
+  function draw(ts){
+    if(!start)start=ts;
+    var p=((ts-start)%3500)/3500;
+    ctx.clearRect(0,0,w,h);
+    var sc2=0.4+p*1.8,al=p<.85?0.8:0.8-(p-.85)/.15*.8;
+    var bw=Math.round(w*.22*sc2),bh=Math.round(h*.6*sc2),cx=Math.round(w*.5),cy=Math.round(h*.58);
+    var x=cx-bw/2,y=cy-bh;
+    ctx.save();ctx.globalAlpha=al;
+    ctx.fillStyle='rgba(20,60,100,.5)';ctx.strokeStyle='rgba(80,160,210,.9)';ctx.lineWidth=2;
+    ctx.beginPath();ctx.rect(x,y,bw,bh);ctx.fill();ctx.stroke();
+    var ww=Math.round(bw*.18),wh=Math.round(bh*.1);
+    ctx.fillStyle='rgba(120,190,230,.25)';ctx.strokeStyle='rgba(100,170,210,.5)';ctx.lineWidth=1;
+    [x+bw*.2,x+bw*.6].forEach(function(wx){[y+bh*.15,y+bh*.38,y+bh*.62].forEach(function(wy){ctx.beginPath();ctx.rect(wx-ww/2,wy-wh/2,ww,wh);ctx.fill();ctx.stroke();});});
+    ctx.restore();
+    ovAnimRAF=requestAnimationFrame(draw);
+  }
+  ovAnimRAF=requestAnimationFrame(draw);
+}
+function animOvL3(ctx,w,h,label,t){
+  label.textContent=t.ov_fs_l3||'Everything is impossibly large · I cannot navigate';
+  var start=null;
+  function draw(ts){
+    if(!start)start=ts;
+    var p=((ts-start)%5000)/5000;
+    ctx.clearRect(0,0,w,h);
+    var str=1+p*2,al=p<.8?0.7:0.7-(p-.8)/.2*.5;
+    var rw=w*.28*str,rh=h*.38;
+    ctx.save();ctx.globalAlpha=al;
+    ctx.strokeStyle='rgba(60,160,200,.8)';ctx.lineWidth=1.5;ctx.fillStyle='rgba(15,50,80,.4)';
+    ctx.beginPath();ctx.rect(w/2-rw/2,h/2-rh/2,rw,rh);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.moveTo(w/2,h/2-rh/2);ctx.lineTo(w/2,h/2+rh/2);ctx.stroke();
+    var corrW=rw*.55*str,corrH=rh*.25;
+    ctx.beginPath();ctx.rect(w/2+rw/2,h/2-corrH/2,corrW,corrH);ctx.fill();ctx.stroke();
+    ctx.restore();
+    ovAnimRAF=requestAnimationFrame(draw);
+  }
+  ovAnimRAF=requestAnimationFrame(draw);
+}
+function animOvL4(ctx,w,h,label,t){
+  label.textContent=t.ov_fs_l4||'Events arriving faster than I can process · Please pause';
+  var pages=[],lastPage=0,pageCount=0,start=null;
+  var prX=w*.18,prY=h*.28,inX=w*.62,inY=h*.55,buX=w*.62,buY=h*.25;
+  function addPage(ts){
+    if(pageCount>12)return;
+    pages.push({x:prX+10,y:prY+10,tx:inX+(Math.random()-.5)*20,ty:inY-pageCount*4+(Math.random()-.5)*6,r:(Math.random()-.5)*.45,prog:0,born:ts,dur:900+Math.random()*400});
+    pageCount++;
+  }
+  function draw(ts){
+    if(!start){start=ts;lastPage=ts;}
+    ctx.clearRect(0,0,w,h);
+    // Printer
+    ctx.save();ctx.fillStyle='rgba(20,60,90,.7)';ctx.strokeStyle='rgba(80,160,200,.7)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.rect(prX-22,prY-14,44,28);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(100,180,220,.5)';ctx.font='bold 9px Arial';ctx.textAlign='center';
+    ctx.fillText('🖨️',prX,prY+2);ctx.restore();
+    // Inbox
+    ctx.save();ctx.strokeStyle='rgba(80,150,190,.6)';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(inX-28,inY-8);ctx.lineTo(inX-28,inY+18);ctx.lineTo(inX+28,inY+18);ctx.lineTo(inX+28,inY-8);ctx.stroke();
+    ctx.fillStyle='rgba(100,170,210,.4)';ctx.font='9px Arial';ctx.textAlign='center';
+    ctx.fillText('📥',inX,inY+14);ctx.restore();
+    // Buffer — stuttering arc (not spinning)
+    ctx.save();
+    var glitch=Math.floor((ts-start)/600)%4;
+    var arcs=[[0,1.2],[1.4,2.6],[2.8,4.0],[4.2,5.4]];
+    ctx.strokeStyle='rgba(80,160,200,.55)';ctx.lineWidth=3;ctx.lineCap='round';
+    ctx.beginPath();ctx.arc(buX,buY,14,arcs[glitch][0],arcs[glitch][1]);ctx.stroke();
+    ctx.fillStyle='rgba(80,160,200,.35)';ctx.font='10px Arial';ctx.textAlign='center';
+    ctx.fillText('💾',buX,buY+4);ctx.restore();
+    // Spawn pages
+    var spawnInt=Math.max(400,1200-pageCount*60);
+    if(ts-lastPage>spawnInt){addPage(ts);lastPage=ts;}
+    // Draw pages
+    pages.forEach(function(pg){
+      pg.prog=Math.min((ts-pg.born)/pg.dur,1);
+      var cx=pg.x+(pg.tx-pg.x)*pg.prog,cy=pg.y+(pg.ty-pg.y)*pg.prog,r=pg.r*pg.prog;
+      ctx.save();ctx.translate(cx,cy);ctx.rotate(r);ctx.globalAlpha=0.7+pg.prog*.2;
+      ctx.fillStyle='rgba(180,220,240,.18)';ctx.strokeStyle='rgba(100,180,220,.55)';ctx.lineWidth=1;
+      ctx.beginPath();ctx.rect(-9,-11,18,22);ctx.fill();ctx.stroke();
+      ctx.strokeStyle='rgba(100,170,210,.3)';ctx.lineWidth=0.7;
+      [-4,0,4].forEach(function(ly){ctx.beginPath();ctx.moveTo(-6,ly);ctx.lineTo(6,ly);ctx.stroke();});
+      ctx.restore();
+    });
+    if(pageCount>12&&ts-start>6000){pages=[];pageCount=0;lastPage=ts;start=ts;}
+    ovAnimRAF=requestAnimationFrame(draw);
+  }
+  ovAnimRAF=requestAnimationFrame(draw);
+}
+function setOvLevel(n){
+  ovLevel=n;
+  [1,2,3,4].forEach(function(i){
+    var el=document.getElementById('ovl'+i);
+    if(el)el.classList.toggle('active',i===n);
+  });
+  runOvAnim();
+}
+function animOverload(){
+  var t=getLang();
+  var msgs=[t.ov_fs_l1,t.ov_fs_l2,t.ov_fs_l3,t.ov_fs_l4];
+  var cw=sc(300),ch=sc(200);
+  showAnim('linear-gradient(160deg,#071420,#0a1a2e)','<canvas id="ov-fs-canvas" width="'+cw+'" height="'+ch+'" style="width:'+cw+'px;height:'+ch+'px;border-radius:'+sc(12)+'px;background:rgba(10,30,50,.6)"></canvas>',msgs[ovLevel-1]||'');
+  setTimeout(function(){
+    var fc=document.getElementById('ov-fs-canvas');
+    if(!fc)return;
+    var fctx=fc.getContext('2d'),fw=fc.width,fh=fc.height;
+    var dl={textContent:''};
+    var t2=getLang();
+    if(ovLevel===1)animOvL1(fctx,fw,fh,dl,t2);
+    else if(ovLevel===2)animOvL2(fctx,fw,fh,dl,t2);
+    else if(ovLevel===3)animOvL3(fctx,fw,fh,dl,t2);
+    else animOvL4(fctx,fw,fh,dl,t2);
+  },60);
+}
 function animSugar(){var t=getLang(),ring=sc(160);showAnim('linear-gradient(160deg,#1a0e00,#2a1400)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(16)+'px"><div style="position:relative;width:'+ring+'px;height:'+ring+'px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite"></div><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite;animation-delay:.4s"></div><div style="font-size:'+sc(80)+'px;animation:candy-bounce 1s ease-in-out infinite">🍬</div></div><div style="font-size:'+sc(22)+'px;font-weight:900;color:#E74C3C">'+t.anim_sugar_title+'</div><div style="font-size:'+sc(20)+'px;color:white;font-weight:700">'+t.anim_sugar_sub+'</div></div>','');animLbl.textContent='';}
 function animSit(){var t=getLang(),w=sc(220);showAnim('linear-gradient(160deg,#0a1a2e,#001040)','<div style="position:relative;width:'+w+'px;height:'+sc(260)+'px"><div style="font-size:'+sc(80)+'px;animation:sit-down 1.5s ease-in-out infinite alternate;position:absolute;top:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🧍</div><div style="font-size:'+sc(70)+'px;animation:chair-appear 1.5s ease-in-out infinite alternate;position:absolute;bottom:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🪑</div><div style="position:absolute;right:0;top:50%;font-size:'+sc(36)+'px;color:#4A8FE7;animation:ok-bounce 1s ease-in-out infinite">⬇️</div></div>',t.anim_sit);}
 function animTired(){var t=getLang(),s=sc(100),zs=sc(38);showAnim('linear-gradient(160deg,#050818,#0a0d24)','<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:'+sc(10)+'px"><div style="font-size:'+s+'px;filter:drop-shadow(0 0 '+sc(20)+'px rgba(100,140,255,.5))">😴</div><div style="display:flex;gap:'+sc(18)+'px;margin-top:'+sc(8)+'px"><span style="font-size:'+zs+'px;color:#8ab4f8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;display:inline-block">Z</span><span style="font-size:'+sc(28)+'px;color:#6a8ee8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;animation-delay:.4s;display:inline-block">Z</span><span style="font-size:'+sc(20)+'px;color:#4a6ec8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;animation-delay:.8s;display:inline-block">z</span></div></div>',t.anim_tired);}
@@ -1391,11 +1665,15 @@ onTap(document.getElementById('btn2'),animSpace);
 onTap(document.getElementById('btn3'),animNoTouch);
 onTap(document.getElementById('btn4'),animOkay);
 onTap(document.getElementById('btn5'),animLeave);
-onTap(document.getElementById('btn6'),animOverload);
+onTap(document.getElementById('btn6'),function(){goTo('overload');});
+onTap(document.getElementById('ovl1'),function(){setOvLevel(1);});
+onTap(document.getElementById('ovl2'),function(){setOvLevel(2);});
+onTap(document.getElementById('ovl3'),function(){setOvLevel(3);});
+onTap(document.getElementById('ovl4'),function(){setOvLevel(4);});
+onTap(document.getElementById('mg-epd-btn'),function(){setOvLevel(4);animOverload();});
 onTap(document.getElementById('btn8'),animSugar);
 onTap(document.getElementById('btn9'),animSit);
 onTap(document.getElementById('btn11'),animTired);
-onTap(document.getElementById('ov-show'),animOverload);
 
 /* ══ MIGRAINE ══ */
 var mgLevel=1,mgDir='same';
@@ -1454,20 +1732,7 @@ onTap(document.getElementById('mg-show-btn'),function(){
   mgOv.classList.add('open');
 });
 
-/* ══ RECOVERY BAR ══ */
-var pct=0;
-onTap(document.getElementById('rec-track'),function(){if(pct<100){pct=Math.min(pct+10,100);updRec();}});
-onTap(document.getElementById('reset-btn'),function(){pct=0;updRec();});
-function updRec(){
-  var f=document.getElementById('rec-fill'),l=document.getElementById('rec-pct'),t=getLang();
-  var r=document.getElementById('p-red'),y=document.getElementById('p-yel'),g=document.getElementById('p-grn');
-  f.style.width=pct+'%';
-  if(pct<=40){f.style.backgroundColor='#C0392B';l.textContent=pct===0?t.rec_start:pct+'% — '+t.rec_red;}
-  else if(pct<=75){f.style.backgroundColor='#D4AC0D';l.textContent=pct+'% — '+t.rec_yellow;}
-  else{f.style.backgroundColor='#27AE60';l.textContent=pct===100?'100% ✓':pct+'% — '+t.rec_green;}
-  r.classList.toggle('on',pct>=1&&pct<=40);y.classList.toggle('on',pct>40&&pct<=75);g.classList.toggle('on',pct>75);
-  if(pct===0)r.classList.add('on');
-}
+
 
 /* ══ MEDICAL ID ══ */
 var med={name:'',about:'',please:'',important:'',cname:'',cphone:''};
