@@ -1642,19 +1642,37 @@ function setOvLevel(n){
 function animOverload(){
   var t=getLang();
   var msgs=[t.ov_fs_l1,t.ov_fs_l2,t.ov_fs_l3,t.ov_fs_l4];
-  var cw=sc(300),ch=sc(200);
-  showAnim('linear-gradient(160deg,#071420,#0a1a2e)','<canvas id="ov-fs-canvas" width="'+cw+'" height="'+ch+'" style="width:'+cw+'px;height:'+ch+'px;border-radius:'+sc(12)+'px;background:rgba(10,30,50,.6)"></canvas>',msgs[ovLevel-1]||'');
+  var msg=msgs[ovLevel-1]||'';
+  var cw=window.innerWidth,ch=window.innerHeight;
+  // Stop preview canvas first
+  stopOvAnim();
+  showAnim(
+    'linear-gradient(160deg,#071420,#0a1a2e)',
+    '<canvas id="ov-fs-canvas" width="'+cw+'" height="'+ch+'" style="position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1;"></canvas>',
+    msg
+  );
+  // No auto-close timeout for overload — tap to close
+  clearTimeout(animTimer);
   setTimeout(function(){
     var fc=document.getElementById('ov-fs-canvas');
     if(!fc)return;
+    fc.width=window.innerWidth;
+    fc.height=window.innerHeight;
     var fctx=fc.getContext('2d'),fw=fc.width,fh=fc.height;
     var dl={textContent:''};
-    var t2=getLang();
-    if(ovLevel===1)animOvL1(fctx,fw,fh,dl,t2);
-    else if(ovLevel===2)animOvL2(fctx,fw,fh,dl,t2);
-    else if(ovLevel===3)animOvL3(fctx,fw,fh,dl,t2);
-    else animOvL4(fctx,fw,fh,dl,t2);
-  },60);
+    if(ovLevel===1)animOvL1(fctx,fw,fh,dl,t);
+    else if(ovLevel===2)animOvL2(fctx,fw,fh,dl,t);
+    else if(ovLevel===3)animOvL3(fctx,fw,fh,dl,t);
+    else animOvL4(fctx,fw,fh,dl,t);
+    // When overlay closes, stop anim and restart preview
+    var checkClose=setInterval(function(){
+      if(!overlay.classList.contains('open')){
+        stopOvAnim();
+        clearInterval(checkClose);
+        setTimeout(initOvCanvas,150);
+      }
+    },300);
+  },80);
 }
 function animSugar(){var t=getLang(),ring=sc(160);showAnim('linear-gradient(160deg,#1a0e00,#2a1400)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(16)+'px"><div style="position:relative;width:'+ring+'px;height:'+ring+'px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite"></div><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite;animation-delay:.4s"></div><div style="font-size:'+sc(80)+'px;animation:candy-bounce 1s ease-in-out infinite">🍬</div></div><div style="font-size:'+sc(22)+'px;font-weight:900;color:#E74C3C">'+t.anim_sugar_title+'</div><div style="font-size:'+sc(20)+'px;color:white;font-weight:700">'+t.anim_sugar_sub+'</div></div>','');animLbl.textContent='';}
 function animSit(){var t=getLang(),w=sc(220);showAnim('linear-gradient(160deg,#0a1a2e,#001040)','<div style="position:relative;width:'+w+'px;height:'+sc(260)+'px"><div style="font-size:'+sc(80)+'px;animation:sit-down 1.5s ease-in-out infinite alternate;position:absolute;top:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🧍</div><div style="font-size:'+sc(70)+'px;animation:chair-appear 1.5s ease-in-out infinite alternate;position:absolute;bottom:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🪑</div><div style="position:absolute;right:0;top:50%;font-size:'+sc(36)+'px;color:#4A8FE7;animation:ok-bounce 1s ease-in-out infinite">⬇️</div></div>',t.anim_sit);}
@@ -1666,6 +1684,7 @@ onTap(document.getElementById('btn3'),animNoTouch);
 onTap(document.getElementById('btn4'),animOkay);
 onTap(document.getElementById('btn5'),animLeave);
 onTap(document.getElementById('btn6'),function(){goTo('overload');});
+onTap(document.getElementById('ov-show'),animOverload);
 onTap(document.getElementById('ovl1'),function(){setOvLevel(1);});
 onTap(document.getElementById('ovl2'),function(){setOvLevel(2);});
 onTap(document.getElementById('ovl3'),function(){setOvLevel(3);});
