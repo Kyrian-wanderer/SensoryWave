@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SensoryWave">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a10">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<link rel="apple-touch-icon" sizes="57x57"   href="/icons/icon-57.png">
+<link rel="apple-touch-icon" sizes="60x60"   href="/icons/icon-60.png">
+<link rel="apple-touch-icon" sizes="72x72"   href="/icons/icon-72.png">
+<link rel="apple-touch-icon" sizes="76x76"   href="/icons/icon-76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/icons/icon-114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/icons/icon-120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png">
+<link rel="apple-touch-icon" sizes="167x167" href="/icons/icon-167.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="192x192" href="/icons/icon-192.png">
+<link rel="icon" sizes="512x512" href="/icons/icon-512.png">
+<title>SensoryWave</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none; -webkit-user-select:none; }
+html,body { height:100%; }
+body { background:#0a0a10; font-family:Arial,sans-serif; color:#f0f0f0; display:flex; flex-direction:column; min-height:100vh; min-height:100dvh; }
+
+/* ANIMATIONS */
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(200,120,255,.5)} 50%{box-shadow:0 0 0 16px rgba(200,120,255,0)} }
+@keyframes wave-expand { 0%{transform:scale(.3);opacity:1} 100%{transform:scale(2.2);opacity:0} }
+@keyframes x-appear { 0%,50%{opacity:0;transform:scale(0)} 100%{opacity:1;transform:scale(1)} }
+@keyframes arrow-out { 0%{transform:translate(0,0);opacity:1} 100%{transform:translate(var(--dx),var(--dy));opacity:0} }
+@keyframes hand-shake { 0%,100%{transform:rotate(0)} 20%{transform:rotate(-18deg)} 40%{transform:rotate(18deg)} 60%{transform:rotate(-12deg)} 80%{transform:rotate(12deg)} }
+@keyframes x-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.25)} }
+@keyframes ok-bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+@keyframes walk { 0%{transform:translateX(0)} 100%{transform:translateX(140px)} }
+@keyframes door-open { 0%{transform-origin:left;transform:perspective(200px) rotateY(0)} 100%{transform-origin:left;transform:perspective(200px) rotateY(-70deg)} }
+@keyframes overload-shake { 0%,100%{transform:translate(0,0)} 10%{transform:translate(-10px,6px)} 20%{transform:translate(10px,-6px)} 30%{transform:translate(-6px,10px)} 40%{transform:translate(6px,-10px)} 50%{transform:translate(-10px,4px)} 60%{transform:translate(10px,-4px)} 70%{transform:translate(-4px,10px)} 80%{transform:translate(4px,-10px)} }
+@keyframes candy-bounce { 0%,100%{transform:translateY(0) rotate(0)} 25%{transform:translateY(-24px) rotate(-12deg)} 75%{transform:translateY(-12px) rotate(12deg)} }
+@keyframes alert-ring { 0%{transform:scale(1);opacity:1} 100%{transform:scale(2.8);opacity:0} }
+@keyframes sit-down { 0%{transform:translateY(0)} 100%{transform:translateY(70px)} }
+@keyframes chair-appear { 0%,55%{opacity:0} 100%{opacity:1} }
+@keyframes head-throb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.09)} }
+@keyframes bolt-flash { 0%,49%,100%{opacity:1} 50%,99%{opacity:0} }
+@keyframes pain-ring { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(2.5);opacity:0} }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pinShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-10px)} 40%,80%{transform:translateX(10px)} }
+
+/* PIN LOCK SCREEN */
+#pin-screen { position:fixed; top:0; left:0; width:100%; height:100%; background:linear-gradient(160deg,#0a0820,#050510); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:30px; }
+#pin-screen.hidden { display:none; }
+.pin-logo { font-size:56px; margin-bottom:4px; }
+.pin-title { font-size:22px; font-weight:700; color:#c080ff; }
+.pin-sub { font-size:14px; color:rgba(255,255,255,.4); text-align:center; }
+.pin-dots { display:flex; gap:16px; margin:8px 0; }
+.pin-dot { width:18px; height:18px; border-radius:50%; border:2px solid rgba(200,120,255,.5); background:transparent; transition:all .2s ease; }
+.pin-dot.filled { background:#c080ff; border-color:#c080ff; box-shadow:0 0 10px rgba(200,120,255,.6); }
+.pin-dot.error { border-color:#E74C3C; background:#E74C3C; }
+.pin-error { font-size:14px; color:#E74C3C; font-weight:700; min-height:20px; text-align:center; }
+.pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; width:100%; max-width:280px; }
+.pin-key { background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.15); border-radius:16px; padding:18px 10px; text-align:center; font-size:24px; font-weight:700; color:white; transition:all .15s ease; }
+.pin-key:active, .pin-key.pressed { background:rgba(200,120,255,.3); border-color:#c080ff; transform:scale(.93); }
+.pin-key.del { font-size:18px; color:rgba(255,255,255,.6); }
+.pin-key.empty { background:transparent; border-color:transparent; pointer-events:none; }
+.pin-shake { animation:pinShake .4s ease; }
+.pin-setup-note { font-size:12px; color:rgba(255,255,255,.3); text-align:center; max-width:260px; line-height:1.6; }
+
+/* HEADER */
+.app-header { background:linear-gradient(135deg,#1a0a2e,#0a0a18); border-bottom:1px solid rgba(200,120,255,.2); padding:12px 16px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; gap:10px; }
+.app-title { font-size:20px; font-weight:700; color:#c080ff; }
+.app-tagline { font-size:11px; color:rgba(255,255,255,.4); margin-top:2px; }
+.header-btns { display:flex; gap:8px; align-items:center; }
+.lang-header-btn { background:rgba(255,255,255,.08); border:1.5px solid rgba(255,255,255,.2); border-radius:20px; padding:7px 11px; font-size:13px; font-weight:700; color:rgba(255,255,255,.8); }
+.lock-header-btn { background:rgba(255,180,0,.1); border:1.5px solid rgba(255,180,0,.3); border-radius:20px; padding:7px 11px; font-size:13px; font-weight:700; color:#ffcc44; }
+@media(min-width:600px){ .app-title{font-size:24px;} }
+
+/* NAV */
+.nav { display:flex; gap:5px; padding:8px 10px; background:#0d0d14; border-bottom:1px solid rgba(255,255,255,.07); justify-content:center; flex-wrap:wrap; flex-shrink:0; }
+.nb { padding:8px 11px; border-radius:22px; font-size:11px; font-weight:700; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.55); }
+.nb.active { background:rgba(160,100,255,.3); border:1.5px solid rgba(200,120,255,.6); color:#c080ff; }
+@media(min-width:600px){ .nb{font-size:13px;padding:10px 14px;} }
+
+/* CONTENT */
+.content { flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+.screen { display:none; }
+.screen.active { display:flex; flex-direction:column; }
+
+/* PANIC BOARD */
+.panic-bg { background:#0a0a0e; padding:12px; gap:10px; }
+.grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+@media(min-width:600px){ .grid{grid-template-columns:repeat(3,1fr);} }
+.btn { border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:18px 10px 14px; border:1px solid transparent; gap:6px; min-height:100px; }
+@media(min-width:600px){ .btn{min-height:130px;border-radius:22px;padding:24px 14px 18px;} }
+.bi { font-size:32px; line-height:1; }
+@media(min-width:600px){ .bi{font-size:44px;} }
+.bl { font-size:12px; font-weight:700; text-align:center; color:rgba(255,255,255,.9); line-height:1.35; }
+@media(min-width:600px){ .bl{font-size:15px;} }
+.show-lbl { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:rgba(255,255,255,.3); }
+.b1{background:#0e2a4a;border-color:rgba(74,143,231,.4)}.b2{background:#0a2e22;border-color:rgba(126,200,164,.4)}
+.b3{background:#1e1030;border-color:rgba(160,130,220,.4)}.b4{background:#2a1e08;border-color:rgba(231,180,74,.4)}
+.b5{background:#2a0e0e;border-color:rgba(231,100,74,.4)}.b6{background:#1a0a2e;border-color:rgba(200,120,255,.5)}
+.b6 .bl{color:rgba(200,150,255,.95)}.b7{background:#1e0a28;border-color:rgba(200,80,180,.5)}
+.b8{background:#261800;border-color:rgba(255,190,50,.4)}.b9{background:#081822;border-color:rgba(80,180,220,.4)}
+.b10{background:#0a1020;border-color:rgba(74,143,231,.25)}
+.b11{background:#0d1a2e;border-color:rgba(100,160,220,.4)}.b11 .bl{color:rgba(160,200,255,.95)}
+
+/* OVERLOAD */
+.ov { background:#12082a; align-items:center; padding:24px 20px; gap:14px; }
+.ovr { width:80px;height:80px;background:rgba(160,100,255,.15);border-radius:50%;border:3px solid rgba(200,120,255,.5);display:flex;align-items:center;justify-content:center;font-size:38px;animation:pulse 2s infinite; }
+.ovb { background:rgba(200,120,255,.2);border:1px solid rgba(200,120,255,.5);border-radius:22px;padding:5px 20px;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#c080ff; }
+.ovt { font-size:20px;font-weight:700;color:#fff;text-align:center;line-height:1.4; }
+.ovs { font-size:13px;color:rgba(200,160,255,.65);text-align:center; }
+.ovl { width:100%;height:1px;background:rgba(200,120,255,.2); }
+.ova { display:flex;gap:10px;width:100%;max-width:500px; }
+.ovat { flex:1;border-radius:14px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;font-size:13px;font-weight:700;text-transform:uppercase; }
+.ovsh { background:rgba(100,160,255,.18);color:#7ab8f5;border:1.5px solid rgba(100,160,255,.5); }
+.ovai { font-size:26px; }
+.rec { width:100%;max-width:600px;display:flex;flex-direction:column;gap:10px; }
+.rech { font-size:13px;font-weight:700;text-align:center;color:rgba(255,255,255,.8);letter-spacing:.1em;text-transform:uppercase; }
+.rect { width:100%;height:30px;background:rgba(255,255,255,.08);border-radius:15px;overflow:hidden;border:1px solid rgba(255,255,255,.15); }
+.recf { height:100%;width:0%;border-radius:15px;background:#C0392B;transition:width .4s ease,background-color .6s ease; }
+.recp { font-size:14px;font-weight:700;text-align:center;color:rgba(255,255,255,.9); }
+.rech2 { font-size:11px;text-align:center;color:rgba(255,255,255,.35); }
+.ph { border-radius:10px;padding:8px 12px;display:flex;align-items:center;gap:10px;opacity:.35;transition:all .4s ease; }
+.ph.on { opacity:1; }
+.pd { width:12px;height:12px;border-radius:50%;flex-shrink:0; }
+.pr2 { font-size:11px;font-weight:700;color:rgba(255,255,255,.5); }
+.pt { font-size:13px;font-weight:600;color:rgba(255,255,255,.9);line-height:1.3; }
+.phr{background:rgba(192,57,43,.12);border:1px solid rgba(192,57,43,.25)}.phr.on{background:rgba(192,57,43,.28);border-color:rgba(192,57,43,.65)}
+.phy{background:rgba(212,172,13,.1);border:1px solid rgba(212,172,13,.2)}.phy.on{background:rgba(212,172,13,.25);border-color:rgba(212,172,13,.6)}
+.phg{background:rgba(39,174,96,.1);border:1px solid rgba(39,174,96,.2)}.phg.on{background:rgba(39,174,96,.25);border-color:rgba(39,174,96,.6)}
+.rsb { background:rgba(192,57,43,.18);border:1.5px solid rgba(192,57,43,.45);border-radius:22px;padding:10px 0;text-align:center;font-size:14px;font-weight:700;color:#E74C3C;max-width:300px;margin:0 auto;width:100%; }
+
+/* MIGRAINE */
+#s-migraine { background:#0d0010;align-items:center;padding:16px;gap:0;overflow-y:auto; }
+.mg-title { font-size:18px;font-weight:700;color:#cc88ff;text-align:center;margin-bottom:4px; }
+.mg-subtitle { font-size:12px;color:rgba(255,255,255,.4);text-align:center;margin-bottom:14px; }
+.mg-display { position:relative;width:220px;height:220px;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+#mg-head { font-size:100px; }
+.mg-bolt { position:absolute;font-size:0;opacity:0;transition:font-size .4s,opacity .4s; }
+#mg-bolt-tl{top:10%;left:10%}#mg-bolt-tr{top:10%;right:10%}#mg-bolt-l{top:35%;left:5%}
+#mg-bolt-r{top:35%;right:5%}#mg-bolt-bl{bottom:20%;left:12%}#mg-bolt-br{bottom:20%;right:12%}
+#mg-pain-ring1,#mg-pain-ring2{position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid transparent;}
+.mg-level-wrap { display:flex;flex-direction:column;align-items:center;gap:4px;margin:8px 0 4px; }
+#mg-level-num { font-size:52px;font-weight:900;line-height:1; }
+#mg-level-label { font-size:20px;font-weight:700;letter-spacing:.08em; }
+#mg-direction { font-size:26px;font-weight:700;text-align:center;min-height:34px; }
+.mg-zones-label { font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:10px;margin-bottom:6px; }
+.mg-zones { display:flex;gap:8px;width:100%;max-width:400px; }
+.mg-zone { flex:1;border-radius:12px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;border:2px solid transparent;transition:all .3s; }
+.mg-zone.selected { transform:scale(1.08); }
+.mz-num { font-size:22px;font-weight:900; }
+.mz-lbl { font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;text-align:center; }
+.mg-slider-wrap { width:100%;max-width:400px;margin-top:12px;display:flex;flex-direction:column;gap:6px; }
+.mg-slider-label { font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;text-align:center; }
+#mg-slider { -webkit-appearance:none;appearance:none;width:100%;height:18px;border-radius:9px;background:linear-gradient(to right,#27AE60,#D4AC0D,#E74C3C,#8B0000);outline:none;cursor:pointer;touch-action:pan-y; }
+#mg-slider::-webkit-slider-thumb { -webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:white;border:3px solid #cc88ff;box-shadow:0 2px 10px rgba(0,0,0,.5); }
+#mg-slider::-moz-range-thumb { width:32px;height:32px;border-radius:50%;background:white;border:3px solid #cc88ff; }
+.mg-dir-wrap { display:flex;gap:10px;width:100%;max-width:400px;margin-top:12px; }
+.mg-dir-btn { flex:1;border-radius:14px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:700;text-transform:uppercase;border:2px solid transparent;transition:all .25s; }
+.mg-dir-btn.active { transform:scale(1.05); }
+#mg-dir-worse{background:rgba(180,30,30,.2);color:#ff6666;border-color:rgba(180,30,30,.5)}#mg-dir-worse.active{background:rgba(180,30,30,.5);border-color:#ff4444}
+#mg-dir-same{background:rgba(150,100,200,.15);color:#cc88ff;border-color:rgba(150,100,200,.4)}#mg-dir-same.active{background:rgba(150,100,200,.4);border-color:#cc88ff}
+#mg-dir-better{background:rgba(30,130,60,.2);color:#66dd88;border-color:rgba(30,130,60,.5)}#mg-dir-better.active{background:rgba(30,130,60,.5);border-color:#44cc66}
+.mg-dir-icon { font-size:22px; }
+.mg-btn-row { display:flex;gap:10px;width:100%;max-width:400px;margin-top:14px;margin-bottom:6px; }
+.mg-show-btn { flex:2;background:rgba(100,160,255,.2);border:2px solid rgba(100,160,255,.6);color:#7ab8f5;border-radius:14px;padding:14px;text-align:center;font-size:15px;font-weight:700; }
+.mg-back-btn { flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);border-radius:14px;padding:14px;text-align:center;font-size:13px;font-weight:700; }
+
+/* MEDICAL ID */
+.medb { background:#f4f6f9; }
+.medh { background:#1B4F8A;padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between; }
+.medh-left { display:flex;align-items:center;gap:12px; }
+.medx { width:30px;height:30px;background:white;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px; }
+.medn { font-size:18px;font-weight:700;color:white; }
+.meds { font-size:11px;color:rgba(255,255,255,.75);font-weight:600;text-transform:uppercase;letter-spacing:.05em; }
+.edit-btn { background:rgba(255,255,255,.2);border:1.5px solid rgba(255,255,255,.5);border-radius:9px;padding:7px 14px;font-size:13px;font-weight:700;color:white; }
+.lang-note { background:#FFF3CD;border-left:4px solid #f0a500;padding:10px 16px;font-size:13px;color:#7a5c00;font-weight:600;display:none; }
+.lang-note.visible { display:block; }
+.medbody { padding:14px 16px;display:flex;flex-direction:column;gap:10px; }
+@media(min-width:600px){ .medbody{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px;} }
+.mbox { background:white;border-radius:13px;padding:12px 14px;border-left:4px solid #1B4F8A;box-shadow:0 1px 4px rgba(0,0,0,.08); }
+.mbox.w { background:#fff5f5;border-left-color:#C0392B; }
+.mbt { font-size:11px;font-weight:700;color:#1B4F8A;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px; }
+.mbox.w .mbt { color:#C0392B; }
+.mbtx { font-size:14px;color:#333;line-height:1.6;white-space:pre-wrap; }
+.mbox.w .mbtx { font-weight:700;color:#C0392B; }
+.mcon { display:flex;align-items:center;gap:8px; }
+.mci { font-size:22px; }
+.mct { font-size:14px;color:#333;line-height:1.5;white-space:pre-wrap; }
+.mbk { margin:0 16px 16px;background:#1B4F8A;color:white;border-radius:13px;padding:14px;text-align:center;font-size:15px;font-weight:700; }
+
+/* EDIT MODAL */
+#edit-modal { display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);z-index:1000;overflow-y:auto;padding:20px 14px 40px; }
+#edit-modal.open { display:block; }
+.edit-card { background:#1a1a2e;border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:560px;margin:0 auto; }
+.edit-title { font-size:22px;font-weight:700;color:#c080ff;text-align:center; }
+.edit-field { display:flex;flex-direction:column;gap:7px; }
+.edit-label { font-size:13px;font-weight:700;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.08em; }
+.edit-input { background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);border-radius:11px;padding:13px 15px;font-size:16px;color:white;font-family:Arial,sans-serif;width:100%;user-select:text;-webkit-user-select:text; }
+.edit-input:focus { outline:none;border-color:#c080ff; }
+textarea.edit-input { min-height:85px;resize:vertical; }
+.edit-save { background:#27AE60;color:white;border:none;border-radius:13px;padding:16px;font-size:18px;font-weight:700;text-align:center; }
+.edit-cancel { background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);border-radius:13px;padding:13px;font-size:16px;font-weight:700;text-align:center; }
+
+/* SECURITY SCREEN */
+#s-security { background:#0a0a10;padding:24px 16px;overflow-y:auto; }
+.sec-title { font-size:22px;font-weight:700;color:#ffcc44;text-align:center;margin-bottom:6px; }
+.sec-sub { font-size:14px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:24px;line-height:1.6; }
+.sec-card { background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:14px;max-width:480px;margin:0 auto 16px; }
+.sec-card-title { font-size:16px;font-weight:700;color:#ffcc44;display:flex;align-items:center;gap:8px; }
+.sec-row { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.sec-lbl { font-size:14px;color:rgba(255,255,255,.8);line-height:1.4; }
+.sec-lbl small { font-size:12px;color:rgba(255,255,255,.4);display:block;margin-top:2px; }
+.toggle-wrap { display:flex;align-items:center;gap:8px; }
+.toggle { width:52px;height:28px;border-radius:14px;background:rgba(255,255,255,.15);border:none;position:relative;transition:background .3s;flex-shrink:0; }
+.toggle.on { background:#27AE60; }
+.toggle-knob { position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:white;transition:transform .3s;box-shadow:0 1px 4px rgba(0,0,0,.3); }
+.toggle.on .toggle-knob { transform:translateX(24px); }
+.sec-pin-row { display:flex;flex-direction:column;gap:10px; }
+.sec-pin-display { display:flex;gap:10px;align-items:center; }
+.sec-pin-dots { display:flex;gap:8px; }
+.sec-pin-dot { width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.3);background:transparent; }
+.sec-pin-dot.set { background:#27AE60;border-color:#27AE60; }
+.sec-btn { border-radius:12px;padding:12px 20px;font-size:14px;font-weight:700;text-align:center; }
+.sec-btn-green { background:rgba(39,174,96,.2);border:2px solid rgba(39,174,96,.5);color:#27AE60; }
+.sec-btn-red { background:rgba(231,76,60,.2);border:2px solid rgba(231,76,60,.5);color:#E74C3C; }
+.sec-info { background:rgba(255,204,68,.08);border:1px solid rgba(255,204,68,.2);border-radius:14px;padding:16px;font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;max-width:480px;margin:0 auto; }
+.sec-info strong { color:#ffcc44; }
+
+/* PIN SETUP MODAL */
+#pin-setup-modal { display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.95);z-index:5000;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:30px; }
+#pin-setup-modal.open { display:flex; }
+.psm-title { font-size:20px;font-weight:700;color:#c080ff;text-align:center; }
+.psm-sub { font-size:14px;color:rgba(255,255,255,.5);text-align:center; }
+.psm-dots { display:flex;gap:14px;margin:6px 0; }
+.psm-dot { width:16px;height:16px;border-radius:50%;border:2px solid rgba(200,120,255,.5);background:transparent;transition:all .2s; }
+.psm-dot.filled { background:#c080ff;border-color:#c080ff; }
+.psm-pad { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px; }
+.psm-key { background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:16px;padding:18px 10px;text-align:center;font-size:24px;font-weight:700;color:white; }
+.psm-key.del { font-size:18px;color:rgba(255,255,255,.6); }
+.psm-key.empty { background:transparent;border-color:transparent;pointer-events:none; }
+.psm-cancel { font-size:14px;color:rgba(255,255,255,.4);text-align:center;margin-top:4px; }
+.psm-error { font-size:13px;color:#E74C3C;font-weight:700;min-height:18px;text-align:center; }
+
+/* LANGUAGE SCREEN */
+#s-language { background:#0a0a10;padding:20px 16px 30px;overflow-y:auto; }
+.lang-screen-title { font-size:22px;font-weight:700;color:#c080ff;text-align:center;margin-bottom:6px; }
+.lang-screen-sub { font-size:14px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:20px; }
+.lang-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:500px;margin:0 auto; }
+@media(min-width:600px){ .lang-grid{grid-template-columns:repeat(3,1fr);} }
+.lang-card { background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.1);border-radius:16px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;animation:fadeIn .3s ease forwards;transition:all .2s; }
+.lang-card.selected { background:rgba(160,100,255,.25);border-color:#c080ff; }
+.lang-flag { font-size:34px;line-height:1; }
+.lang-name { font-size:14px;font-weight:700;color:rgba(255,255,255,.9);text-align:center; }
+.lang-native { font-size:12px;color:rgba(255,255,255,.45);text-align:center; }
+
+/* WIDGET */
+.widb { background:radial-gradient(ellipse at 50% 20%,#0e0a1e 0%,#06050c 100%);padding:24px 16px;gap:20px;align-items:center;justify-content:center; }
+.storm-wrap { position:relative;width:100%;max-width:440px;display:flex;flex-direction:column;align-items:center;padding:36px 16px 28px;background:linear-gradient(180deg,#12102a 0%,#0a0818 100%);border-radius:26px;border:1.5px solid rgba(140,100,255,.3);box-shadow:0 0 40px rgba(100,80,200,.15);overflow:hidden; }
+.storm-clouds { position:absolute;top:0;left:0;width:100%;height:60px;overflow:hidden;pointer-events:none; }
+.storm-cloud { position:absolute;font-size:52px;opacity:.12;top:-8px; }
+.storm-title { position:relative;display:flex;flex-direction:column;align-items:center;z-index:2;margin-bottom:10px; }
+.storm-word { font-size:44px;font-weight:900;letter-spacing:.06em;color:#b0a8cc;line-height:1.15;transition:color .05s,text-shadow .05s; }
+@media(min-width:600px){ .storm-word{font-size:60px;} }
+.storm-word.struck { color:#fff;text-shadow:0 0 6px #fff,0 0 18px #ccddff,0 0 35px #8899ff,0 0 60px #4455cc; }
+#lightning-canvas { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3; }
+#wave-canvas { position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:4; }
+.storm-tagline { font-size:13px;color:rgba(255,255,255,.38);text-align:center;line-height:1.6;z-index:2; }
+.storm-open { background:rgba(140,100,255,.2);border:2px solid rgba(160,120,255,.5);border-radius:24px;padding:12px 32px;font-size:15px;font-weight:700;color:#c0a8ff;z-index:2;margin-top:14px; }
+.storm-word.crashing { transition:none;animation:tsunami-crash 0.9s ease-in forwards; }
+.storm-word.surfacing { transition:none;animation:tsunami-surface 0.8s ease-out forwards; }
+@keyframes tsunami-crash { 0%{transform:translateY(0) rotate(0deg);filter:blur(0px);opacity:1} 30%{transform:translateY(8px) rotate(-3deg);filter:blur(1px);opacity:.9} 100%{transform:translateY(120px) rotate(-12deg);filter:blur(8px);opacity:0} }
+@keyframes tsunami-surface { 0%{transform:translateY(80px) rotate(8deg);filter:blur(6px);opacity:0} 60%{transform:translateY(-6px) rotate(-1deg);filter:blur(1px);opacity:.7} 100%{transform:translateY(0) rotate(0deg);filter:blur(0px);opacity:1} }
+
+
+/* ══ TRAVEL SCREEN ══ */
+#s-travel { background:#0a0a10; padding:20px 16px 40px; overflow-y:auto; }
+.travel-title { font-size:26px; font-weight:700; color:#44ccff; text-align:center; margin-bottom:4px; }
+.travel-sub   { font-size:15px; color:rgba(255,255,255,.45); text-align:center; margin-bottom:22px; line-height:1.6; }
+
+/* Destination picker */
+.dest-card { background:rgba(68,204,255,.08); border:2px solid rgba(68,204,255,.3); border-radius:22px; padding:22px 18px; max-width:520px; margin:0 auto 18px; display:flex; flex-direction:column; gap:14px; }
+.dest-label { font-size:14px; font-weight:700; color:#44ccff; text-transform:uppercase; letter-spacing:.1em; }
+.dest-input { background:rgba(255,255,255,.08); border:2px solid rgba(68,204,255,.35); border-radius:14px; padding:16px 18px; font-size:18px; color:white; font-family:Arial,sans-serif; width:100%; user-select:text; -webkit-user-select:text; }
+.dest-input:focus { outline:none; border-color:#44ccff; }
+.dest-input::placeholder { color:rgba(255,255,255,.3); }
+.dest-country-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+@media(min-width:600px){ .dest-country-grid{grid-template-columns:repeat(4,1fr);} }
+.dest-country { background:rgba(255,255,255,.06); border:2px solid rgba(255,255,255,.12); border-radius:14px; padding:12px 6px; display:flex; flex-direction:column; align-items:center; gap:5px; transition:all .2s; }
+.dest-country.selected { background:rgba(68,204,255,.22); border-color:#44ccff; }
+.dest-flag { font-size:28px; line-height:1; }
+.dest-cname { font-size:11px; font-weight:700; color:rgba(255,255,255,.8); text-align:center; }
+@media(min-width:600px){ .dest-flag{font-size:36px;} .dest-cname{font-size:13px;} }
+
+/* Travel card preview */
+.travel-card-wrap { max-width:520px; margin:0 auto 18px; display:flex; flex-direction:column; gap:10px; }
+.travel-card-title { font-size:14px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.1em; text-align:center; }
+.travel-card { border-radius:22px; padding:22px 18px; display:flex; flex-direction:column; gap:14px; border:2px solid rgba(68,204,255,.4); background:linear-gradient(160deg,#0a1828,#080d18); }
+.tc-header { display:flex; align-items:center; gap:14px; }
+.tc-flag-big { font-size:48px; line-height:1; }
+@media(min-width:600px){ .tc-flag-big{font-size:64px;} }
+.tc-dest-info { display:flex; flex-direction:column; gap:3px; }
+.tc-country-name { font-size:22px; font-weight:900; color:#44ccff; }
+@media(min-width:600px){ .tc-country-name{font-size:28px;} }
+.tc-lang-name { font-size:14px; color:rgba(255,255,255,.55); }
+.tc-divider { height:1px; background:rgba(68,204,255,.2); }
+.tc-row { display:flex; flex-direction:column; gap:5px; }
+.tc-row-label { font-size:12px; font-weight:700; color:#44ccff; text-transform:uppercase; letter-spacing:.08em; }
+.tc-row-en { font-size:13px; color:rgba(255,255,255,.45); font-style:italic; }
+.tc-row-local { font-size:17px; font-weight:700; color:white; line-height:1.5; }
+@media(min-width:600px){ .tc-row-local{font-size:20px;} }
+.tc-emergency { background:rgba(231,76,60,.15); border:1.5px solid rgba(231,76,60,.4); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.tc-emg-title { font-size:13px; font-weight:700; color:#E74C3C; text-transform:uppercase; letter-spacing:.08em; }
+.tc-emg-row { display:flex; justify-content:space-between; align-items:center; }
+.tc-emg-label { font-size:15px; color:rgba(255,255,255,.75); }
+.tc-emg-num { font-size:22px; font-weight:900; color:#ff6655; letter-spacing:.05em; }
+@media(min-width:600px){ .tc-emg-num{font-size:28px;} }
+.travel-show-btn { background:rgba(68,204,255,.2); border:2px solid rgba(68,204,255,.6); color:#44ccff; border-radius:18px; padding:18px; text-align:center; font-size:18px; font-weight:700; max-width:520px; margin:0 auto; width:100%; }
+@media(min-width:600px){ .travel-show-btn{font-size:22px;padding:22px;} }
+.travel-back-btn { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); color:rgba(255,255,255,.5); border-radius:14px; padding:14px; text-align:center; font-size:15px; font-weight:700; max-width:520px; margin:4px auto 0; width:100%; }
+
+/* Travel fullscreen overlay */
+#travel-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:3000; flex-direction:column; align-items:center; justify-content:flex-start; padding:24px 20px 30px; overflow-y:auto; }
+#travel-overlay.open { display:flex; }
+.tov-flag { font-size:72px; text-align:center; margin-bottom:4px; }
+@media(min-width:600px){ .tov-flag{font-size:96px;} }
+.tov-country { font-size:32px; font-weight:900; color:#44ccff; text-align:center; margin-bottom:16px; }
+@media(min-width:600px){ .tov-country{font-size:44px;} }
+.tov-section { width:100%; max-width:560px; background:rgba(255,255,255,.07); border-radius:18px; padding:18px; margin-bottom:12px; border-left:5px solid #44ccff; }
+.tov-section.red { border-left-color:#E74C3C; background:rgba(231,76,60,.1); }
+.tov-slabel { font-size:12px; font-weight:700; color:#44ccff; text-transform:uppercase; letter-spacing:.1em; margin-bottom:4px; }
+.tov-section.red .tov-slabel { color:#E74C3C; }
+.tov-en { font-size:14px; color:rgba(255,255,255,.4); font-style:italic; margin-bottom:4px; }
+.tov-local { font-size:20px; font-weight:700; color:white; line-height:1.5; }
+@media(min-width:600px){ .tov-local{font-size:26px;} }
+.tov-emg-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,.1); }
+.tov-emg-row:last-child { border-bottom:none; }
+.tov-emg-lbl { font-size:16px; color:rgba(255,255,255,.8); }
+.tov-emg-num { font-size:28px; font-weight:900; color:#ff6655; }
+@media(min-width:600px){ .tov-emg-num{font-size:36px;} }
+.tov-close { font-size:16px; color:rgba(255,255,255,.4); text-align:center; margin-top:16px; }
+
+/* ══ BACKUP SCREEN ══ */
+#s-backup { background:#0a0a10; padding:24px 16px 40px; overflow-y:auto; }
+.bk-title { font-size:26px; font-weight:700; color:#aaffaa; text-align:center; margin-bottom:4px; }
+.bk-sub   { font-size:15px; color:rgba(255,255,255,.45); text-align:center; margin-bottom:24px; line-height:1.6; }
+.bk-card  { background:rgba(170,255,170,.06); border:2px solid rgba(170,255,170,.25); border-radius:22px; padding:22px 18px; max-width:520px; margin:0 auto 16px; display:flex; flex-direction:column; gap:14px; }
+.bk-card-title { font-size:16px; font-weight:700; color:#aaffaa; display:flex; align-items:center; gap:8px; }
+.bk-desc  { font-size:15px; color:rgba(255,255,255,.65); line-height:1.7; }
+.bk-btn   { border-radius:16px; padding:20px; text-align:center; font-size:18px; font-weight:700; width:100%; }
+@media(min-width:600px){ .bk-btn{font-size:22px; padding:24px;} }
+.bk-btn-save   { background:rgba(39,174,96,.2);  border:2px solid rgba(39,174,96,.6);  color:#44ee88; }
+.bk-btn-load   { background:rgba(68,144,255,.2); border:2px solid rgba(68,144,255,.6); color:#88bbff; }
+.bk-btn-clear  { background:rgba(231,76,60,.15); border:2px solid rgba(231,76,60,.4);  color:#ff7766; }
+.bk-status { font-size:15px; font-weight:700; text-align:center; min-height:22px; color:#44ee88; }
+.bk-info   { background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.1); border-radius:14px; padding:16px; font-size:14px; color:rgba(255,255,255,.5); line-height:1.8; max-width:520px; margin:0 auto; }
+.bk-info strong { color:rgba(255,255,255,.8); }
+#backup-file-input { display:none; }
+
+/* ANIM OVERLAYS */
+#anim-overlay { display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;flex-direction:column;align-items:center;justify-content:center; }
+#anim-overlay.open { display:flex; }
+#anim-stage { width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative; }
+#anim-label { position:absolute;bottom:70px;left:0;right:0;text-align:center;font-size:30px;font-weight:700;color:white;text-shadow:0 2px 12px rgba(0,0,0,.9);padding:0 30px;line-height:1.3; }
+@media(min-width:600px){ #anim-label{font-size:42px;} }
+#anim-close { position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:16px;color:rgba(255,255,255,.45); }
+#mg-overlay { display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2500;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:30px; }
+#mg-overlay.open { display:flex; }
+#mg-ov-head { }
+#mg-ov-bolts { position:absolute;width:100%;height:100%;pointer-events:none;top:0;left:0; }
+.mg-ov-bolt { position:absolute;font-size:0;opacity:0; }
+#mg-ov-level-num { font-size:72px;font-weight:900;line-height:1; }
+#mg-ov-level-lbl { font-size:28px;font-weight:700;letter-spacing:.1em; }
+#mg-ov-direction { font-size:26px;font-weight:700;min-height:36px;text-align:center; }
+#mg-ov-close { position:absolute;bottom:22px;left:0;right:0;text-align:center;font-size:15px;color:rgba(255,255,255,.4); }
+
+/* ══ LOW VISION ACCESSIBILITY ══ */
+/* Larger base text throughout */
+body { font-size: 16px; }
+
+/* Nav buttons — bigger and easier to tap */
+.nb { padding: 11px 14px; font-size: 13px; min-height: 44px; display: flex; align-items: center; gap: 4px; }
+@media(min-width:600px){ .nb { font-size: 16px; padding: 13px 18px; } }
+
+/* Panic board buttons — much bigger labels */
+.bl { font-size: 14px !important; font-weight: 800 !important; line-height: 1.4; }
+@media(min-width:600px){ .bl { font-size: 18px !important; } }
+.show-lbl { font-size: 11px !important; }
+.bi { font-size: 38px !important; }
+@media(min-width:600px){ .bi { font-size: 52px !important; } }
+.btn { min-height: 110px !important; padding: 20px 10px 16px !important; border-width: 2px !important; }
+@media(min-width:600px){ .btn { min-height: 145px !important; } }
+
+/* Medical ID — larger text */
+.mbtx { font-size: 16px !important; line-height: 1.8 !important; }
+.mbt  { font-size: 13px !important; letter-spacing: .06em; }
+.mct  { font-size: 16px !important; line-height: 1.7 !important; }
+.medn { font-size: 22px !important; }
+.mbk  { font-size: 18px !important; padding: 18px !important; }
+.edit-btn { font-size: 16px !important; padding: 10px 18px !important; }
+
+/* Recovery bar — easier to tap */
+.rect { height: 44px !important; border-radius: 22px !important; }
+.recf { border-radius: 22px !important; }
+.recp { font-size: 17px !important; font-weight: 800 !important; }
+.rech { font-size: 16px !important; }
+.rech2 { font-size: 14px !important; }
+.rsb  { font-size: 17px !important; padding: 16px 0 !important; }
+.pt   { font-size: 15px !important; }
+.pr2  { font-size: 13px !important; }
+.ph   { padding: 12px 14px !important; }
+
+/* Overload screen */
+.ovt { font-size: 24px !important; }
+.ovs { font-size: 16px !important; }
+.ovb { font-size: 15px !important; }
+.ovat { font-size: 16px !important; padding: 18px 10px !important; }
+.ovr  { width: 100px !important; height: 100px !important; font-size: 48px !important; }
+
+/* Migraine screen — bigger tap zones */
+.mg-zone   { min-height: 70px !important; }
+.mz-num    { font-size: 26px !important; }
+.mz-lbl    { font-size: 10px !important; }
+.mg-title  { font-size: 22px !important; }
+.mg-subtitle { font-size: 14px !important; }
+#mg-level-num   { font-size: 64px !important; }
+#mg-level-label { font-size: 24px !important; }
+#mg-direction   { font-size: 22px !important; }
+.mg-dir-btn     { min-height: 64px !important; font-size: 13px !important; }
+.mg-dir-icon    { font-size: 28px !important; }
+.mg-show-btn    { font-size: 18px !important; padding: 18px !important; }
+.mg-back-btn    { font-size: 15px !important; padding: 18px !important; }
+#mg-slider      { height: 28px !important; }
+
+/* Security screen */
+.sec-title { font-size: 26px !important; }
+.sec-sub   { font-size: 16px !important; }
+.sec-lbl   { font-size: 16px !important; }
+.sec-lbl small { font-size: 14px !important; }
+.sec-card-title { font-size: 18px !important; }
+.sec-btn   { font-size: 16px !important; padding: 16px 22px !important; }
+.toggle    { width: 62px !important; height: 34px !important; }
+.toggle-knob { width: 28px !important; height: 28px !important; }
+.toggle.on .toggle-knob { transform: translateX(28px) !important; }
+.sec-info  { font-size: 15px !important; line-height: 2.0 !important; }
+
+/* Language screen — bigger cards */
+.lang-card   { padding: 20px 14px !important; }
+.lang-flag   { font-size: 40px !important; }
+.lang-name   { font-size: 16px !important; }
+.lang-native { font-size: 14px !important; }
+
+/* Travel screen */
+.travel-title   { font-size: 28px !important; }
+.travel-sub     { font-size: 16px !important; }
+.dest-label     { font-size: 16px !important; }
+.dest-input     { font-size: 20px !important; padding: 18px 20px !important; }
+.dest-flag      { font-size: 34px !important; }
+.dest-cname     { font-size: 13px !important; }
+.dest-country   { padding: 14px 8px !important; min-height: 74px !important; }
+.tc-country-name { font-size: 24px !important; }
+.tc-flag-big    { font-size: 56px !important; }
+.tc-row-label   { font-size: 14px !important; }
+.tc-row-en      { font-size: 15px !important; }
+.tc-row-local   { font-size: 18px !important; }
+.tc-emg-label   { font-size: 17px !important; }
+.tc-emg-num     { font-size: 26px !important; }
+.travel-show-btn { font-size: 20px !important; padding: 22px !important; min-height: 70px !important; }
+.travel-back-btn { font-size: 16px !important; padding: 16px !important; }
+
+/* Backup screen */
+.bk-title  { font-size: 28px !important; }
+.bk-sub    { font-size: 16px !important; }
+.bk-card-title { font-size: 18px !important; }
+.bk-desc   { font-size: 16px !important; line-height: 1.8 !important; }
+.bk-btn    { font-size: 20px !important; padding: 22px !important; min-height: 70px !important; }
+.bk-status { font-size: 17px !important; }
+.bk-info   { font-size: 16px !important; line-height: 2.0 !important; }
+
+/* PIN screens — bigger digits */
+.pin-key, .psm-key { font-size: 30px !important; padding: 22px 10px !important; min-height: 70px !important; }
+.pin-title, .psm-title { font-size: 26px !important; }
+.pin-sub, .psm-sub { font-size: 16px !important; }
+.pin-dot, .psm-dot { width: 22px !important; height: 22px !important; }
+.pin-error, .psm-error { font-size: 16px !important; }
+.pin-setup-note { font-size: 14px !important; }
+.pin-logo { font-size: 68px !important; }
+
+/* Animation overlays — bigger text */
+#anim-label { font-size: 36px !important; }
+@media(min-width:600px){ #anim-label { font-size: 48px !important; } }
+#anim-close, #mg-ov-close, .tov-close { font-size: 18px !important; }
+#mg-ov-level-num { font-size: 80px !important; }
+#mg-ov-level-lbl { font-size: 32px !important; }
+#mg-ov-direction { font-size: 30px !important; }
+
+/* Travel overlay — maximum readability */
+.tov-flag    { font-size: 88px !important; }
+.tov-country { font-size: 36px !important; }
+.tov-slabel  { font-size: 14px !important; letter-spacing: .1em; }
+.tov-en      { font-size: 15px !important; }
+.tov-local   { font-size: 22px !important; line-height: 1.6 !important; }
+.tov-emg-lbl { font-size: 18px !important; }
+.tov-emg-num { font-size: 34px !important; }
+.tov-section { padding: 20px !important; margin-bottom: 14px !important; border-left-width: 6px !important; }
+
+/* Edit modal — bigger inputs */
+.edit-label { font-size: 15px !important; }
+.edit-input { font-size: 18px !important; padding: 16px 18px !important; }
+.edit-save  { font-size: 20px !important; padding: 20px !important; }
+.edit-cancel { font-size: 17px !important; padding: 16px !important; }
+.edit-title { font-size: 24px !important; }
+
+/* Header */
+.app-title    { font-size: 22px !important; }
+.app-tagline  { font-size: 13px !important; }
+.lang-header-btn { font-size: 15px !important; padding: 10px 14px !important; }
+.lock-header-btn { font-size: 15px !important; padding: 10px 14px !important; }
+.lang-note { font-size: 15px !important; padding: 14px 18px !important; }
+
+</style>
+</head>
+<body>
+
+<!-- PIN LOCK SCREEN -->
+<div id="pin-screen" class="hidden">
+  <div class="pin-logo">⚡</div>
+  <div class="pin-title">SensoryWave</div>
+  <div class="pin-sub" id="pin-sub">Enter your PIN to open</div>
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+    <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
+  </div>
+  <div class="pin-error" id="pin-error"></div>
+  <div class="pin-pad">
+    <div class="pin-key" data-k="1">1</div><div class="pin-key" data-k="2">2</div><div class="pin-key" data-k="3">3</div>
+    <div class="pin-key" data-k="4">4</div><div class="pin-key" data-k="5">5</div><div class="pin-key" data-k="6">6</div>
+    <div class="pin-key" data-k="7">7</div><div class="pin-key" data-k="8">8</div><div class="pin-key" data-k="9">9</div>
+    <div class="pin-key empty"></div><div class="pin-key" data-k="0">0</div><div class="pin-key del" id="pin-del">⌫</div>
+  </div>
+  <div class="pin-setup-note" id="pin-setup-note"></div>
+</div>
+
+<!-- MAIN APP -->
+<div id="main-app">
+  <div class="app-header">
+    <div>
+      <div class="app-title">⚡ SensoryWave</div>
+      <div class="app-tagline">Tap any button to show a fullscreen visual</div>
+    </div>
+    <div class="header-btns">
+      <div class="lang-header-btn" id="lang-header-btn">🌍 <span id="lang-header-name">EN</span></div>
+      <div class="lock-header-btn" id="lock-header-btn">🔒</div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <div class="nb active" id="nav-panic">📱 <span data-t="nav_panic">Panic Board</span></div>
+    <div class="nb" id="nav-overload">⚡ <span data-t="nav_overload">Overload</span></div>
+    <div class="nb" id="nav-medical">🏥 <span data-t="nav_medical">Medical ID</span></div>
+    <div class="nb" id="nav-widget">🏠</div>
+    <div class="nb" id="nav-language">🌍</div>
+    <div class="nb" id="nav-security">🔒</div>
+    <div class="nb" id="nav-travel">✈️</div>
+    <div class="nb" id="nav-backup">💾</div>
+  </div>
+
+  <div class="content">
+    <!-- PANIC BOARD -->
+    <div class="screen active panic-bg" id="s-panic">
+      <div class="grid">
+        <div class="btn b1"  id="btn1"><div class="bi">🔇</div><div class="bl" data-t="b1">I need quiet</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b2"  id="btn2"><div class="bi">🙏</div><div class="bl" data-t="b2">Give me space</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b3"  id="btn3"><div class="bi">🚫</div><div class="bl" data-t="b3">Do not touch me</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b4"  id="btn4"><div class="bi">✋</div><div class="bl" data-t="b4">I'm okay — please wait</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b5"  id="btn5"><div class="bi">🚪</div><div class="bl" data-t="b5">I need to leave</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b6"  id="btn6"><div class="bi">⚡</div><div class="bl" data-t="b6">Sensory Overload starting</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b7"  id="btn7"><div class="bi">🤕</div><div class="bl" data-t="b7">Migraine Intensity</div><div class="show-lbl" data-t="tap_set">tap to set level</div></div>
+        <div class="btn b8"  id="btn8"><div class="bi">🍬</div><div class="bl" data-t="b8">Low blood sugar — get candy</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b9"  id="btn9"><div class="bi">🪑</div><div class="bl" data-t="b9">I need to sit down</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+        <div class="btn b10" id="btn10"><div class="bi">🪪</div><div class="bl" data-t="b10">My medical card</div><div class="show-lbl" data-t="tap_open">tap to open</div></div>
+        <div class="btn b11" id="btn11"><div class="bi">😴</div><div class="bl" data-t="b11">I'm tired</div><div class="show-lbl" data-t="tap_show">tap to show</div></div>
+      </div>
+    </div>
+
+    <!-- OVERLOAD -->
+    <div class="screen ov" id="s-overload">
+      <div class="ovr">⚡</div>
+      <div class="ovb" data-t="ov_badge">⚠ SENSORY OVERLOAD</div>
+      <div class="ovt" data-t="ov_title">I feel a Sensory<br>Overload starting</div>
+      <div class="ovs" data-t="ov_sub">Signal lost · Please help me</div>
+      <div class="ovl"></div>
+      <div class="ova"><div class="ovat ovsh" id="ov-show"><div class="ovai">👁</div><span data-t="show_fullscreen">Show Fullscreen</span></div></div>
+      <div class="rec">
+        <div class="rech" data-t="rec_title">Recovery Bar</div>
+        <div class="rect" id="rec-track"><div class="recf" id="rec-fill"></div></div>
+        <div class="recp" id="rec-pct" data-t="rec_start">Tap the bar to begin recovery</div>
+        <div class="rech2" data-t="rec_hint">Each tap adds 10%</div>
+        <div class="ph phr on" id="p-red"><div class="pd" style="background:#C0392B"></div><div><div class="pr2">10–40%</div><div class="pt" data-t="rec_red">Still having sensory overload</div></div></div>
+        <div class="ph phy" id="p-yel"><div class="pd" style="background:#D4AC0D"></div><div><div class="pr2">40–75%</div><div class="pt" data-t="rec_yellow">Beginning recovery — please wait</div></div></div>
+        <div class="ph phg" id="p-grn"><div class="pd" style="background:#27AE60"></div><div><div class="pr2">75–100%</div><div class="pt" data-t="rec_green">Recovery</div></div></div>
+        <div class="rsb" id="reset-btn" data-t="rec_reset">↺ Reset Bar to 0%</div>
+      </div>
+    </div>
+
+    <!-- MIGRAINE -->
+    <div class="screen" id="s-migraine">
+      <div class="mg-title" data-t="mg_title">🤕 Migraine Intensity</div>
+      <div class="mg-subtitle" data-t="mg_sub">Set the level, then show your phone to someone</div>
+      <div class="mg-display">
+        <div id="mg-pain-ring1"></div><div id="mg-pain-ring2"></div>
+        <div id="mg-head">🤕</div>
+        <div class="mg-bolt" id="mg-bolt-tl">⚡</div><div class="mg-bolt" id="mg-bolt-tr">⚡</div>
+        <div class="mg-bolt" id="mg-bolt-l">⚡</div><div class="mg-bolt" id="mg-bolt-r">⚡</div>
+        <div class="mg-bolt" id="mg-bolt-bl">⚡</div><div class="mg-bolt" id="mg-bolt-br">⚡</div>
+      </div>
+      <div class="mg-level-wrap">
+        <div id="mg-level-num">1</div>
+        <div id="mg-level-label">Mild</div>
+        <div id="mg-direction"></div>
+      </div>
+      <div class="mg-zones-label" data-t="mg_tap_level">Tap a level</div>
+      <div class="mg-zones">
+        <div class="mg-zone" id="mz1"><div class="mz-num">1</div><div class="mz-lbl" data-t="mg_l1">Mild</div></div>
+        <div class="mg-zone" id="mz2"><div class="mz-num">2</div><div class="mz-lbl" data-t="mg_l2">Low</div></div>
+        <div class="mg-zone" id="mz3"><div class="mz-num">3</div><div class="mz-lbl" data-t="mg_l3">Moderate</div></div>
+        <div class="mg-zone" id="mz4"><div class="mz-num">4</div><div class="mz-lbl" data-t="mg_l4">Severe</div></div>
+        <div class="mg-zone" id="mz5"><div class="mz-num">5</div><div class="mz-lbl" data-t="mg_l5">Unbearable</div></div>
+      </div>
+      <div class="mg-slider-wrap">
+        <div class="mg-slider-label" data-t="mg_drag">Or drag the slider</div>
+        <input type="range" id="mg-slider" min="1" max="5" value="1" step="1">
+      </div>
+      <div class="mg-dir-wrap">
+        <div class="mg-dir-btn" id="mg-dir-worse"><div class="mg-dir-icon">📈</div><span data-t="mg_worse">Getting Worse</span></div>
+        <div class="mg-dir-btn" id="mg-dir-same"><div class="mg-dir-icon">➡️</div><span data-t="mg_same">Same</span></div>
+        <div class="mg-dir-btn" id="mg-dir-better"><div class="mg-dir-icon">📉</div><span data-t="mg_better">Getting Better</span></div>
+      </div>
+      <div class="mg-btn-row">
+        <div class="mg-show-btn" id="mg-show-btn" data-t="show_fullscreen">👁 Show Fullscreen</div>
+        <div class="mg-back-btn" id="mg-back-btn" data-t="back">← Back</div>
+      </div>
+    </div>
+
+    <!-- MEDICAL ID -->
+    <div class="screen medb" id="s-medical">
+      <div class="medh">
+        <div class="medh-left"><div class="medx">🏥</div><div><div class="medn" id="view-name">My Name</div><div class="meds" data-t="med_card">Medical ID Card</div></div></div>
+        <div class="edit-btn" id="edit-open-btn">✏️ <span data-t="edit">Edit</span></div>
+      </div>
+      <div class="lang-note" id="lang-note"></div>
+      <div class="medbody">
+        <div class="mbox"><div class="mbt" data-t="med_about_lbl">About Me</div><div class="mbtx" id="view-about">Tap ✏️ Edit to add your information.</div></div>
+        <div class="mbox"><div class="mbt" data-t="med_please_lbl">Please Do This</div><div class="mbtx" id="view-please">Tap ✏️ Edit to add your information.</div></div>
+        <div class="mbox w"><div class="mbt" data-t="med_important_lbl">⚠ Important</div><div class="mbtx" id="view-important">Tap ✏️ Edit to add your information.</div></div>
+        <div class="mbox"><div class="mbt" data-t="med_contact_lbl">Emergency Contact</div><div class="mcon"><div class="mci">📞</div><div class="mct" id="view-contact">Tap ✏️ Edit to add your contact.</div></div></div>
+      </div>
+      <div class="mbk" id="back-btn" data-t="back_panic">← Back to Panic Board</div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="screen" id="s-security">
+      <div class="sec-title">🔒 Security & Privacy</div>
+      <div class="sec-sub">Keep SensoryWave private — only your family can access it</div>
+      <div class="sec-card">
+        <div class="sec-card-title">🔢 PIN Lock</div>
+        <div class="sec-row">
+          <div class="sec-lbl">Lock app with a 4-digit PIN<small>Family members will need to enter it to open the app</small></div>
+          <div class="toggle-wrap">
+            <div class="toggle" id="pin-toggle"><div class="toggle-knob"></div></div>
+          </div>
+        </div>
+        <div class="sec-pin-row" id="pin-status-row">
+          <div class="sec-pin-display">
+            <div class="sec-pin-dots" id="sec-pin-dots">
+              <div class="sec-pin-dot" id="spd0"></div><div class="sec-pin-dot" id="spd1"></div>
+              <div class="sec-pin-dot" id="spd2"></div><div class="sec-pin-dot" id="spd3"></div>
+            </div>
+          </div>
+          <div class="sec-btn sec-btn-green" id="change-pin-btn">Set / Change PIN</div>
+        </div>
+      </div>
+      <div class="sec-info">
+        <strong>How it works:</strong><br>
+        When PIN lock is on, anyone who opens the app will see a lock screen asking for your PIN. Only people who know the PIN can get in.<br><br>
+        <strong>💡 Tips:</strong><br>
+        • Choose a PIN your family all know<br>
+        • If you forget your PIN, you can reset it from this screen<br>
+        • The app still works offline — no internet needed<br>
+        • Your Medical ID is stored only on this device — never online
+      </div>
+    </div>
+
+    <!-- LANGUAGE -->
+    <div class="screen" id="s-language">
+      <div class="lang-screen-title">🌍 Choose Language</div>
+      <div class="lang-screen-sub">The whole app switches instantly</div>
+      <div class="lang-grid" id="lang-grid"></div>
+    </div>
+
+    <!-- WIDGET -->
+    <div class="screen widb" id="s-widget">
+      <div class="storm-wrap" id="storm-wrap">
+        <div class="storm-clouds">
+          <div class="storm-cloud" style="left:2%">☁️</div><div class="storm-cloud" style="left:28%">☁️</div>
+          <div class="storm-cloud" style="left:55%">☁️</div><div class="storm-cloud" style="left:78%">☁️</div>
+        </div>
+        <canvas id="lightning-canvas"></canvas>
+        <canvas id="wave-canvas"></canvas>
+        <div class="storm-title">
+          <div class="storm-word" id="sw-sensory">SENSORY</div>
+          <div class="storm-word" id="sw-speak">SPEAK</div>
+        </div>
+        <div class="storm-tagline" data-t="widget_tag">Communication app for sensory overload episodes</div>
+        <div class="storm-open" id="widget-open" data-t="open_app">OPEN APP →</div>
+      </div>
+    </div>
+  
+    <!-- TRAVEL -->
+    <div class="screen" id="s-travel">
+      <div class="travel-title">✈️ Travel Mode</div>
+      <div class="travel-sub">Set your destination — the app shows your info and emergency numbers in the local language</div>
+      <div class="dest-card">
+        <div class="dest-label">🌍 Where are you travelling?</div>
+        <input class="dest-input" id="travel-dest-input" type="text" placeholder="Type a country or city…">
+        <div class="dest-label">Or pick a country</div>
+        <div class="dest-country-grid" id="dest-country-grid"></div>
+      </div>
+      <div class="travel-card-wrap" id="travel-card-wrap" style="display:none">
+        <div class="travel-card-title">📋 Your travel card preview</div>
+        <div class="travel-card" id="travel-card-inner"></div>
+        <div class="travel-show-btn" id="travel-show-btn">👁 Show Fullscreen Travel Card</div>
+        <div class="travel-back-btn" id="travel-back-btn">← Back to Panic Board</div>
+      </div>
+    </div>
+
+    <!-- BACKUP -->
+    <div class="screen" id="s-backup">
+      <div class="bk-title">💾 Backup & Transfer</div>
+      <div class="bk-sub">Save all your data as a file — restore it on any device</div>
+      <div class="bk-card">
+        <div class="bk-card-title">📤 Save Everything to a File</div>
+        <div class="bk-desc">Downloads a backup file with your Medical ID, PIN, language choice and travel settings. Send this file to yourself by email or save it to iCloud / Google Drive.</div>
+        <div class="bk-btn bk-btn-save" id="bk-save-btn">⬇️ Download My Backup File</div>
+      </div>
+      <div class="bk-card">
+        <div class="bk-card-title">📥 Restore From a File</div>
+        <div class="bk-desc">On your new device, tap below and select the backup file. Everything will be restored instantly — Medical ID, PIN, language, travel settings.</div>
+        <div class="bk-btn bk-btn-load" id="bk-load-btn">⬆️ Load Backup File</div>
+        <input type="file" id="backup-file-input" accept=".json,.sensorypeak">
+      </div>
+      <div class="bk-card">
+        <div class="bk-card-title">🗑️ Clear All My Data</div>
+        <div class="bk-desc">Removes everything from this device — Medical ID, PIN, language and travel settings. Use this if you are giving the device to someone else.</div>
+        <div class="bk-btn bk-btn-clear" id="bk-clear-btn">🗑️ Clear All Data From This Device</div>
+      </div>
+      <div class="bk-status" id="bk-status"></div>
+      <div class="bk-info">
+        <strong>Moving to a new phone?</strong><br>
+        1. On your old phone → tap "Download My Backup File"<br>
+        2. Email it to yourself or save to cloud<br>
+        3. On new phone → open SensoryWave → Backup tab → "Load Backup File"<br>
+        4. Everything is restored ✅<br><br>
+        <strong>Works iPhone ↔ Android</strong> — the file works on any device.
+      </div>
+    </div>
+
+</div><!-- end .content -->
+</div><!-- end #main-app -->
+
+<!-- EDIT MODAL -->
+<div id="edit-modal">
+  <div class="edit-card">
+    <div class="edit-title">✏️ <span data-t="edit_title">Edit My Medical ID</span></div>
+    <div class="edit-field"><div class="edit-label" data-t="edit_name_lbl">Your Name</div><input class="edit-input" id="edit-name" type="text"></div>
+    <div class="edit-field"><div class="edit-label" data-t="med_about_lbl">About Me</div><textarea class="edit-input" id="edit-about"></textarea></div>
+    <div class="edit-field"><div class="edit-label" data-t="med_please_lbl">Please Do This</div><textarea class="edit-input" id="edit-please"></textarea></div>
+    <div class="edit-field"><div class="edit-label" data-t="med_important_lbl">⚠ Important Warning</div><textarea class="edit-input" id="edit-important"></textarea></div>
+    <div class="edit-field"><div class="edit-label" data-t="edit_contact_name_lbl">Emergency Contact Name</div><input class="edit-input" id="edit-contact-name" type="text"></div>
+    <div class="edit-field"><div class="edit-label" data-t="edit_contact_phone_lbl">Emergency Contact Phone</div><input class="edit-input" id="edit-contact-phone" type="tel"></div>
+    <div class="edit-save" id="save-btn" data-t="save">✅ Save Medical ID</div>
+    <div class="edit-cancel" id="cancel-btn" data-t="cancel">Cancel — don't save</div>
+  </div>
+</div>
+
+<!-- PIN SETUP MODAL -->
+<div id="pin-setup-modal">
+  <div class="psm-title" id="psm-title">Set Your PIN</div>
+  <div class="psm-sub" id="psm-sub">Choose a 4-digit PIN your family will remember</div>
+  <div class="psm-dots" id="psm-dots">
+    <div class="psm-dot" id="ppd0"></div><div class="psm-dot" id="ppd1"></div>
+    <div class="psm-dot" id="ppd2"></div><div class="psm-dot" id="ppd3"></div>
+  </div>
+  <div class="psm-error" id="psm-error"></div>
+  <div class="psm-pad">
+    <div class="psm-key" data-pk="1">1</div><div class="psm-key" data-pk="2">2</div><div class="psm-key" data-pk="3">3</div>
+    <div class="psm-key" data-pk="4">4</div><div class="psm-key" data-pk="5">5</div><div class="psm-key" data-pk="6">6</div>
+    <div class="psm-key" data-pk="7">7</div><div class="psm-key" data-pk="8">8</div><div class="psm-key" data-pk="9">9</div>
+    <div class="psm-key empty"></div><div class="psm-key" data-pk="0">0</div><div class="psm-key del" id="psm-del">⌫</div>
+  </div>
+  <div class="psm-cancel" id="psm-cancel">Cancel</div>
+</div>
+
+<!-- ANIMATION OVERLAY -->
+<div id="anim-overlay">
+  <div id="anim-stage"></div>
+  <div id="anim-label"></div>
+  <div id="anim-close">Tap anywhere to close</div>
+</div>
+
+<!-- MIGRAINE FULLSCREEN -->
+<div id="mg-overlay">
+  <div id="mg-ov-head"></div>
+  <div id="mg-ov-bolts"></div>
+  <div id="mg-ov-level-num"></div>
+  <div id="mg-ov-level-lbl"></div>
+  <div id="mg-ov-direction"></div>
+  <div id="mg-ov-close">Tap anywhere to close</div>
+</div>
+
+<script>
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('/sw.js'); }
+
+/* ── TRANSLATIONS ── */
+var LANGS=[
+  {code:'en',flag:'🇬🇧',name:'English',native:'English'},
+  {code:'es',flag:'🇪🇸',name:'Spanish',native:'Español'},
+  {code:'fr',flag:'🇫🇷',name:'French',native:'Français'},
+  {code:'de',flag:'🇩🇪',name:'German',native:'Deutsch'},
+  {code:'it',flag:'🇮🇹',name:'Italian',native:'Italiano'},
+  {code:'pt',flag:'🇵🇹',name:'Portuguese',native:'Português'},
+  {code:'ar',flag:'🇸🇦',name:'Arabic',native:'العربية'},
+  {code:'zh',flag:'🇨🇳',name:'Chinese',native:'中文'},
+  {code:'ja',flag:'🇯🇵',name:'Japanese',native:'日本語'},
+  {code:'pl',flag:'🇵🇱',name:'Polish',native:'Polski'},
+  {code:'ro',flag:'🇷🇴',name:'Romanian',native:'Română'},
+  {code:'nl',flag:'🇳🇱',name:'Dutch',native:'Nederlands'}
+];
+
+var T={
+  en:{nav_panic:'Panic Board',nav_overload:'Overload',nav_medical:'Medical ID',
+    b1:'I need quiet',b2:'Give me space',b3:'Do not touch me',b4:"I'm okay — please wait",b5:'I need to leave',
+    b6:'Sensory Overload starting',b7:'Migraine Intensity',b8:'Low blood sugar — get candy',b9:'I need to sit down',b10:'My medical card',b11:"I'm tired",
+    tap_show:'tap to show',tap_set:'tap to set level',tap_open:'tap to open',
+    ov_badge:'⚠ SENSORY OVERLOAD',ov_title:'I feel a Sensory\nOverload starting',ov_sub:'Signal lost · Please help me',
+    show_fullscreen:'👁 Show Fullscreen',rec_title:'Recovery Bar',rec_start:'Tap the bar to begin recovery',
+    rec_hint:'Each tap adds 10%',rec_red:'Still having sensory overload',rec_yellow:'Beginning recovery — please wait',
+    rec_green:'Recovery',rec_reset:'↺ Reset Bar to 0%',
+    mg_title:'🤕 Migraine Intensity',mg_sub:'Set the level, then show your phone to someone',
+    mg_tap_level:'Tap a level',mg_drag:'Or drag the slider',
+    mg_l1:'Mild',mg_l2:'Low',mg_l3:'Moderate',mg_l4:'Severe',mg_l5:'Unbearable',
+    mg_worse:'Getting Worse',mg_same:'Same',mg_better:'Getting Better',
+    mg_worse_txt:'📈 Getting worse',mg_better_txt:'📉 Getting better',mg_pain:' Pain',
+    med_card:'Medical ID Card',med_about_lbl:'About Me',med_please_lbl:'Please Do This',
+    med_important_lbl:'⚠ Important',med_contact_lbl:'Emergency Contact',
+    edit:'Edit',edit_title:'Edit My Medical ID',edit_name_lbl:'Your Name',
+    edit_contact_name_lbl:'Emergency Contact Name',edit_contact_phone_lbl:'Emergency Contact Phone',
+    save:'✅ Save Medical ID',cancel:"Cancel — don't save",back:'← Back',back_panic:'← Back to Panic Board',
+    widget_tag:'Communication app for sensory overload episodes',open_app:'OPEN APP →',
+    lang_note:'🌍 This card is shown in: ',
+    anim_quiet:'I need quiet',anim_space:'Give me space',anim_notouch:'Do not touch me',
+    anim_okay:"I'm okay — please wait",anim_leave:'I need to leave',
+    anim_overload_title:'SENSORY\nOVERLOAD',anim_overload_sub:'Please help me',
+    anim_sugar_title:'LOW BLOOD SUGAR',anim_sugar_sub:'Please get candy now',
+    anim_sit:'I need to sit down',anim_okay_sub:'Please wait with me',anim_tired:"I'm tired — I need to rest"},
+  es:{nav_panic:'Panel de Pánico',nav_overload:'Sobrecarga',nav_medical:'ID Médica',
+    b1:'Necesito silencio',b2:'Dame espacio',b3:'No me toques',b4:'Estoy bien — espera',b5:'Necesito irme',
+    b6:'Sobrecarga sensorial',b7:'Intensidad de migraña',b8:'Azúcar baja — dulce',b9:'Necesito sentarme',b10:'Mi tarjeta médica',b11:'Estoy cansado',
+    tap_show:'toca para mostrar',tap_set:'toca para ajustar',tap_open:'toca para abrir',
+    ov_badge:'⚠ SOBRECARGA SENSORIAL',ov_title:'Siento una Sobrecarga\nSensorial',ov_sub:'Señal perdida · Ayúdame',
+    show_fullscreen:'👁 Mostrar Pantalla',rec_title:'Barra de Recuperación',rec_start:'Toca para comenzar',
+    rec_hint:'Cada toque añade 10%',rec_red:'Aún en sobrecarga',rec_yellow:'Comenzando recuperación',
+    rec_green:'Recuperación',rec_reset:'↺ Reiniciar a 0%',
+    mg_title:'🤕 Intensidad de Migraña',mg_sub:'Ajusta el nivel y muestra tu teléfono',
+    mg_tap_level:'Toca un nivel',mg_drag:'O desliza',
+    mg_l1:'Leve',mg_l2:'Baja',mg_l3:'Moderada',mg_l4:'Severa',mg_l5:'Insoportable',
+    mg_worse:'Empeorando',mg_same:'Igual',mg_better:'Mejorando',
+    mg_worse_txt:'📈 Empeorando',mg_better_txt:'📉 Mejorando',mg_pain:' Dolor',
+    med_card:'Tarjeta Médica',med_about_lbl:'Sobre Mí',med_please_lbl:'Por Favor Haz Esto',
+    med_important_lbl:'⚠ Importante',med_contact_lbl:'Contacto de Emergencia',
+    edit:'Editar',edit_title:'Editar ID Médica',edit_name_lbl:'Tu Nombre',
+    edit_contact_name_lbl:'Nombre del Contacto',edit_contact_phone_lbl:'Teléfono del Contacto',
+    save:'✅ Guardar',cancel:'Cancelar',back:'← Atrás',back_panic:'← Volver al Panel',
+    widget_tag:'App de comunicación para sobrecarga sensorial',open_app:'ABRIR APP →',
+    lang_note:'🌍 Esta tarjeta se muestra en: ',
+    anim_quiet:'Necesito silencio',anim_space:'Dame espacio',anim_notouch:'No me toques',
+    anim_okay:'Estoy bien — espera',anim_leave:'Necesito irme',
+    anim_overload_title:'SOBRECARGA\nSENSORIAL',anim_overload_sub:'Por favor ayúdame',
+    anim_sugar_title:'AZÚCAR BAJA',anim_sugar_sub:'Por favor dame algo dulce',
+    anim_sit:'Necesito sentarme',anim_okay_sub:'Por favor espera conmigo',anim_tired:'Estoy cansado — necesito descansar'},
+  fr:{nav_panic:'Panneau Urgent',nav_overload:'Surcharge',nav_medical:'ID Médicale',
+    b1:"J'ai besoin de silence",b2:"Donnez-moi de l'espace",b3:'Ne me touchez pas',b4:'Je vais bien — attendez',b5:'Je dois partir',
+    b6:'Surcharge sensorielle',b7:'Intensité migraine',b8:'Glycémie basse — bonbon',b9:"Je dois m'asseoir",b10:'Ma carte médicale',b11:'Je suis fatigué',
+    tap_show:'appuyer pour montrer',tap_set:'appuyer pour régler',tap_open:'appuyer pour ouvrir',
+    ov_badge:'⚠ SURCHARGE SENSORIELLE',ov_title:'Je ressens une Surcharge\nSensorielle',ov_sub:'Signal perdu · Aidez-moi',
+    show_fullscreen:'👁 Afficher Plein Écran',rec_title:'Barre de Récupération',rec_start:'Appuyez pour commencer',
+    rec_hint:'Chaque pression ajoute 10%',rec_red:'Toujours en surcharge',rec_yellow:'Récupération commence',
+    rec_green:'Récupération',rec_reset:'↺ Réinitialiser',
+    mg_title:'🤕 Intensité Migraine',mg_sub:'Réglez le niveau et montrez votre téléphone',
+    mg_tap_level:'Appuyez sur un niveau',mg_drag:'Ou faites glisser',
+    mg_l1:'Légère',mg_l2:'Faible',mg_l3:'Modérée',mg_l4:'Sévère',mg_l5:'Insupportable',
+    mg_worse:"S'aggrave",mg_same:'Pareil',mg_better:"S'améliore",
+    mg_worse_txt:"📈 S'aggrave",mg_better_txt:"📉 S'améliore",mg_pain:' Douleur',
+    med_card:'Carte Médicale',med_about_lbl:'À Propos de Moi',med_please_lbl:"Faites Ceci S'il Vous Plaît",
+    med_important_lbl:'⚠ Important',med_contact_lbl:"Contact d'Urgence",
+    edit:'Modifier',edit_title:'Modifier ID Médicale',edit_name_lbl:'Votre Nom',
+    edit_contact_name_lbl:'Nom du Contact',edit_contact_phone_lbl:'Téléphone du Contact',
+    save:'✅ Sauvegarder',cancel:'Annuler',back:'← Retour',back_panic:'← Retour au Panneau',
+    widget_tag:'Application pour surcharges sensorielles',open_app:'OUVRIR →',
+    lang_note:'🌍 Cette carte est affichée en : ',
+    anim_quiet:"J'ai besoin de silence",anim_space:"Donnez-moi de l'espace",anim_notouch:'Ne me touchez pas',
+    anim_okay:'Je vais bien — attendez',anim_leave:'Je dois partir',
+    anim_overload_title:'SURCHARGE\nSENSORIELLE',anim_overload_sub:'Aidez-moi',
+    anim_sugar_title:'GLYCÉMIE BASSE',anim_sugar_sub:'Donnez-moi un bonbon',
+    anim_sit:"Je dois m'asseoir",anim_okay_sub:'Attendez avec moi',anim_tired:"Je suis fatigué — j'ai besoin de repos"},
+  de:{nav_panic:'Panik-Tafel',nav_overload:'Überlastung',nav_medical:'Med. Ausweis',
+    b1:'Ich brauche Stille',b2:'Gib mir Abstand',b3:'Nicht anfassen',b4:'Mir geht es gut — bitte warten',b5:'Ich muss gehen',
+    b6:'Sensorische Überlastung',b7:'Migräne-Intensität',b8:'Niedriger Blutzucker — Süßes',b9:'Ich muss mich setzen',b10:'Mein Medizinausweis',b11:'Ich bin müde',
+    tap_show:'tippen',tap_set:'tippen zum Einstellen',tap_open:'tippen zum Öffnen',
+    ov_badge:'⚠ SENSORISCHE ÜBERLASTUNG',ov_title:'Ich spüre eine sensorische\nÜberlastung',ov_sub:'Signal verloren · Bitte helfen',
+    show_fullscreen:'👁 Vollbild Anzeigen',rec_title:'Erholungsbalken',rec_start:'Tippen zum Starten',
+    rec_hint:'Jeder Tipp fügt 10% hinzu',rec_red:'Noch in Überlastung',rec_yellow:'Erholung beginnt',
+    rec_green:'Erholung',rec_reset:'↺ Zurücksetzen',
+    mg_title:'🤕 Migräne-Intensität',mg_sub:'Stufe einstellen und Handy zeigen',
+    mg_tap_level:'Stufe antippen',mg_drag:'Oder schieben',
+    mg_l1:'Leicht',mg_l2:'Niedrig',mg_l3:'Mäßig',mg_l4:'Stark',mg_l5:'Unerträglich',
+    mg_worse:'Schlimmer',mg_same:'Gleich',mg_better:'Besser',
+    mg_worse_txt:'📈 Wird schlimmer',mg_better_txt:'📉 Wird besser',mg_pain:' Schmerz',
+    med_card:'Med. Ausweis',med_about_lbl:'Über mich',med_please_lbl:'Bitte tun Sie das',
+    med_important_lbl:'⚠ Wichtig',med_contact_lbl:'Notfallkontakt',
+    edit:'Bearbeiten',edit_title:'Ausweis bearbeiten',edit_name_lbl:'Ihr Name',
+    edit_contact_name_lbl:'Kontaktname',edit_contact_phone_lbl:'Kontakttelefon',
+    save:'✅ Speichern',cancel:'Abbrechen',back:'← Zurück',back_panic:'← Zurück zur Tafel',
+    widget_tag:'Kommunikations-App für sensorische Überlastung',open_app:'APP ÖFFNEN →',
+    lang_note:'🌍 Diese Karte wird angezeigt in: ',
+    anim_quiet:'Ich brauche Stille',anim_space:'Gib mir Abstand',anim_notouch:'Nicht anfassen',
+    anim_okay:'Mir geht es gut — bitte warten',anim_leave:'Ich muss gehen',
+    anim_overload_title:'SENSORISCHE\nÜBERLASTUNG',anim_overload_sub:'Bitte helfen Sie mir',
+    anim_sugar_title:'NIEDRIGER BLUTZUCKER',anim_sugar_sub:'Bitte Süßes holen',
+    anim_sit:'Ich muss mich setzen',anim_okay_sub:'Bitte warten Sie bei mir',anim_tired:'Ich bin müde — ich brauche Ruhe'},
+  it:{nav_panic:'Pannello Panico',nav_overload:'Sovraccarico',nav_medical:'ID Medica',
+    b1:'Ho bisogno di silenzio',b2:'Dammi spazio',b3:'Non toccarmi',b4:'Sto bene — aspetta',b5:'Devo andare',
+    b6:'Sovraccarico sensoriale',b7:'Intensità emicrania',b8:'Glicemia bassa — dolce',b9:'Devo sedermi',b10:'La mia carta medica',b11:'Sono stanco',
+    tap_show:'tocca per mostrare',tap_set:'tocca per impostare',tap_open:'tocca per aprire',
+    ov_badge:'⚠ SOVRACCARICO SENSORIALE',ov_title:'Sento un Sovraccarico\nSensoriale',ov_sub:'Segnale perso · Aiutami',
+    show_fullscreen:'👁 Mostra Schermo Intero',rec_title:'Barra di Recupero',rec_start:'Tocca per iniziare',
+    rec_hint:'Ogni tocco aggiunge 10%',rec_red:'Ancora in sovraccarico',rec_yellow:'Recupero inizia',
+    rec_green:'Recupero',rec_reset:'↺ Azzera',
+    mg_title:'🤕 Intensità Emicrania',mg_sub:'Imposta il livello e mostra il telefono',
+    mg_tap_level:'Tocca un livello',mg_drag:'O trascina',
+    mg_l1:'Lieve',mg_l2:'Bassa',mg_l3:'Moderata',mg_l4:'Severa',mg_l5:'Insopportabile',
+    mg_worse:'Peggiora',mg_same:'Uguale',mg_better:'Migliora',
+    mg_worse_txt:'📈 Peggiora',mg_better_txt:'📉 Migliora',mg_pain:' Dolore',
+    med_card:'Carta Medica',med_about_lbl:'Su di me',med_please_lbl:'Per favore fai questo',
+    med_important_lbl:'⚠ Importante',med_contact_lbl:'Contatto di Emergenza',
+    edit:'Modifica',edit_title:'Modifica ID Medica',edit_name_lbl:'Il tuo nome',
+    edit_contact_name_lbl:'Nome contatto',edit_contact_phone_lbl:'Telefono contatto',
+    save:'✅ Salva',cancel:'Annulla',back:'← Indietro',back_panic:'← Torna al Pannello',
+    widget_tag:'App per sovraccarico sensoriale',open_app:'APRI APP →',
+    lang_note:'🌍 Questa scheda è mostrata in: ',
+    anim_quiet:'Ho bisogno di silenzio',anim_space:'Dammi spazio',anim_notouch:'Non toccarmi',
+    anim_okay:'Sto bene — aspetta',anim_leave:'Devo andare',
+    anim_overload_title:'SOVRACCARICO\nSENSORIALE',anim_overload_sub:'Aiutami',
+    anim_sugar_title:'GLICEMIA BASSA',anim_sugar_sub:'Porta qualcosa di dolce',
+    anim_sit:'Devo sedermi',anim_okay_sub:'Aspetta con me',anim_tired:'Sono stanco — ho bisogno di riposare'},
+  pt:{nav_panic:'Painel de Pânico',nav_overload:'Sobrecarga',nav_medical:'ID Médica',
+    b1:'Preciso de silêncio',b2:'Dê-me espaço',b3:'Não me toque',b4:'Estou bem — espere',b5:'Preciso sair',
+    b6:'Sobrecarga sensorial',b7:'Intensidade de enxaqueca',b8:'Açúcar baixo — doce',b9:'Preciso sentar',b10:'Meu cartão médico',b11:'Estou cansado',
+    tap_show:'toque para mostrar',tap_set:'toque para definir',tap_open:'toque para abrir',
+    ov_badge:'⚠ SOBRECARGA SENSORIAL',ov_title:'Estou sentindo\nSobrecarga Sensorial',ov_sub:'Sinal perdido · Me ajude',
+    show_fullscreen:'👁 Mostrar Tela Cheia',rec_title:'Barra de Recuperação',rec_start:'Toque para começar',
+    rec_hint:'Cada toque adiciona 10%',rec_red:'Ainda em sobrecarga',rec_yellow:'Recuperação começando',
+    rec_green:'Recuperação',rec_reset:'↺ Reiniciar',
+    mg_title:'🤕 Intensidade de Enxaqueca',mg_sub:'Defina o nível e mostre o telefone',
+    mg_tap_level:'Toque um nível',mg_drag:'Ou arraste',
+    mg_l1:'Leve',mg_l2:'Baixa',mg_l3:'Moderada',mg_l4:'Severa',mg_l5:'Insuportável',
+    mg_worse:'Piorando',mg_same:'Igual',mg_better:'Melhorando',
+    mg_worse_txt:'📈 Piorando',mg_better_txt:'📉 Melhorando',mg_pain:' Dor',
+    med_card:'Cartão Médico',med_about_lbl:'Sobre Mim',med_please_lbl:'Por Favor Faça Isso',
+    med_important_lbl:'⚠ Importante',med_contact_lbl:'Contato de Emergência',
+    edit:'Editar',edit_title:'Editar ID Médica',edit_name_lbl:'Seu Nome',
+    edit_contact_name_lbl:'Nome do Contato',edit_contact_phone_lbl:'Telefone do Contato',
+    save:'✅ Salvar',cancel:'Cancelar',back:'← Voltar',back_panic:'← Voltar ao Painel',
+    widget_tag:'App para sobrecarga sensorial',open_app:'ABRIR APP →',
+    lang_note:'🌍 Este cartão está em: ',
+    anim_quiet:'Preciso de silêncio',anim_space:'Dê-me espaço',anim_notouch:'Não me toque',
+    anim_okay:'Estou bem — espere',anim_leave:'Preciso sair',
+    anim_overload_title:'SOBRECARGA\nSENSORIAL',anim_overload_sub:'Me ajude',
+    anim_sugar_title:'AÇÚCAR BAIXO',anim_sugar_sub:'Por favor traga algo doce',
+    anim_sit:'Preciso sentar',anim_okay_sub:'Por favor espere comigo',anim_tired:'Estou cansado — preciso descansar'},
+  ar:{nav_panic:'لوحة الطوارئ',nav_overload:'إرهاق حسي',nav_medical:'بطاقة طبية',
+    b1:'أحتاج للهدوء',b2:'أعطني مساحة',b3:'لا تلمسني',b4:'أنا بخير — انتظر',b5:'أحتاج للمغادرة',
+    b6:'إرهاق حسي بدأ',b7:'شدة الصداع',b8:'سكر منخفض — حلوى',b9:'أحتاج للجلوس',b10:'بطاقتي الطبية',b11:'أنا متعب',
+    tap_show:'اضغط للعرض',tap_set:'اضغط للضبط',tap_open:'اضغط للفتح',
+    ov_badge:'⚠ إرهاق حسي',ov_title:'أشعر ببداية إرهاق حسي',ov_sub:'الإشارة ضعيفة · ساعدني',
+    show_fullscreen:'👁 عرض كامل',rec_title:'شريط التعافي',rec_start:'اضغط لبدء التعافي',
+    rec_hint:'كل ضغطة تضيف 10%',rec_red:'لا يزال في إرهاق',rec_yellow:'التعافي يبدأ',
+    rec_green:'التعافي',rec_reset:'↺ إعادة ضبط',
+    mg_title:'🤕 شدة الصداع',mg_sub:'اضبط المستوى وأرِ هاتفك',
+    mg_tap_level:'اضغط على مستوى',mg_drag:'أو اسحب',
+    mg_l1:'خفيف',mg_l2:'منخفض',mg_l3:'متوسط',mg_l4:'شديد',mg_l5:'لا يُحتمل',
+    mg_worse:'يزداد سوءاً',mg_same:'نفس الحال',mg_better:'يتحسن',
+    mg_worse_txt:'📈 يزداد سوءاً',mg_better_txt:'📉 يتحسن',mg_pain:' ألم',
+    med_card:'البطاقة الطبية',med_about_lbl:'عني',med_please_lbl:'من فضلك افعل هذا',
+    med_important_lbl:'⚠ مهم',med_contact_lbl:'جهة اتصال الطوارئ',
+    edit:'تعديل',edit_title:'تعديل بطاقتي',edit_name_lbl:'اسمك',
+    edit_contact_name_lbl:'اسم جهة الاتصال',edit_contact_phone_lbl:'رقم الهاتف',
+    save:'✅ حفظ',cancel:'إلغاء',back:'← رجوع',back_panic:'← العودة للوحة',
+    widget_tag:'تطبيق تواصل للإرهاق الحسي',open_app:'فتح التطبيق ←',
+    lang_note:'🌍 هذه البطاقة بـ: ',
+    anim_quiet:'أحتاج للهدوء',anim_space:'أعطني مساحة',anim_notouch:'لا تلمسني',
+    anim_okay:'أنا بخير — انتظر',anim_leave:'أحتاج للمغادرة',
+    anim_overload_title:'إرهاق\nحسي',anim_overload_sub:'ساعدني',
+    anim_sugar_title:'سكر منخفض',anim_sugar_sub:'أعطني حلوى من فضلك',
+    anim_sit:'أحتاج للجلوس',anim_okay_sub:'انتظر معي',anim_tired:'أنا متعب — أحتاج للراحة'},
+  zh:{nav_panic:'紧急面板',nav_overload:'感觉过载',nav_medical:'医疗卡',
+    b1:'我需要安静',b2:'给我空间',b3:'请勿触碰我',b4:'我没事 — 请等一下',b5:'我需要离开',
+    b6:'感觉过载开始',b7:'偏头痛强度',b8:'血糖低 — 请给我糖',b9:'我需要坐下',b10:'我的医疗卡',b11:'我累了',
+    tap_show:'点击展示',tap_set:'点击设置',tap_open:'点击打开',
+    ov_badge:'⚠ 感觉过载',ov_title:'我感到感觉过载开始了',ov_sub:'信号丢失 · 请帮助我',
+    show_fullscreen:'👁 全屏显示',rec_title:'恢复条',rec_start:'点击开始恢复',
+    rec_hint:'每次点击增加10%',rec_red:'仍在感觉过载中',rec_yellow:'开始恢复 — 请等待',
+    rec_green:'恢复中',rec_reset:'↺ 重置为0%',
+    mg_title:'🤕 偏头痛强度',mg_sub:'设置级别后展示手机',
+    mg_tap_level:'点击一个级别',mg_drag:'或滑动',
+    mg_l1:'轻微',mg_l2:'较低',mg_l3:'中度',mg_l4:'严重',mg_l5:'难以忍受',
+    mg_worse:'加重中',mg_same:'相同',mg_better:'好转中',
+    mg_worse_txt:'📈 加重中',mg_better_txt:'📉 好转中',mg_pain:' 疼痛',
+    med_card:'医疗ID卡',med_about_lbl:'关于我',med_please_lbl:'请这样做',
+    med_important_lbl:'⚠ 重要',med_contact_lbl:'紧急联系人',
+    edit:'编辑',edit_title:'编辑我的医疗ID',edit_name_lbl:'你的姓名',
+    edit_contact_name_lbl:'联系人姓名',edit_contact_phone_lbl:'联系人电话',
+    save:'✅ 保存',cancel:'取消',back:'← 返回',back_panic:'← 返回面板',
+    widget_tag:'用于感觉过载发作的沟通应用',open_app:'打开应用 →',
+    lang_note:'🌍 此卡显示语言：',
+    anim_quiet:'我需要安静',anim_space:'给我空间',anim_notouch:'请勿触碰我',
+    anim_okay:'我没事 — 请等一下',anim_leave:'我需要离开',
+    anim_overload_title:'感觉\n过载',anim_overload_sub:'请帮助我',
+    anim_sugar_title:'血糖低',anim_sugar_sub:'请给我糖',
+    anim_sit:'我需要坐下',anim_okay_sub:'请陪我等一下',anim_tired:'我累了 — 我需要休息'},
+  ja:{nav_panic:'緊急パネル',nav_overload:'過負荷',nav_medical:'医療カード',
+    b1:'静かにしてください',b2:'スペースをください',b3:'触れないでください',b4:'大丈夫 — 待ってください',b5:'帰る必要があります',
+    b6:'感覚過負荷が始まりました',b7:'片頭痛の強さ',b8:'血糖値が低い — 甘いものを',b9:'座る必要があります',b10:'私の医療カード',b11:'疲れています',
+    tap_show:'タップして表示',tap_set:'タップして設定',tap_open:'タップして開く',
+    ov_badge:'⚠ 感覚過負荷',ov_title:'感覚過負荷が始まっています',ov_sub:'信号消失 · 助けてください',
+    show_fullscreen:'👁 全画面表示',rec_title:'回復バー',rec_start:'バーをタップして始める',
+    rec_hint:'1回タップで10%追加',rec_red:'まだ感覚過負荷中',rec_yellow:'回復を開始 — 待ってください',
+    rec_green:'回復中',rec_reset:'↺ リセット',
+    mg_title:'🤕 片頭痛の強さ',mg_sub:'レベルを設定して見せてください',
+    mg_tap_level:'レベルをタップ',mg_drag:'またはスライド',
+    mg_l1:'軽度',mg_l2:'低め',mg_l3:'中程度',mg_l4:'重度',mg_l5:'耐えられない',
+    mg_worse:'悪化中',mg_same:'同じ',mg_better:'改善中',
+    mg_worse_txt:'📈 悪化中',mg_better_txt:'📉 改善中',mg_pain:' 痛み',
+    med_card:'医療IDカード',med_about_lbl:'私について',med_please_lbl:'これをお願いします',
+    med_important_lbl:'⚠ 重要',med_contact_lbl:'緊急連絡先',
+    edit:'編集',edit_title:'医療IDを編集',edit_name_lbl:'あなたの名前',
+    edit_contact_name_lbl:'連絡先名',edit_contact_phone_lbl:'連絡先電話',
+    save:'✅ 保存',cancel:'キャンセル',back:'← 戻る',back_panic:'← パネルに戻る',
+    widget_tag:'感覚過負荷のためのコミュニケーションアプリ',open_app:'アプリを開く →',
+    lang_note:'🌍 このカードの表示言語：',
+    anim_quiet:'静かにしてください',anim_space:'スペースをください',anim_notouch:'触れないでください',
+    anim_okay:'大丈夫 — 待ってください',anim_leave:'帰る必要があります',
+    anim_overload_title:'感覚\n過負荷',anim_overload_sub:'助けてください',
+    anim_sugar_title:'血糖値が低い',anim_sugar_sub:'甘いものを持ってきてください',
+    anim_sit:'座る必要があります',anim_okay_sub:'一緒に待っていてください',anim_tired:'疲れています — 休む必要があります'},
+  pl:{nav_panic:'Panel Awaryjny',nav_overload:'Przeciążenie',nav_medical:'Dowód Medyczny',
+    b1:'Potrzebuję ciszy',b2:'Daj mi przestrzeń',b3:'Nie dotykaj mnie',b4:'Wszystko OK — poczekaj',b5:'Muszę wyjść',
+    b6:'Przeciążenie sensoryczne',b7:'Intensywność migreny',b8:'Niski cukier — cukierek',b9:'Muszę usiąść',b10:'Moja karta medyczna',b11:'Jestem zmęczony',
+    tap_show:'dotknij aby pokazać',tap_set:'dotknij aby ustawić',tap_open:'dotknij aby otworzyć',
+    ov_badge:'⚠ PRZECIĄŻENIE SENSORYCZNE',ov_title:'Czuję Przeciążenie\nSensoryczne',ov_sub:'Sygnał utracony · Pomóż mi',
+    show_fullscreen:'👁 Pokaż Pełny Ekran',rec_title:'Pasek Zdrowienia',rec_start:'Dotknij aby zacząć',
+    rec_hint:'Każde dotknięcie dodaje 10%',rec_red:'Nadal w przeciążeniu',rec_yellow:'Zdrowienie zaczyna',
+    rec_green:'Zdrowienie',rec_reset:'↺ Resetuj',
+    mg_title:'🤕 Intensywność Migreny',mg_sub:'Ustaw poziom i pokaż telefon',
+    mg_tap_level:'Dotknij poziom',mg_drag:'Lub przesuń',
+    mg_l1:'Lekka',mg_l2:'Niska',mg_l3:'Umiarkowana',mg_l4:'Silna',mg_l5:'Nieznośna',
+    mg_worse:'Pogarsza się',mg_same:'Tak samo',mg_better:'Poprawia się',
+    mg_worse_txt:'📈 Pogarsza się',mg_better_txt:'📉 Poprawia się',mg_pain:' Ból',
+    med_card:'Karta Medyczna',med_about_lbl:'O mnie',med_please_lbl:'Proszę zrób to',
+    med_important_lbl:'⚠ Ważne',med_contact_lbl:'Kontakt Alarmowy',
+    edit:'Edytuj',edit_title:'Edytuj Dowód Medyczny',edit_name_lbl:'Twoje imię',
+    edit_contact_name_lbl:'Imię kontaktu',edit_contact_phone_lbl:'Telefon kontaktu',
+    save:'✅ Zapisz',cancel:'Anuluj',back:'← Wróć',back_panic:'← Wróć do Panelu',
+    widget_tag:'Aplikacja dla przeciążenia sensorycznego',open_app:'OTWÓRZ →',
+    lang_note:'🌍 Ta karta jest w: ',
+    anim_quiet:'Potrzebuję ciszy',anim_space:'Daj mi przestrzeń',anim_notouch:'Nie dotykaj mnie',
+    anim_okay:'Wszystko OK — poczekaj',anim_leave:'Muszę wyjść',
+    anim_overload_title:'PRZECIĄŻENIE\nSENSORYCZNE',anim_overload_sub:'Pomóż mi',
+    anim_sugar_title:'NISKI CUKIER',anim_sugar_sub:'Proszę przynieś cukierek',
+    anim_sit:'Muszę usiąść',anim_okay_sub:'Poczekaj ze mną',anim_tired:'Jestem zmęczony — potrzebuję odpoczynku'},
+  ro:{nav_panic:'Panou Urgență',nav_overload:'Supraîncărcare',nav_medical:'ID Medical',
+    b1:'Am nevoie de liniște',b2:'Dă-mi spațiu',b3:'Nu mă atinge',b4:'Sunt bine — așteaptă',b5:'Trebuie să plec',
+    b6:'Supraîncărcare senzorială',b7:'Intensitate migrenă',b8:'Zahăr scăzut — dulce',b9:'Trebuie să mă așez',b10:'Cardul meu medical',b11:'Sunt obosit',
+    tap_show:'apasă pentru afișare',tap_set:'apasă pentru setare',tap_open:'apasă pentru deschidere',
+    ov_badge:'⚠ SUPRAÎNCĂRCARE SENZORIALĂ',ov_title:'Simt o Supraîncărcare\nSenzorială',ov_sub:'Semnal pierdut · Ajutor',
+    show_fullscreen:'👁 Afișează Ecran Complet',rec_title:'Bară de Recuperare',rec_start:'Apasă bara pentru a începe',
+    rec_hint:'Fiecare apăsare adaugă 10%',rec_red:'Încă în supraîncărcare',rec_yellow:'Recuperare începe',
+    rec_green:'Recuperare',rec_reset:'↺ Resetare',
+    mg_title:'🤕 Intensitate Migrenă',mg_sub:'Setează nivelul și arată telefonul',
+    mg_tap_level:'Apasă un nivel',mg_drag:'Sau glisează',
+    mg_l1:'Ușoară',mg_l2:'Scăzută',mg_l3:'Moderată',mg_l4:'Severă',mg_l5:'Insuportabilă',
+    mg_worse:'Se înrăutățește',mg_same:'La fel',mg_better:'Se îmbunătățește',
+    mg_worse_txt:'📈 Se înrăutățește',mg_better_txt:'📉 Se îmbunătățește',mg_pain:' Durere',
+    med_card:'Card Medical',med_about_lbl:'Despre Mine',med_please_lbl:'Vă rog faceți asta',
+    med_important_lbl:'⚠ Important',med_contact_lbl:'Contact Urgență',
+    edit:'Editează',edit_title:'Editează ID Medical',edit_name_lbl:'Numele tău',
+    edit_contact_name_lbl:'Nume contact',edit_contact_phone_lbl:'Telefon contact',
+    save:'✅ Salvează',cancel:'Anulează',back:'← Înapoi',back_panic:'← Înapoi la Panou',
+    widget_tag:'Aplicație pentru supraîncărcare senzorială',open_app:'DESCHIDE →',
+    lang_note:'🌍 Acest card este în: ',
+    anim_quiet:'Am nevoie de liniște',anim_space:'Dă-mi spațiu',anim_notouch:'Nu mă atinge',
+    anim_okay:'Sunt bine — așteaptă',anim_leave:'Trebuie să plec',
+    anim_overload_title:'SUPRAÎNCĂRCARE\nSENZORIALĂ',anim_overload_sub:'Ajutați-mă',
+    anim_sugar_title:'ZAHĂR SCĂZUT',anim_sugar_sub:'Vă rog aduceți ceva dulce',
+    anim_sit:'Trebuie să mă așez',anim_okay_sub:'Vă rog așteptați cu mine',anim_tired:'Sunt obosit — am nevoie să mă odihnesc'},
+  nl:{nav_panic:'Paniekbord',nav_overload:'Overbelasting',nav_medical:'Medische ID',
+    b1:'Ik heb stilte nodig',b2:'Geef me ruimte',b3:'Raak me niet aan',b4:'Ik ben oké — wacht',b5:'Ik moet weg',
+    b6:'Zintuiglijke overbelasting',b7:'Migraine intensiteit',b8:'Lage bloedsuiker — snoep',b9:'Ik moet zitten',b10:'Mijn medische kaart',b11:'Ik ben moe',
+    tap_show:'tik om te tonen',tap_set:'tik om in te stellen',tap_open:'tik om te openen',
+    ov_badge:'⚠ ZINTUIGLIJKE OVERBELASTING',ov_title:'Ik voel Zintuiglijke\nOverbelasting',ov_sub:'Signaal verloren · Help me',
+    show_fullscreen:'👁 Toon Volledig Scherm',rec_title:'Herstelbar',rec_start:'Tik om te beginnen',
+    rec_hint:'Elke tik voegt 10% toe',rec_red:'Nog in overbelasting',rec_yellow:'Herstel begint',
+    rec_green:'Herstel',rec_reset:'↺ Resetten',
+    mg_title:'🤕 Migraine Intensiteit',mg_sub:'Stel niveau in en toon telefoon',
+    mg_tap_level:'Tik op een niveau',mg_drag:'Of versleep',
+    mg_l1:'Licht',mg_l2:'Laag',mg_l3:'Matig',mg_l4:'Ernstig',mg_l5:'Ondraaglijk',
+    mg_worse:'Verergert',mg_same:'Hetzelfde',mg_better:'Verbetert',
+    mg_worse_txt:'📈 Verergert',mg_better_txt:'📉 Verbetert',mg_pain:' Pijn',
+    med_card:'Medische ID Kaart',med_about_lbl:'Over Mij',med_please_lbl:'Doe Dit Alstublieft',
+    med_important_lbl:'⚠ Belangrijk',med_contact_lbl:'Noodcontact',
+    edit:'Bewerken',edit_title:'Medische ID Bewerken',edit_name_lbl:'Uw naam',
+    edit_contact_name_lbl:'Naam contact',edit_contact_phone_lbl:'Telefoon contact',
+    save:'✅ Opslaan',cancel:'Annuleren',back:'← Terug',back_panic:'← Terug naar Bord',
+    widget_tag:'Communicatie-app voor zintuiglijke overbelasting',open_app:'OPEN APP →',
+    lang_note:'🌍 Deze kaart wordt weergegeven in: ',
+    anim_quiet:'Ik heb stilte nodig',anim_space:'Geef me ruimte',anim_notouch:'Raak me niet aan',
+    anim_okay:'Ik ben oké — wacht',anim_leave:'Ik moet weg',
+    anim_overload_title:'ZINTUIGLIJKE\nOVERBELASTING',anim_overload_sub:'Help me',
+    anim_sugar_title:'LAGE BLOEDSUIKER',anim_sugar_sub:'Haal alstublieft snoep',
+    anim_sit:'Ik moet zitten',anim_okay_sub:'Wacht alstublieft bij me',anim_tired:'Ik ben moe — ik heb rust nodig'}
+};
+
+/* ══ HELPERS ══ */
+var currentLang='en';
+function getLang(){ return T[currentLang]||T.en; }
+function sc(n){ return Math.round(n*Math.min(Math.min(window.innerWidth,window.innerHeight)/375,2.2)); }
+
+function onTap(el,fn){
+  if(!el) return;
+  var sx,sy;
+  el.addEventListener('touchstart',function(e){sx=e.touches[0].clientX;sy=e.touches[0].clientY;},{passive:true});
+  el.addEventListener('touchend',function(e){
+    if(Math.abs(e.changedTouches[0].clientX-sx)<14&&Math.abs(e.changedTouches[0].clientY-sy)<14){e.preventDefault();fn(e);}
+  });
+  el.addEventListener('click',fn);
+}
+
+/* ══ PIN LOCK ══ */
+var pinEnabled=false, storedPin='', pinEntry='', pinSetupStep=1, pinFirst='';
+
+function loadPinSettings(){
+  try{
+    pinEnabled = localStorage.getItem('ss-pin-on')==='true';
+    storedPin  = localStorage.getItem('ss-pin')||'';
+  }catch(e){}
+}
+
+function showPinScreen(){
+  pinEntry='';
+  document.getElementById('pin-screen').classList.remove('hidden');
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('pin-error').textContent='';
+  updatePinDots('pin-dots','pd',pinEntry,false);
+  if(!storedPin){
+    document.getElementById('pin-sub').textContent='Set a PIN to protect the app';
+    document.getElementById('pin-setup-note').textContent='You are setting this up for the first time. Choose a 4-digit PIN your family will remember.';
+    pinSetupStep=1; pinFirst='';
+  } else {
+    document.getElementById('pin-sub').textContent='Enter your PIN to open';
+    document.getElementById('pin-setup-note').textContent='';
+  }
+}
+
+function hidePinScreen(){
+  document.getElementById('pin-screen').classList.add('hidden');
+  document.getElementById('main-app').style.display='';
+}
+
+function updatePinDots(containerId, dotPrefix, entry, error){
+  for(var i=0;i<4;i++){
+    var dot=document.getElementById(dotPrefix+i);
+    if(!dot) continue;
+    dot.classList.remove('filled','error');
+    if(error){ dot.classList.add('error'); }
+    else if(i<entry.length){ dot.classList.add('filled'); }
+  }
+}
+
+function pinPress(digit){
+  if(!storedPin){
+    // Setup mode
+    pinFirst += digit;
+    updatePinDots('pin-dots','pd',pinFirst,false);
+    if(pinFirst.length===4){
+      if(pinSetupStep===1){
+        pinSetupStep=2;
+        document.getElementById('pin-sub').textContent='Enter PIN again to confirm';
+        pinEntry=''; pinFirst=''; // reuse pinFirst for second entry
+        // swap tracking
+        var temp=pinFirst; pinFirst=pinEntry; pinEntry=temp;
+        // Actually: store first entry, clear for second
+        pinFirst=pinEntry; // no — let's simplify:
+        // pinFirst already has 4 digits, reset display
+        // We'll handle this differently:
+      }
+    }
+  } else {
+    pinEntry += digit;
+    updatePinDots('pin-dots','pd',pinEntry,false);
+    if(pinEntry.length===4){
+      if(pinEntry===storedPin){ hidePinScreen(); pinEntry=''; }
+      else{
+        updatePinDots('pin-dots','pd','',true);
+        var dotsEl=document.getElementById('pin-dots');
+        dotsEl.style.animation='pinShake .4s ease';
+        setTimeout(function(){dotsEl.style.animation='';},400);
+        document.getElementById('pin-error').textContent='Wrong PIN — try again';
+        setTimeout(function(){
+          pinEntry='';
+          updatePinDots('pin-dots','pd',pinEntry,false);
+          document.getElementById('pin-error').textContent='';
+        },900);
+      }
+    }
+  }
+}
+
+function pinDel(){
+  if(pinEntry.length>0){ pinEntry=pinEntry.slice(0,-1); updatePinDots('pin-dots','pd',pinEntry,false); }
+}
+
+// Wire pin pad
+document.querySelectorAll('.pin-key[data-k]').forEach(function(k){
+  onTap(k,function(){ pinPress(k.getAttribute('data-k')); });
+});
+onTap(document.getElementById('pin-del'),pinDel);
+
+/* ══ PIN SETUP MODAL ══ */
+var psmEntry='', psmStep=1, psmFirst='';
+function openPinSetup(){
+  psmEntry=''; psmStep=1; psmFirst='';
+  document.getElementById('psm-title').textContent='Set Your PIN';
+  document.getElementById('psm-sub').textContent='Choose a 4-digit PIN your family will remember';
+  document.getElementById('psm-error').textContent='';
+  updatePinDots('psm-dots','ppd','',false);
+  document.getElementById('pin-setup-modal').classList.add('open');
+}
+function closePinSetup(){ document.getElementById('pin-setup-modal').classList.remove('open'); }
+
+function psmPress(digit){
+  if(psmEntry.length>=4) return;
+  psmEntry+=digit;
+  updatePinDots('psm-dots','ppd',psmEntry,false);
+  if(psmEntry.length===4){
+    if(psmStep===1){
+      psmFirst=psmEntry; psmEntry=''; psmStep=2;
+      setTimeout(function(){
+        document.getElementById('psm-title').textContent='Confirm Your PIN';
+        document.getElementById('psm-sub').textContent='Enter the same PIN again';
+        updatePinDots('psm-dots','ppd','',false);
+      },200);
+    } else {
+      if(psmEntry===psmFirst){
+        storedPin=psmEntry;
+        pinEnabled=true;
+        try{ localStorage.setItem('ss-pin',storedPin); localStorage.setItem('ss-pin-on','true'); }catch(e){}
+        updateSecurityScreen();
+        closePinSetup();
+        document.getElementById('psm-error').textContent='';
+      } else {
+        updatePinDots('psm-dots','ppd','',true);
+        document.getElementById('psm-error').textContent="PINs don't match — start again";
+        setTimeout(function(){ psmEntry=''; psmStep=1; psmFirst=''; document.getElementById('psm-title').textContent='Set Your PIN'; document.getElementById('psm-sub').textContent='Choose a 4-digit PIN'; updatePinDots('psm-dots','ppd','',false); document.getElementById('psm-error').textContent=''; },1200);
+      }
+    }
+  }
+}
+function psmDel(){ if(psmEntry.length>0){psmEntry=psmEntry.slice(0,-1); updatePinDots('psm-dots','ppd',psmEntry,false);} }
+
+document.querySelectorAll('.psm-key[data-pk]').forEach(function(k){ onTap(k,function(){psmPress(k.getAttribute('data-pk'));}); });
+onTap(document.getElementById('psm-del'),psmDel);
+onTap(document.getElementById('psm-cancel'),closePinSetup);
+
+function updateSecurityScreen(){
+  var tog=document.getElementById('pin-toggle');
+  tog.classList.toggle('on',pinEnabled);
+  var dots=['spd0','spd1','spd2','spd3'];
+  dots.forEach(function(id,i){ var d=document.getElementById(id); if(d) d.classList.toggle('set',pinEnabled&&storedPin&&i<storedPin.length); });
+  document.getElementById('change-pin-btn').textContent = pinEnabled&&storedPin ? 'Change PIN' : 'Set PIN';
+}
+
+onTap(document.getElementById('pin-toggle'),function(){
+  if(pinEnabled){ pinEnabled=false; storedPin=''; try{localStorage.removeItem('ss-pin');localStorage.setItem('ss-pin-on','false');}catch(e){} updateSecurityScreen(); }
+  else{ openPinSetup(); }
+});
+onTap(document.getElementById('change-pin-btn'),openPinSetup);
+onTap(document.getElementById('lock-header-btn'),function(){
+  if(pinEnabled&&storedPin){ document.getElementById('pin-screen').classList.remove('hidden'); document.getElementById('main-app').style.display='none'; pinEntry=''; updatePinDots('pin-dots','pd','',false); document.getElementById('pin-sub').textContent='Enter your PIN to open'; document.getElementById('pin-error').textContent=''; document.getElementById('pin-setup-note').textContent=''; }
+  else{ goTo('security'); }
+});
+
+/* ══ LANGUAGE ══ */
+function applyLanguage(code){
+  currentLang=code;
+  var t=getLang(), lang=LANGS.find(function(l){return l.code===code;});
+  try{localStorage.setItem('ss-lang',code);}catch(e){}
+  document.querySelectorAll('[data-t]').forEach(function(el){
+    var key=el.getAttribute('data-t'); if(t[key]!==undefined) el.textContent=t[key];
+  });
+  document.getElementById('lang-header-name').textContent=lang?lang.code.toUpperCase():code.toUpperCase();
+  var note=document.getElementById('lang-note');
+  if(code==='en'){ note.classList.remove('visible'); }
+  else{ note.textContent=t.lang_note+(lang?lang.flag+' '+lang.name+' ('+lang.native+')':code); note.classList.add('visible'); }
+  document.querySelectorAll('.lang-card').forEach(function(el){ el.classList.toggle('selected',el.getAttribute('data-code')===code); });
+  applyMgLevel(mgLevel); updateMgDirection();
+}
+
+function buildLangGrid(){
+  var grid=document.getElementById('lang-grid'); grid.innerHTML='';
+  LANGS.forEach(function(lang,i){
+    var card=document.createElement('div');
+    card.className='lang-card'+(lang.code===currentLang?' selected':'');
+    card.setAttribute('data-code',lang.code);
+    card.style.animationDelay=(i*.04)+'s';
+    card.innerHTML='<div class="lang-flag">'+lang.flag+'</div><div class="lang-name">'+lang.name+'</div><div class="lang-native">'+lang.native+'</div>';
+    onTap(card,(function(c){return function(){applyLanguage(c);};})(lang.code));
+    grid.appendChild(card);
+  });
+}
+
+/* ══ NAV ══ */
+var screens=['panic','overload','migraine','medical','security','language','widget','travel','backup'];
+function goTo(id){
+  screens.forEach(function(s){ var sc=document.getElementById('s-'+s),nb=document.getElementById('nav-'+s); if(sc)sc.classList.remove('active'); if(nb)nb.classList.remove('active'); });
+  document.getElementById('s-'+id).classList.add('active');
+  var nb=document.getElementById('nav-'+id); if(nb)nb.classList.add('active');
+  document.querySelector('.content').scrollTop=0;
+  if(id==='widget') setTimeout(initStorm,120);
+}
+onTap(document.getElementById('nav-panic'),    function(){goTo('panic');});
+onTap(document.getElementById('nav-overload'), function(){goTo('overload');});
+onTap(document.getElementById('nav-medical'),  function(){goTo('medical');});
+onTap(document.getElementById('nav-widget'),   function(){goTo('widget');});
+onTap(document.getElementById('nav-language'), function(){goTo('language');});
+onTap(document.getElementById('nav-security'), function(){goTo('security');});
+onTap(document.getElementById('nav-travel'),   function(){goTo('travel');});
+onTap(document.getElementById('nav-backup'),   function(){goTo('backup');});
+onTap(document.getElementById('lang-header-btn'),function(){goTo('language');});
+onTap(document.getElementById('btn10'),  function(){goTo('medical');});
+onTap(document.getElementById('btn7'),   function(){goTo('migraine');});
+onTap(document.getElementById('back-btn'),    function(){goTo('panic');});
+onTap(document.getElementById('mg-back-btn'), function(){goTo('panic');});
+onTap(document.getElementById('widget-open'), function(){goTo('panic');});
+
+/* ══ ANIMATION OVERLAY ══ */
+var overlay=document.getElementById('anim-overlay'),stage=document.getElementById('anim-stage'),animLbl=document.getElementById('anim-label');
+var animTimer,flashInterval;
+function showAnim(bg,html,text){clearTimeout(animTimer);clearInterval(flashInterval);overlay.style.background=bg;stage.innerHTML=html;animLbl.textContent=text;overlay.classList.add('open');animTimer=setTimeout(closeAnim,9000);}
+function closeAnim(){overlay.classList.remove('open');clearTimeout(animTimer);clearInterval(flashInterval);setTimeout(function(){stage.innerHTML='';},300);}
+onTap(overlay,closeAnim);
+
+function animQuiet(){var t=getLang(),s=sc(60),w=sc(280);showAnim('linear-gradient(160deg,#0a1a2e,#001040)','<svg width="'+w+'" height="'+w+'" viewBox="0 0 280 280"><circle cx="140" cy="140" r="35" fill="none" stroke="#4A8FE7" stroke-width="3" style="animation:wave-expand 1.5s ease-out infinite"/><circle cx="140" cy="140" r="35" fill="none" stroke="#4A8FE7" stroke-width="3" style="animation:wave-expand 1.5s ease-out infinite;animation-delay:.5s"/><circle cx="140" cy="140" r="35" fill="none" stroke="#4A8FE7" stroke-width="3" style="animation:wave-expand 1.5s ease-out infinite;animation-delay:1s"/><text x="140" y="162" text-anchor="middle" font-size="'+s+'">🔇</text><line x1="60" y1="60" x2="220" y2="220" stroke="#E74C3C" stroke-width="14" stroke-linecap="round" style="animation:x-appear 1s ease forwards"/><line x1="220" y1="60" x2="60" y2="220" stroke="#E74C3C" stroke-width="14" stroke-linecap="round" style="animation:x-appear 1s ease forwards"/></svg>',t.anim_quiet);}
+function animSpace(){var t=getLang(),s=sc(64),a=sc(36),w=sc(280);showAnim('linear-gradient(160deg,#0a2e1a,#001a10)','<svg width="'+w+'" height="'+w+'" viewBox="0 0 280 280"><text x="140" y="162" text-anchor="middle" font-size="'+s+'">🙏</text><text x="140" y="55" text-anchor="middle" font-size="'+a+'" style="animation:arrow-out 1s ease-in-out infinite;--dx:0px;--dy:-44px">⬆️</text><text x="140" y="248" text-anchor="middle" font-size="'+a+'" style="animation:arrow-out 1s ease-in-out infinite;--dx:0px;--dy:44px;animation-delay:.25s">⬇️</text><text x="38" y="158" text-anchor="middle" font-size="'+a+'" style="animation:arrow-out 1s ease-in-out infinite;--dx:-44px;--dy:0px;animation-delay:.5s">⬅️</text><text x="242" y="158" text-anchor="middle" font-size="'+a+'" style="animation:arrow-out 1s ease-in-out infinite;--dx:44px;--dy:0px;animation-delay:.75s">➡️</text></svg>',t.anim_space);}
+function animNoTouch(){var t=getLang();showAnim('linear-gradient(160deg,#2a0a0a,#1a0000)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(20)+'px"><div style="font-size:'+sc(100)+'px;animation:hand-shake .6s ease-in-out infinite">🤚</div><div style="font-size:'+sc(80)+'px;color:#E74C3C;font-weight:900;animation:x-pulse .8s ease-in-out infinite">✖</div></div>',t.anim_notouch);}
+function animOkay(){var t=getLang();showAnim('linear-gradient(160deg,#0a2e0a,#001a00)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(24)+'px"><div style="font-size:'+sc(110)+'px;animation:ok-bounce 1.5s ease-in-out infinite;filter:drop-shadow(0 0 '+sc(30)+'px rgba(39,174,96,.8))">✋</div><div style="font-size:'+sc(48)+'px;font-weight:900;color:#27AE60;letter-spacing:4px">OK</div><div style="font-size:'+sc(20)+'px;color:rgba(255,255,255,.7)">'+t.anim_okay_sub+'</div></div>',t.anim_okay);}
+function animLeave(){var t=getLang(),w=sc(260);showAnim('linear-gradient(160deg,#1a0a0a,#2a0000)','<div style="position:relative;width:'+w+'px;height:'+w+'px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;right:'+sc(40)+'px;top:'+sc(40)+'px;width:'+sc(90)+'px;height:'+sc(160)+'px;border:'+sc(6)+'px solid #888;border-radius:4px 4px 0 0;background:#1a1a2a"><div style="width:100%;height:100%;background:#2a2a3a;border-radius:2px;animation:door-open 1.5s ease-in-out infinite alternate;transform-origin:left"></div></div><div style="position:absolute;font-size:'+sc(64)+'px;animation:walk 1.5s ease-in-out infinite alternate;left:'+sc(20)+'px">🚶</div><div style="position:absolute;font-size:'+sc(40)+'px;right:'+sc(20)+'px;top:50%;transform:translateY(-50%);color:#E74C3C">➡️</div></div>',t.anim_leave);}
+function animOverload(){var t=getLang();showAnim('#12082a','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(16)+'px;animation:overload-shake .3s ease-in-out infinite"><div style="font-size:'+sc(90)+'px;filter:drop-shadow(0 0 '+sc(20)+'px #ff00ff)">⚡</div><div style="font-size:'+sc(24)+'px;font-weight:900;color:white;text-align:center;letter-spacing:2px;line-height:1.3">'+t.anim_overload_title+'</div><div style="font-size:'+sc(18)+'px;color:rgba(255,255,255,.8)">'+t.anim_overload_sub+'</div></div>','');animLbl.textContent='';var cols=['#12082a','#440044','#004444','#440000','#001144'],fi=0;flashInterval=setInterval(function(){if(!overlay.classList.contains('open')){clearInterval(flashInterval);return;}overlay.style.background=cols[fi%cols.length];fi++;},200);}
+function animSugar(){var t=getLang(),ring=sc(160);showAnim('linear-gradient(160deg,#1a0e00,#2a1400)','<div style="display:flex;flex-direction:column;align-items:center;gap:'+sc(16)+'px"><div style="position:relative;width:'+ring+'px;height:'+ring+'px;display:flex;align-items:center;justify-content:center"><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite"></div><div style="position:absolute;width:100%;height:100%;border-radius:50%;border:4px solid #E74C3C;animation:alert-ring 1s ease-out infinite;animation-delay:.4s"></div><div style="font-size:'+sc(80)+'px;animation:candy-bounce 1s ease-in-out infinite">🍬</div></div><div style="font-size:'+sc(22)+'px;font-weight:900;color:#E74C3C">'+t.anim_sugar_title+'</div><div style="font-size:'+sc(20)+'px;color:white;font-weight:700">'+t.anim_sugar_sub+'</div></div>','');animLbl.textContent='';}
+function animSit(){var t=getLang(),w=sc(220);showAnim('linear-gradient(160deg,#0a1a2e,#001040)','<div style="position:relative;width:'+w+'px;height:'+sc(260)+'px"><div style="font-size:'+sc(80)+'px;animation:sit-down 1.5s ease-in-out infinite alternate;position:absolute;top:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🧍</div><div style="font-size:'+sc(70)+'px;animation:chair-appear 1.5s ease-in-out infinite alternate;position:absolute;bottom:'+sc(20)+'px;left:50%;transform:translateX(-50%)">🪑</div><div style="position:absolute;right:0;top:50%;font-size:'+sc(36)+'px;color:#4A8FE7;animation:ok-bounce 1s ease-in-out infinite">⬇️</div></div>',t.anim_sit);}
+function animTired(){var t=getLang(),s=sc(100),zs=sc(38);showAnim('linear-gradient(160deg,#050818,#0a0d24)','<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:'+sc(10)+'px"><div style="font-size:'+s+'px;filter:drop-shadow(0 0 '+sc(20)+'px rgba(100,140,255,.5))">😴</div><div style="display:flex;gap:'+sc(18)+'px;margin-top:'+sc(8)+'px"><span style="font-size:'+zs+'px;color:#8ab4f8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;display:inline-block">Z</span><span style="font-size:'+sc(28)+'px;color:#6a8ee8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;animation-delay:.4s;display:inline-block">Z</span><span style="font-size:'+sc(20)+'px;color:#4a6ec8;font-weight:900;animation:ok-bounce 2s ease-in-out infinite;animation-delay:.8s;display:inline-block">z</span></div></div>',t.anim_tired);}
+
+onTap(document.getElementById('btn1'),animQuiet);
+onTap(document.getElementById('btn2'),animSpace);
+onTap(document.getElementById('btn3'),animNoTouch);
+onTap(document.getElementById('btn4'),animOkay);
+onTap(document.getElementById('btn5'),animLeave);
+onTap(document.getElementById('btn6'),animOverload);
+onTap(document.getElementById('btn8'),animSugar);
+onTap(document.getElementById('btn9'),animSit);
+onTap(document.getElementById('btn11'),animTired);
+onTap(document.getElementById('ov-show'),animOverload);
+
+/* ══ MIGRAINE ══ */
+var mgLevel=1,mgDir='same';
+var mgLvls=[null,
+  {color:'#9B59B6',bg:'linear-gradient(160deg,#1a0a2e,#0d0520)',bolts:0,throb:'2s',flash:'2s',rings:false},
+  {color:'#C0392B',bg:'linear-gradient(160deg,#2a0a1a,#1a0010)',bolts:2,throb:'1.5s',flash:'1.5s',rings:false},
+  {color:'#E74C3C',bg:'linear-gradient(160deg,#3a0a0a,#250010)',bolts:4,throb:'1s',flash:'1s',rings:true},
+  {color:'#ff3300',bg:'linear-gradient(160deg,#4a0000,#300010)',bolts:6,throb:'.6s',flash:'.6s',rings:true},
+  {color:'#ff0000',bg:'linear-gradient(160deg,#5a0000,#3a0000)',bolts:6,throb:'.3s',flash:'.3s',rings:true}];
+var boltIds=['mg-bolt-tl','mg-bolt-tr','mg-bolt-l','mg-bolt-r','mg-bolt-bl','mg-bolt-br'];
+var zoneColors=['','#6a3090','#8B2020','#C0392B','#e63300','#ff0000'];
+
+function applyMgLevel(lv){
+  mgLevel=lv; var d=mgLvls[lv],t=getLang();
+  var head=document.getElementById('mg-head');
+  head.style.cssText='font-size:100px;animation-name:head-throb;animation-duration:'+d.throb+';animation-timing-function:ease-in-out;animation-iteration-count:infinite';
+  boltIds.forEach(function(id,i){var el=document.getElementById(id),show=i<d.bolts,sz=[0,0,22,22,28,28,32,32][lv]||22;el.style.fontSize=show?sz+'px':'0px';el.style.opacity=show?'1':'0';if(show){el.style.animationName='bolt-flash';el.style.animationDuration=d.flash;el.style.animationDelay=(i*.1)+'s';el.style.animationTimingFunction='ease-in-out';el.style.animationIterationCount='infinite';}});
+  var r1=document.getElementById('mg-pain-ring1'),r2=document.getElementById('mg-pain-ring2');
+  if(d.rings){r1.style.cssText='position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid '+d.color+';animation:pain-ring 1.2s ease-out infinite';r2.style.cssText='position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid '+d.color+';animation:pain-ring 1.2s ease-out infinite;animation-delay:.6s';}
+  else{r1.style.cssText=r2.style.cssText='position:absolute;width:100%;height:100%;border-radius:50%;border:3px solid transparent';}
+  document.getElementById('mg-level-num').textContent=lv;document.getElementById('mg-level-num').style.color=d.color;
+  var labels=[null,t.mg_l1,t.mg_l2,t.mg_l3,t.mg_l4,t.mg_l5];
+  document.getElementById('mg-level-label').textContent=labels[lv];document.getElementById('mg-level-label').style.color=d.color;
+  document.getElementById('s-migraine').style.background=d.bg;
+  for(var z=1;z<=5;z++){var zEl=document.getElementById('mz'+z);if(z===lv){zEl.style.background=zoneColors[z]+'66';zEl.style.borderColor=zoneColors[z];zEl.style.color='white';zEl.classList.add('selected');}else{zEl.style.background='rgba(255,255,255,.06)';zEl.style.borderColor='rgba(255,255,255,.15)';zEl.style.color='rgba(255,255,255,.6)';zEl.classList.remove('selected');}}
+  document.getElementById('mg-slider').value=lv;
+  updateMgDirection();
+}
+function updateMgDirection(){
+  var t=getLang(),el=document.getElementById('mg-direction');
+  if(mgDir==='worse'){el.textContent=t.mg_worse_txt;el.style.color='#ff6666';}
+  else if(mgDir==='better'){el.textContent=t.mg_better_txt;el.style.color='#66dd88';}
+  else{el.textContent='';}
+  ['worse','same','better'].forEach(function(k){var b=document.getElementById('mg-dir-'+k);if(b)b.classList.toggle('active',k===mgDir);});
+}
+for(var z=1;z<=5;z++){(function(lv){onTap(document.getElementById('mz'+lv),function(){applyMgLevel(lv);});})(z);}
+document.getElementById('mg-slider').addEventListener('input',function(){applyMgLevel(parseInt(this.value));});
+onTap(document.getElementById('mg-dir-worse'), function(){mgDir='worse';updateMgDirection();});
+onTap(document.getElementById('mg-dir-same'),  function(){mgDir='same';updateMgDirection();});
+onTap(document.getElementById('mg-dir-better'),function(){mgDir='better';updateMgDirection();});
+var mgOv=document.getElementById('mg-overlay');
+onTap(mgOv,function(){mgOv.classList.remove('open');});
+onTap(document.getElementById('mg-show-btn'),function(){
+  var t=getLang(),d=mgLvls[mgLevel];
+  mgOv.style.background=d.bg;
+  var ovHead=document.getElementById('mg-ov-head');
+  ovHead.textContent='🤕';ovHead.style.cssText='font-size:'+sc([0,100,110,120,130,140][mgLevel])+'px;animation-name:head-throb;animation-duration:'+d.throb+';animation-timing-function:ease-in-out;animation-iteration-count:infinite';
+  var boltsDiv=document.getElementById('mg-ov-bolts');boltsDiv.innerHTML='';
+  var bpos=[{top:'8%',left:'15%'},{top:'8%',right:'15%'},{top:'30%',left:'4%'},{top:'30%',right:'4%'},{bottom:'25%',left:'18%'},{bottom:'25%',right:'18%'}];
+  for(var bi=0;bi<d.bolts;bi++){var b=document.createElement('div');b.className='mg-ov-bolt';var pos=bpos[bi],bsize=sc([0,0,28,30,36,40][mgLevel]);b.style.cssText='position:absolute;font-size:'+bsize+'px;opacity:1;animation-name:bolt-flash;animation-duration:'+d.flash+';animation-delay:'+(bi*.1)+'s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;';Object.keys(pos).forEach(function(k){b.style[k]=pos[k];});b.textContent='⚡';boltsDiv.appendChild(b);}
+  var labels=[null,t.mg_l1,t.mg_l2,t.mg_l3,t.mg_l4,t.mg_l5];
+  document.getElementById('mg-ov-level-num').textContent=mgLevel;document.getElementById('mg-ov-level-num').style.color=d.color;
+  document.getElementById('mg-ov-level-lbl').textContent=labels[mgLevel]+t.mg_pain;document.getElementById('mg-ov-level-lbl').style.color=d.color;
+  var dirEl=document.getElementById('mg-ov-direction');
+  if(mgDir==='worse'){dirEl.textContent=t.mg_worse_txt;dirEl.style.color='#ff6666';}else if(mgDir==='better'){dirEl.textContent=t.mg_better_txt;dirEl.style.color='#66dd88';}else{dirEl.textContent='';}
+  mgOv.classList.add('open');
+});
+
+/* ══ RECOVERY BAR ══ */
+var pct=0;
+onTap(document.getElementById('rec-track'),function(){if(pct<100){pct=Math.min(pct+10,100);updRec();}});
+onTap(document.getElementById('reset-btn'),function(){pct=0;updRec();});
+function updRec(){
+  var f=document.getElementById('rec-fill'),l=document.getElementById('rec-pct'),t=getLang();
+  var r=document.getElementById('p-red'),y=document.getElementById('p-yel'),g=document.getElementById('p-grn');
+  f.style.width=pct+'%';
+  if(pct<=40){f.style.backgroundColor='#C0392B';l.textContent=pct===0?t.rec_start:pct+'% — '+t.rec_red;}
+  else if(pct<=75){f.style.backgroundColor='#D4AC0D';l.textContent=pct+'% — '+t.rec_yellow;}
+  else{f.style.backgroundColor='#27AE60';l.textContent=pct===100?'100% ✓':pct+'% — '+t.rec_green;}
+  r.classList.toggle('on',pct>=1&&pct<=40);y.classList.toggle('on',pct>40&&pct<=75);g.classList.toggle('on',pct>75);
+  if(pct===0)r.classList.add('on');
+}
+
+/* ══ MEDICAL ID ══ */
+var med={name:'',about:'',please:'',important:'',cname:'',cphone:''};
+function loadMed(){try{var d=localStorage.getItem('ss-med');if(d)med=JSON.parse(d);}catch(e){}renderMed();}
+function renderMed(){
+  document.getElementById('view-name').textContent=med.name||'My Name';
+  document.getElementById('view-about').textContent=med.about||'Tap ✏️ Edit to add your information.';
+  document.getElementById('view-please').textContent=med.please||'Tap ✏️ Edit to add your information.';
+  document.getElementById('view-important').textContent=med.important||'Tap ✏️ Edit to add your information.';
+  var c=[med.cname,med.cphone].filter(Boolean).join('\n');
+  document.getElementById('view-contact').textContent=c||'Tap ✏️ Edit to add your contact.';
+}
+function openEdit(){
+  document.getElementById('edit-name').value=med.name||'';
+  document.getElementById('edit-about').value=med.about||'';
+  document.getElementById('edit-please').value=med.please||'';
+  document.getElementById('edit-important').value=med.important||'';
+  document.getElementById('edit-contact-name').value=med.cname||'';
+  document.getElementById('edit-contact-phone').value=med.cphone||'';
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeEdit(){document.getElementById('edit-modal').classList.remove('open');}
+function saveEdit(){
+  med.name=document.getElementById('edit-name').value.trim();
+  med.about=document.getElementById('edit-about').value.trim();
+  med.please=document.getElementById('edit-please').value.trim();
+  med.important=document.getElementById('edit-important').value.trim();
+  med.cname=document.getElementById('edit-contact-name').value.trim();
+  med.cphone=document.getElementById('edit-contact-phone').value.trim();
+  try{localStorage.setItem('ss-med',JSON.stringify(med));}catch(e){}
+  renderMed();closeEdit();
+}
+onTap(document.getElementById('edit-open-btn'),openEdit);
+onTap(document.getElementById('save-btn'),saveEdit);
+onTap(document.getElementById('cancel-btn'),closeEdit);
+
+/* ══ THUNDERSTORM WIDGET ══ */
+var stormStarted=false;
+function initStorm(){
+  var wrap=document.getElementById('storm-wrap');
+  var canvas=document.getElementById('lightning-canvas');
+  var waveCanvas=document.getElementById('wave-canvas');
+  if(!wrap||!canvas||!waveCanvas) return;
+  function resize(){canvas.width=wrap.offsetWidth;canvas.height=wrap.offsetHeight;waveCanvas.width=wrap.offsetWidth;waveCanvas.height=wrap.offsetHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  var ctx=canvas.getContext('2d');
+  var wCtx=waveCanvas.getContext('2d');
+  var words=[document.getElementById('sw-sensory'),document.getElementById('sw-speak')];
+
+  // Draw jagged lightning bolt
+  function drawBolt(x1,y1,x2,y2,branches){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var pts=[{x:x1,y:y1}],steps=10+Math.floor(Math.random()*8);
+    for(var i=1;i<steps;i++){var t=i/steps;pts.push({x:x1+(x2-x1)*t+(Math.random()-.5)*60,y:y1+(y2-y1)*t+(Math.random()-.5)*20});}
+    pts.push({x:x2,y:y2});
+    ctx.shadowBlur=22;ctx.shadowColor='#aaccff';ctx.strokeStyle='rgba(200,220,255,.7)';ctx.lineWidth=3.5;
+    ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    ctx.shadowBlur=8;ctx.strokeStyle='#fff';ctx.lineWidth=1.5;
+    ctx.beginPath();pts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();
+    if(branches>0){var bf=pts[Math.floor(pts.length*.4+Math.random()*pts.length*.4)],bpts=[bf];for(var j=0;j<4;j++)bpts.push({x:bf.x+(Math.random()-.5)*80,y:bf.y+20+Math.random()*40});ctx.strokeStyle='rgba(180,200,255,.4)';ctx.lineWidth=1;ctx.shadowBlur=8;ctx.beginPath();bpts.forEach(function(p,i){i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});ctx.stroke();}
+    ctx.shadowBlur=0;
+  }
+
+  // Draw animated wave crest sweeping across the screen
+  function drawWaveCrest(progress,wordY,wordH){
+    wCtx.clearRect(0,0,waveCanvas.width,waveCanvas.height);
+    if(progress<=0||progress>=1) return;
+    var w=waveCanvas.width,h=waveCanvas.height;
+    var cx=progress*w; // wave front x position
+    var waveTop=wordY+wordH*.6;
+    // Draw the main wave body
+    wCtx.save();
+    wCtx.beginPath();
+    wCtx.moveTo(0,waveTop+20);
+    // Left flat water trailing behind wave
+    for(var x=0;x<cx-40;x+=4){
+      var y=waveTop+Math.sin(x*.04+progress*8)*3;
+      wCtx.lineTo(x,y);
+    }
+    // Wave crest peak
+    var peakH=28+Math.sin(progress*Math.PI)*18;
+    wCtx.bezierCurveTo(cx-30,waveTop-peakH*.3, cx-10,waveTop-peakH, cx+8,waveTop-peakH*.7);
+    wCtx.bezierCurveTo(cx+22,waveTop-peakH*.4, cx+38,waveTop+8, cx+50,waveTop+12);
+    // Right side of wave (undisturbed water ahead)
+    for(var x2=cx+50;x2<=w;x2+=4){
+      var y2=waveTop+Math.sin(x2*.04)*2.5;
+      wCtx.lineTo(x2,y2);
+    }
+    wCtx.lineTo(w,h);wCtx.lineTo(0,h);wCtx.closePath();
+    var grad=wCtx.createLinearGradient(0,waveTop-peakH,0,waveTop+30);
+    grad.addColorStop(0,'rgba(100,180,255,.55)');
+    grad.addColorStop(0.5,'rgba(60,130,220,.4)');
+    grad.addColorStop(1,'rgba(20,60,140,.15)');
+    wCtx.fillStyle=grad;
+    wCtx.fill();
+    // Foam on top of crest
+    wCtx.beginPath();
+    for(var fi=0;fi<12;fi++){
+      var fx=cx-18+fi*4+(Math.random()-.5)*3;
+      var fy=waveTop-peakH*.7-(Math.random()*6);
+      var fr=1+Math.random()*3;
+      wCtx.moveTo(fx+fr,fy);wCtx.arc(fx,fy,fr,0,Math.PI*2);
+    }
+    wCtx.fillStyle='rgba(220,240,255,.75)';wCtx.fill();
+    // Shimmer highlight sweeping across word area
+    var shimX=cx-80;
+    if(shimX>0&&shimX<w){
+      var shimGrad=wCtx.createLinearGradient(shimX,0,shimX+80,0);
+      shimGrad.addColorStop(0,'rgba(160,220,255,0)');
+      shimGrad.addColorStop(.4,'rgba(200,235,255,.35)');
+      shimGrad.addColorStop(1,'rgba(160,220,255,0)');
+      wCtx.fillStyle=shimGrad;
+      wCtx.fillRect(shimX,wordY-10,80,wordH+20);
+    }
+    wCtx.restore();
+  }
+
+  function strike(){
+    var target=words[Math.floor(Math.random()*words.length)];
+    var rect=target.getBoundingClientRect(),wrapR=wrap.getBoundingClientRect();
+    var sx=wrap.offsetWidth*(0.15+Math.random()*.7),sy=0;
+    var ex=rect.left-wrapR.left+Math.random()*rect.width,ey=rect.top-wrapR.top+rect.height*.5;
+    var wordY=rect.top-wrapR.top,wordH=rect.height;
+
+    // 1: Lightning strike + flash
+    drawBolt(sx,sy,ex,ey,Math.random()>.4?1:0);
+    target.classList.remove('surfacing','struck');
+    target.classList.add('struck');
+
+    // Screen flash
+    wrap.style.transition='background .05s';
+    wrap.style.background='rgba(180,220,255,.18)';
+    setTimeout(function(){wrap.style.background='';wrap.style.transition='';},80);
+
+    // 2: Second bolt flicker
+    if(Math.random()>.45){
+      setTimeout(function(){
+        drawBolt(sx+(Math.random()-.5)*20,0,ex+(Math.random()-.5)*15,ey,0);
+        setTimeout(function(){ctx.clearRect(0,0,canvas.width,canvas.height);},55);
+      },120);
+    }
+
+    // 3: Wave shimmer sweeps word left→right, then crash
+    setTimeout(function(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      target.classList.remove('struck');
+      // Animate wave sweep across the card
+      var startTime=null,duration=420;
+      function animWave(ts){
+        if(!startTime) startTime=ts;
+        var prog=Math.min((ts-startTime)/duration,1);
+        drawWaveCrest(prog,wordY,wordH);
+        if(prog<1) requestAnimationFrame(animWave);
+        else wCtx.clearRect(0,0,waveCanvas.width,waveCanvas.height);
+      }
+      requestAnimationFrame(animWave);
+
+      // 4: Word crashes down mid-wave
+      setTimeout(function(){
+        target.classList.remove('struck');
+        target.classList.add('crashing');
+      },180);
+
+      // 5: Word reforms — surfaces back up
+      setTimeout(function(){
+        target.classList.remove('crashing');
+        void target.offsetWidth; // force reflow
+        target.classList.add('surfacing');
+        setTimeout(function(){target.classList.remove('surfacing');},820);
+      },960);
+
+    },100);
+
+    setTimeout(strike,1800+Math.random()*2800);
+  }
+
+  if(!stormStarted){stormStarted=true;setTimeout(strike,800+Math.random()*1000);}
+}
+
+
+/* ══ COUNTRY DATA ══ */
+var COUNTRIES = [
+  {code:'gb', flag:'🇬🇧', name:'United Kingdom', lang:'en', emergency:{Police:'999', Ambulance:'999', Fire:'999'}},
+  {code:'us', flag:'🇺🇸', name:'United States',  lang:'en', emergency:{Police:'911', Ambulance:'911', Fire:'911'}},
+  {code:'au', flag:'🇦🇺', name:'Australia',      lang:'en', emergency:{Police:'000', Ambulance:'000', Fire:'000'}},
+  {code:'ca', flag:'🇨🇦', name:'Canada',         lang:'en', emergency:{Police:'911', Ambulance:'911', Fire:'911'}},
+  {code:'ie', flag:'🇮🇪', name:'Ireland',        lang:'en', emergency:{Police:'999', Ambulance:'999', Fire:'999'}},
+  {code:'nz', flag:'🇳🇿', name:'New Zealand',    lang:'en', emergency:{Police:'111', Ambulance:'111', Fire:'111'}},
+  {code:'es', flag:'🇪🇸', name:'Spain',          lang:'es', emergency:{Police:'091', Ambulance:'112', Fire:'080'}},
+  {code:'mx', flag:'🇲🇽', name:'Mexico',         lang:'es', emergency:{Police:'060', Ambulance:'065', Fire:'068'}},
+  {code:'ar', flag:'🇦🇷', name:'Argentina',      lang:'es', emergency:{Police:'101', Ambulance:'107', Fire:'100'}},
+  {code:'fr', flag:'🇫🇷', name:'France',         lang:'fr', emergency:{Police:'17',  Ambulance:'15',  Fire:'18'}},
+  {code:'be', flag:'🇧🇪', name:'Belgium',        lang:'fr', emergency:{Police:'101', Ambulance:'100', Fire:'100'}},
+  {code:'de', flag:'🇩🇪', name:'Germany',        lang:'de', emergency:{Police:'110', Ambulance:'112', Fire:'112'}},
+  {code:'at', flag:'🇦🇹', name:'Austria',        lang:'de', emergency:{Police:'133', Ambulance:'144', Fire:'122'}},
+  {code:'it', flag:'🇮🇹', name:'Italy',          lang:'it', emergency:{Police:'113', Ambulance:'118', Fire:'115'}},
+  {code:'pt', flag:'🇵🇹', name:'Portugal',       lang:'pt', emergency:{Police:'112', Ambulance:'112', Fire:'112'}},
+  {code:'br', flag:'🇧🇷', name:'Brazil',         lang:'pt', emergency:{Police:'190', Ambulance:'192', Fire:'193'}},
+  {code:'nl', flag:'🇳🇱', name:'Netherlands',    lang:'nl', emergency:{Police:'0900-8844', Ambulance:'112', Fire:'112'}},
+  {code:'pl', flag:'🇵🇱', name:'Poland',         lang:'pl', emergency:{Police:'997', Ambulance:'999', Fire:'998'}},
+  {code:'ro', flag:'🇷🇴', name:'Romania',        lang:'ro', emergency:{Police:'112', Ambulance:'112', Fire:'112'}},
+  {code:'jp', flag:'🇯🇵', name:'Japan',          lang:'ja', emergency:{Police:'110', Ambulance:'119', Fire:'119'}},
+  {code:'cn', flag:'🇨🇳', name:'China',          lang:'zh', emergency:{Police:'110', Ambulance:'120', Fire:'119'}},
+  {code:'sa', flag:'🇸🇦', name:'Saudi Arabia',   lang:'ar', emergency:{Police:'999', Ambulance:'997', Fire:'998'}},
+  {code:'ae', flag:'🇦🇪', name:'UAE',            lang:'ar', emergency:{Police:'999', Ambulance:'998', Fire:'997'}},
+  {code:'gr', flag:'🇬🇷', name:'Greece',         lang:'en', emergency:{Police:'100', Ambulance:'166', Fire:'199'}},
+  {code:'tr', flag:'🇹🇷', name:'Turkey',         lang:'en', emergency:{Police:'155', Ambulance:'112', Fire:'110'}},
+  {code:'th', flag:'🇹🇭', name:'Thailand',       lang:'en', emergency:{Police:'191', Ambulance:'1669',Fire:'199'}},
+  {code:'in', flag:'🇮🇳', name:'India',          lang:'en', emergency:{Police:'100', Ambulance:'108', Fire:'101'}},
+  {code:'za', flag:'🇿🇦', name:'South Africa',   lang:'en', emergency:{Police:'10111',Ambulance:'10177',Fire:'10177'}},
+  {code:'eu', flag:'🇪🇺', name:'Europe (general)',lang:'en',emergency:{Emergency:'112', Police:'112',  Ambulance:'112'}}
+];
+
+// Quick translations for key phrases per language
+// Format: { about, please, important, contact }
+var TRAVEL_PHRASES = {
+  en: { about:'About Me', please:'Please Do This', important:'⚠ Important', contact:'Emergency Contact', note:'This person has a sensory condition. Please be patient and gentle.' },
+  es: { about:'Sobre Mí', please:'Por Favor Haz Esto', important:'⚠ Importante', contact:'Contacto de Emergencia', note:'Esta persona tiene una condición sensorial. Por favor sea paciente y amable.' },
+  fr: { about:'À Propos de Moi', please:'Faites Ceci', important:'⚠ Important', contact:"Contact d'Urgence", note:'Cette personne a une condition sensorielle. Soyez patient et doux.' },
+  de: { about:'Über Mich', please:'Bitte Tun Sie Das', important:'⚠ Wichtig', contact:'Notfallkontakt', note:'Diese Person hat eine sensorische Erkrankung. Bitte seien Sie geduldig und sanft.' },
+  it: { about:'Su di Me', please:'Per Favore Fai Questo', important:'⚠ Importante', contact:'Contatto di Emergenza', note:'Questa persona ha una condizione sensoriale. Si prega di essere paziente e gentile.' },
+  pt: { about:'Sobre Mim', please:'Por Favor Faça Isso', important:'⚠ Importante', contact:'Contato de Emergência', note:'Esta pessoa tem uma condição sensorial. Por favor seja paciente e gentil.' },
+  ar: { about:'عني', please:'من فضلك افعل هذا', important:'⚠ مهم', contact:'جهة اتصال الطوارئ', note:'هذا الشخص لديه حالة حسية. يرجى التحلي بالصبر واللطف.' },
+  zh: { about:'关于我', please:'请这样做', important:'⚠ 重要', contact:'紧急联系人', note:'此人有感觉障碍。请耐心温柔对待。' },
+  ja: { about:'私について', please:'これをお願いします', important:'⚠ 重要', contact:'緊急連絡先', note:'この方は感覚障害があります。穏やかに、辛抱強くお願いします。' },
+  pl: { about:'O Mnie', please:'Proszę Zrób To', important:'⚠ Ważne', contact:'Kontakt Alarmowy', note:'Ta osoba ma zaburzenia sensoryczne. Prosimy o cierpliwość.' },
+  ro: { about:'Despre Mine', please:'Vă Rog Faceți Asta', important:'⚠ Important', contact:'Contact Urgență', note:'Această persoană are o condiție senzorială. Vă rugăm să fiți răbdător.' },
+  nl: { about:'Over Mij', please:'Doe Dit Alstublieft', important:'⚠ Belangrijk', contact:'Noodcontact', note:'Deze persoon heeft een sensorische aandoening. Wees geduldig en vriendelijk.' }
+};
+
+/* ══ TRAVEL STATE ══ */
+var selectedCountry = null;
+
+function buildCountryGrid() {
+  var grid = document.getElementById('dest-country-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  COUNTRIES.forEach(function(c) {
+    var el = document.createElement('div');
+    el.className = 'dest-country' + (selectedCountry && selectedCountry.code === c.code ? ' selected' : '');
+    el.innerHTML = '<div class="dest-flag">' + c.flag + '</div><div class="dest-cname">' + c.name + '</div>';
+    onTap(el, (function(country){ return function(){ selectCountry(country); }; })(c));
+    grid.appendChild(el);
+  });
+}
+
+function selectCountry(country) {
+  selectedCountry = country;
+  try { localStorage.setItem('ss-travel', JSON.stringify(country)); } catch(e){}
+  document.querySelectorAll('.dest-country').forEach(function(el){
+    el.classList.remove('selected');
+  });
+  // re-highlight
+  buildCountryGrid();
+  renderTravelCard();
+}
+
+function renderTravelCard() {
+  var wrap = document.getElementById('travel-card-wrap');
+  var inner = document.getElementById('travel-card-inner');
+  if (!wrap || !inner || !selectedCountry) return;
+  wrap.style.display = 'flex';
+
+  var ph = TRAVEL_PHRASES[selectedCountry.lang] || TRAVEL_PHRASES['en'];
+  var html = '';
+
+  // Header
+  html += '<div class="tc-header">';
+  html += '<div class="tc-flag-big">' + selectedCountry.flag + '</div>';
+  html += '<div class="tc-dest-info">';
+  html += '<div class="tc-country-name">' + selectedCountry.name + '</div>';
+  html += '<div class="tc-lang-name">Showing info in local language</div>';
+  html += '</div></div>';
+  html += '<div class="tc-divider"></div>';
+
+  // Sensory note
+  html += '<div class="tc-row"><div class="tc-row-label">📢 Please read</div>';
+  html += '<div class="tc-row-local" style="font-size:15px;color:#aaddff">' + ph.note + '</div></div>';
+  html += '<div class="tc-divider"></div>';
+
+  // About
+  if (med.about) {
+    html += '<div class="tc-row"><div class="tc-row-label">' + ph.about + '</div>';
+    html += '<div class="tc-row-en">' + med.about + '</div>';
+    html += '</div>';
+  }
+  // Please
+  if (med.please) {
+    html += '<div class="tc-row"><div class="tc-row-label">' + ph.please + '</div>';
+    html += '<div class="tc-row-en">' + med.please + '</div>';
+    html += '</div>';
+  }
+  // Important
+  if (med.important) {
+    html += '<div class="tc-row"><div class="tc-row-label" style="color:#ff8888">' + ph.important + '</div>';
+    html += '<div class="tc-row-en" style="color:#ffaaaa;font-weight:700">' + med.important + '</div>';
+    html += '</div>';
+  }
+  // Contact
+  if (med.cname || med.cphone) {
+    html += '<div class="tc-divider"></div>';
+    html += '<div class="tc-row"><div class="tc-row-label">' + ph.contact + '</div>';
+    if (med.cname)  html += '<div class="tc-row-local" style="font-size:16px">' + med.cname + '</div>';
+    if (med.cphone) html += '<div class="tc-row-local" style="font-size:22px;color:#ffcc44">' + med.cphone + '</div>';
+    html += '</div>';
+  }
+
+  // Emergency numbers
+  html += '<div class="tc-emergency">';
+  html += '<div class="tc-emg-title">🚨 Emergency Numbers — ' + selectedCountry.name + '</div>';
+  Object.entries(selectedCountry.emergency).forEach(function(pair) {
+    html += '<div class="tc-emg-row"><div class="tc-emg-label">' + pair[0] + '</div><div class="tc-emg-num">' + pair[1] + '</div></div>';
+  });
+  html += '</div>';
+
+  inner.innerHTML = html;
+}
+
+function showTravelOverlay() {
+  if (!selectedCountry) return;
+  var ph = TRAVEL_PHRASES[selectedCountry.lang] || TRAVEL_PHRASES['en'];
+  var ov = document.getElementById('travel-overlay');
+
+  ov.style.background = 'linear-gradient(160deg,#020d1a,#080412)';
+  document.getElementById('tov-flag').textContent = selectedCountry.flag;
+  document.getElementById('tov-country').textContent = selectedCountry.name;
+
+  // Note
+  var aboutSec = document.getElementById('tov-about-sec');
+  document.querySelector('#tov-about-sec .tov-slabel').textContent = '📢 Please Read';
+  document.getElementById('tov-about-en').textContent = '';
+  document.getElementById('tov-about-local').textContent = ph.note;
+
+  // Please
+  var pleaseSec = document.getElementById('tov-please-sec');
+  document.querySelector('#tov-please-sec .tov-slabel').textContent = ph.please;
+  document.getElementById('tov-please-en').textContent = med.please || '';
+  document.getElementById('tov-please-local').textContent = med.please || '(not set — tap Edit in Medical ID)';
+
+  // Important
+  var impSec = document.getElementById('tov-important-sec');
+  document.querySelector('#tov-important-sec .tov-slabel').textContent = ph.important;
+  document.getElementById('tov-important-en').textContent = med.important || '';
+  document.getElementById('tov-important-local').textContent = med.important || '(not set)';
+
+  // Emergency
+  var rows = '';
+  Object.entries(selectedCountry.emergency).forEach(function(pair) {
+    rows += '<div class="tov-emg-row"><div class="tov-emg-lbl">' + pair[0] + '</div><div class="tov-emg-num">' + pair[1] + '</div></div>';
+  });
+  document.getElementById('tov-emg-rows').innerHTML = rows;
+
+  ov.classList.add('open');
+}
+
+// Travel input search
+var travelInput = document.getElementById('travel-dest-input');
+if (travelInput) {
+  travelInput.addEventListener('input', function() {
+    var q = this.value.toLowerCase().trim();
+    if (!q) { buildCountryGrid(); return; }
+    var filtered = COUNTRIES.filter(function(c) {
+      return c.name.toLowerCase().indexOf(q) > -1;
+    });
+    var grid = document.getElementById('dest-country-grid');
+    grid.innerHTML = '';
+    filtered.forEach(function(c) {
+      var el = document.createElement('div');
+      el.className = 'dest-country' + (selectedCountry && selectedCountry.code === c.code ? ' selected' : '');
+      el.innerHTML = '<div class="dest-flag">' + c.flag + '</div><div class="dest-cname">' + c.name + '</div>';
+      onTap(el, (function(country){ return function(){ selectCountry(country); document.getElementById('travel-dest-input').value = ''; buildCountryGrid(); }; })(c));
+      grid.appendChild(el);
+    });
+  });
+}
+
+var travOv = document.getElementById('travel-overlay');
+onTap(document.getElementById('tov-close'), function() { travOv.classList.remove('open'); });
+onTap(travOv, function(e) { if (e.target === travOv || e.target.id === 'tov-close') travOv.classList.remove('open'); });
+onTap(document.getElementById('travel-show-btn'), showTravelOverlay);
+onTap(document.getElementById('travel-back-btn'), function() { goTo('panic'); });
+
+/* ══ BACKUP SYSTEM ══ */
+function getAllData() {
+  return {
+    version: 1,
+    app: 'SensoryWave',
+    exported: new Date().toISOString(),
+    med: med,
+    lang: currentLang,
+    pinEnabled: pinEnabled,
+    pin: storedPin,
+    travel: selectedCountry
+  };
+}
+
+function applyAllData(data) {
+  if (!data || data.app !== 'SensoryWave') return false;
+  // Medical ID
+  if (data.med) {
+    med = data.med;
+    try { localStorage.setItem('ss-med', JSON.stringify(med)); } catch(e){}
+    renderMed();
+  }
+  // Language
+  if (data.lang && T[data.lang]) {
+    applyLanguage(data.lang);
+    try { localStorage.setItem('ss-lang', data.lang); } catch(e){}
+  }
+  // PIN
+  if (data.pin) {
+    storedPin = data.pin;
+    pinEnabled = data.pinEnabled || false;
+    try { localStorage.setItem('ss-pin', storedPin); localStorage.setItem('ss-pin-on', String(pinEnabled)); } catch(e){}
+    updateSecurityScreen();
+  }
+  // Travel
+  if (data.travel) {
+    selectedCountry = data.travel;
+    try { localStorage.setItem('ss-travel', JSON.stringify(selectedCountry)); } catch(e){}
+    buildCountryGrid();
+    renderTravelCard();
+  }
+  return true;
+}
+
+function saveBackup() {
+  var data = getAllData();
+  var json = JSON.stringify(data, null, 2);
+  var blob = new Blob([json], {type:'application/json'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  var d = new Date();
+  var dateStr = d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  a.href = url; a.download = 'SensoryWave-backup-'+dateStr+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showBkStatus('✅ Backup file downloaded! Send it to yourself by email or save to cloud.', '#44ee88');
+}
+
+function loadBackup() {
+  document.getElementById('backup-file-input').click();
+}
+
+function clearAllData() {
+  if (!confirm('This will remove ALL your data from this device — Medical ID, PIN, language and travel settings. Are you sure?')) return;
+  try {
+    localStorage.removeItem('ss-med');
+    localStorage.removeItem('ss-pin');
+    localStorage.removeItem('ss-pin-on');
+    localStorage.removeItem('ss-lang');
+    localStorage.removeItem('ss-travel');
+  } catch(e){}
+  med = {name:'',about:'',please:'',important:'',cname:'',cphone:''};
+  storedPin = ''; pinEnabled = false;
+  currentLang = 'en'; selectedCountry = null;
+  renderMed(); applyLanguage('en'); updateSecurityScreen();
+  buildCountryGrid();
+  document.getElementById('travel-card-wrap').style.display = 'none';
+  showBkStatus('🗑️ All data cleared from this device.', '#ff9966');
+}
+
+function showBkStatus(msg, color) {
+  var el = document.getElementById('bk-status');
+  if (!el) return;
+  el.textContent = msg; el.style.color = color;
+  setTimeout(function() { el.textContent = ''; }, 5000);
+}
+
+document.getElementById('backup-file-input').addEventListener('change', function(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    try {
+      var data = JSON.parse(ev.target.result);
+      var ok = applyAllData(data);
+      if (ok) showBkStatus('✅ Backup restored! All your data is back.', '#44ee88');
+      else showBkStatus('❌ Could not read file — make sure it is a SensoryWave backup.', '#ff6655');
+    } catch(err) {
+      showBkStatus('❌ File error — try downloading a new backup.', '#ff6655');
+    }
+  };
+  reader.readAsText(file);
+  this.value = '';
+});
+
+onTap(document.getElementById('bk-save-btn'),  saveBackup);
+onTap(document.getElementById('bk-load-btn'),  loadBackup);
+onTap(document.getElementById('bk-clear-btn'), clearAllData);
+
+
+/* ══ INIT ══ */
+loadPinSettings();
+buildLangGrid();
+try{var sl=localStorage.getItem('ss-lang');if(sl&&T[sl])applyLanguage(sl);}catch(e){}
+updateSecurityScreen();
+applyMgLevel(1);
+updRec();
+loadMed();
+// Load saved travel destination
+try {
+  var st = localStorage.getItem('ss-travel');
+  if (st) { selectedCountry = JSON.parse(st); }
+} catch(e) {}
+buildCountryGrid();
+if (selectedCountry) renderTravelCard();
+
+// Show PIN screen if enabled
+if(pinEnabled&&storedPin){
+  document.getElementById('pin-screen').classList.remove('hidden');
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('pin-sub').textContent='Enter your PIN to open';
+  document.getElementById('pin-setup-note').textContent='';
+}
+</script>
+
+<!-- TRAVEL FULLSCREEN OVERLAY -->
+<div id="travel-overlay">
+  <div class="tov-flag" id="tov-flag"></div>
+  <div class="tov-country" id="tov-country"></div>
+  <div class="tov-section" id="tov-about-sec">
+    <div class="tov-slabel">About Me</div>
+    <div class="tov-en" id="tov-about-en"></div>
+    <div class="tov-local" id="tov-about-local"></div>
+  </div>
+  <div class="tov-section" id="tov-please-sec">
+    <div class="tov-slabel">Please Do This</div>
+    <div class="tov-en" id="tov-please-en"></div>
+    <div class="tov-local" id="tov-please-local"></div>
+  </div>
+  <div class="tov-section red" id="tov-important-sec">
+    <div class="tov-slabel">⚠ Important</div>
+    <div class="tov-en" id="tov-important-en"></div>
+    <div class="tov-local" id="tov-important-local"></div>
+  </div>
+  <div class="tov-section red" id="tov-emg-sec">
+    <div class="tov-slabel">🚨 Emergency Numbers</div>
+    <div id="tov-emg-rows"></div>
+  </div>
+  <div class="tov-close" id="tov-close">Tap anywhere to close</div>
+</div>
+
+</body>
+</html>
