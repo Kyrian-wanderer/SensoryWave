@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background gradient: deep Caribbean teal to stormy purple -->
+    <radialGradient id="bg" cx="40%" cy="60%" r="75%">
+      <stop offset="0%" stop-color="#0a2a3a"></stop>
+      <stop offset="45%" stop-color="#0d1a3a"></stop>
+      <stop offset="100%" stop-color="#1a0a2e"></stop>
+    </radialGradient>
+    <!-- Wave gradient: Caribbean teal through gold to stormy purple -->
+    <linearGradient id="wave1g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00b4d8"></stop>
+      <stop offset="35%" stop-color="#0077b6"></stop>
+      <stop offset="65%" stop-color="#c8a800"></stop>
+      <stop offset="100%" stop-color="#7b2d8b"></stop>
+    </linearGradient>
+    <linearGradient id="wave2g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7b2d8b"></stop>
+      <stop offset="30%" stop-color="#c8a800"></stop>
+      <stop offset="70%" stop-color="#00b4d8"></stop>
+      <stop offset="100%" stop-color="#023e8a"></stop>
+    </linearGradient>
+    <linearGradient id="wave3g" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#c8a800" stop-opacity="0.7"></stop>
+      <stop offset="50%" stop-color="#00b4d8" stop-opacity="0.9"></stop>
+      <stop offset="100%" stop-color="#7b2d8b" stop-opacity="0.6"></stop>
+    </linearGradient>
+    <!-- Glow filter for calligraphic effect -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+      <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+    <filter id="softglow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="8" result="blur"></feGaussianBlur>
+      <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+    </filter>
+    <clipPath id="iconClip">
+      <rect width="512" height="512" rx="110" ry="110"></rect>
+    </clipPath>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="512" height="512" rx="110" ry="110" fill="url(#bg)"></rect>
+
+  <g clip-path="url(#iconClip)">
+
+    <!-- Subtle background aurora wash -->
+    <ellipse cx="160" cy="320" rx="200" ry="120" fill="#00b4d8" opacity="0.06"></ellipse>
+    <ellipse cx="360" cy="200" rx="180" ry="100" fill="#7b2d8b" opacity="0.08"></ellipse>
+    <ellipse cx="256" cy="256" rx="160" ry="80" fill="#c8a800" opacity="0.04"></ellipse>
+
+    <!-- === MAIN CALLIGRAPHIC WAVE — thick brushstroke === -->
+    <!-- Primary wave body — thick calligraphic stroke -->
+    <path d="M 48 280
+             C 80 220, 120 180, 155 210
+             C 175 225, 185 255, 200 248
+             C 218 240, 225 195, 248 188
+             C 268 182, 278 215, 295 220
+             C 315 226, 325 195, 348 185
+             C 368 176, 385 200, 400 210
+             C 420 222, 440 238, 464 225" fill="none" stroke="url(#wave1g)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" opacity="0.95" filter="url(#glow)"></path>
+
+    <!-- Fragment 1 — breaking away top right -->
+    <path d="M 370 178 C 388 165, 408 158, 428 162" fill="none" stroke="#c8a800" stroke-width="14" stroke-linecap="round" opacity="0.75"></path>
+
+    <!-- Fragment 2 — splinter mid section -->
+    <path d="M 218 182 C 232 168, 245 162, 258 170" fill="none" stroke="#00b4d8" stroke-width="10" stroke-linecap="round" opacity="0.65"></path>
+
+    <!-- Fragment 3 — edge break far right -->
+    <path d="M 448 218 C 460 208, 472 204, 482 210" fill="none" stroke="#7b2d8b" stroke-width="8" stroke-linecap="round" opacity="0.6"></path>
+
+    <!-- === SECOND WAVE — slightly below, opposing energy === -->
+    <path d="M 42 320
+             C 70 355, 105 370, 138 350
+             C 158 338, 168 308, 192 315
+             C 212 321, 220 352, 248 345
+             C 272 339, 282 305, 308 312
+             C 330 318, 342 348, 368 338
+             C 390 329, 415 305, 464 318" fill="none" stroke="url(#wave2g)" stroke-width="20" stroke-linecap="round" stroke-linejoin="round" opacity="0.85" filter="url(#glow)"></path>
+
+    <!-- Fragment 4 — second wave breaking left -->
+    <path d="M 48 328 C 36 318, 28 312, 20 318" fill="none" stroke="#7b2d8b" stroke-width="10" stroke-linecap="round" opacity="0.55"></path>
+
+    <!-- Fragment 5 — second wave splinter centre -->
+    <path d="M 255 340 C 268 355, 278 362, 290 356" fill="none" stroke="#c8a800" stroke-width="8" stroke-linecap="round" opacity="0.6"></path>
+
+    <!-- === THIRD WAVE — thin golden accent, most fragmented === -->
+    <path d="M 80 368
+             C 110 348, 138 358, 162 372
+             C 182 384, 195 368, 220 362" fill="none" stroke="url(#wave3g)" stroke-width="8" stroke-linecap="round" opacity="0.7"></path>
+
+    <path d="M 268 355
+             C 295 342, 318 350, 340 365" fill="none" stroke="#c8a800" stroke-width="6" stroke-linecap="round" opacity="0.55"></path>
+
+    <path d="M 388 348
+             C 412 335, 438 342, 458 355" fill="none" stroke="#00b4d8" stroke-width="5" stroke-linecap="round" opacity="0.45"></path>
+
+    <!-- === SPRAY/SCATTER — tiny fragments breaking off === -->
+    <!-- Top scatter from main wave -->
+    <line x1="200" y1="240" x2="208" y2="228" stroke="#c8a800" stroke-width="4" stroke-linecap="round" opacity="0.5"></line>
+    <line x1="296" y1="212" x2="306" y2="200" stroke="#00b4d8" stroke-width="3" stroke-linecap="round" opacity="0.45"></line>
+    <line x1="348" y1="178" x2="360" y2="166" stroke="#c8a800" stroke-width="5" stroke-linecap="round" opacity="0.55"></line>
+    <line x1="155" y1="202" x2="145" y2="190" stroke="#7b2d8b" stroke-width="3" stroke-linecap="round" opacity="0.4"></line>
+    <line x1="420" y1="205" x2="432" y2="194" stroke="#00b4d8" stroke-width="4" stroke-linecap="round" opacity="0.45"></line>
+
+    <!-- Bottom scatter -->
+    <line x1="138" y1="358" x2="128" y2="372" stroke="#c8a800" stroke-width="3" stroke-linecap="round" opacity="0.4"></line>
+    <line x1="310" y1="318" x2="320" y2="332" stroke="#7b2d8b" stroke-width="3" stroke-linecap="round" opacity="0.4"></line>
+    <line x1="462" y1="325" x2="472" y2="338" stroke="#00b4d8" stroke-width="2" stroke-linecap="round" opacity="0.35"></line>
+
+    <!-- === SOFT GLOW HIGHLIGHTS on wave peaks === -->
+    <ellipse cx="200" cy="244" rx="18" ry="8" fill="#c8a800" opacity="0.18" filter="url(#softglow)"></ellipse>
+    <ellipse cx="348" cy="185" rx="22" ry="9" fill="#00b4d8" opacity="0.22" filter="url(#softglow)"></ellipse>
+    <ellipse cx="248" cy="342" rx="20" ry="8" fill="#7b2d8b" opacity="0.2" filter="url(#softglow)"></ellipse>
+
+  </g>
+</svg></svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
