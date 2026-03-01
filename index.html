@@ -842,7 +842,7 @@ body { font-size: 16px; }
 <script>
 // ── SERVICE WORKER V1.1 ──
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=1.1')).then(function(reg){
+  navigator.serviceWorker.register('sw.js?v=1.1').then(function(reg){
     reg.update();
     setInterval(function(){ reg.update(); }, 60000);
     function promptUpdate(){
