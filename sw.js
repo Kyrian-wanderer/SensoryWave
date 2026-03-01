@@ -48,4 +48,18 @@ self.addEventListener('fetch', function(event) {
       return caches.match(event.request);
     })
   );
+});  // Network-first: always try to get fresh content
+  // Falls back to cache only if offline
+  event.respondWith(
+    fetch(event.request, {cache: 'no-store'}).then(function(response) {
+      // Cache the fresh response for offline use
+      var clone = response.clone();
+      caches.open(CACHE_NAME).then(function(cache) {
+        cache.put(event.request, clone);
+      });
+      return response;
+    }).catch(function() {
+      return caches.match(event.request);
+    })
+  );
 });
