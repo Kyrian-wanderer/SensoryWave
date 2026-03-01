@@ -1,5 +1,5 @@
 // SensoryPeak Service Worker
-const VERSION = 'V1.1';
+const VERSION = 'V1.2';
 const CACHE_NAME = 'sensorywave-' + VERSION;
 
 self.addEventListener('install', function(event) {
